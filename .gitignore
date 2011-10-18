@@ -4,6 +4,16 @@ gradle-app.setting
 build
 tmp
 
+## intellij metadata files
+whiteboard.iml
+whiteboard.ipr
+whiteboard.iws
+
+## eclipse metadata files
+.settings
+.classpath
+.project
+
 ## generic files to ignore
 *~
 *.lock

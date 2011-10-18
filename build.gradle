@@ -1,0 +1,37 @@
+/**
+ * Build script for JavaPushMail project. Requires the Gradle build tool and a
+ * Java compiler.
+ */
+
+apply plugin: "java"
+apply plugin: "eclipse"
+
+groupId = "com.mofirouz"
+version = "0.0.1"
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: "javax.mail", name: "mail", version: "1.4.4"
+    compile group: "net.java.dev.timingframework", name: "timingframework", version: "1.0"
+    compile fileTree(dir: 'libs', include: '*.jar')
+}
+
+jar {
+    manifest {
+        attributes "Implementation-Title": project.name,
+                    "Implementation-Version": version.toString(),
+                    "Main-Class": "com.mofirouz.javapushmail.app.ui.JavaPushMail",
+                    "Created-By": "Gradle "+gradle.gradleVersion,
+                    "Build-Jdk": System.properties['java.version'],
+                    "Manifest-Version": 1.0
+    }
+
+    // create a fat jar
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+

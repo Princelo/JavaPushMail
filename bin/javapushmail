@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+# Simple shell script to start and run the JavaPushMail.
+# This script is for testing purposes only.
+
+# change current working directory to script location
+DIR="$( cd "$( dirname "$0" )" && pwd )"
+cd $DIR
+
+# relative path to jar
+JAR="../build/libs/JavaPushMail-0.0.1.jar"
+
+[ -f "$JAR" ] || {
+    echo "You must run a build before testing the app.\n"
+    exit 1
+}
+
+# run the app using relative path to build dir (with debugging)
+java -jar "$JAR" -Djava.debug=true $@
+

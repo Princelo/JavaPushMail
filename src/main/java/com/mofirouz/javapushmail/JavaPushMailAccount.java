@@ -13,11 +13,14 @@ import javax.mail.event.MessageChangedListener;
 import javax.mail.event.MessageCountEvent;
 import javax.mail.event.MessageCountListener;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  *
  * @author Mo Firouz
  * @since 2/10/11
  */
+@Slf4j
 public abstract class JavaPushMailAccount implements Runnable {
 
     public final static int READ_ONLY_FOLDER = Folder.READ_ONLY;
@@ -92,7 +95,7 @@ public abstract class JavaPushMailAccount implements Runnable {
             connected = true;
             prober.start();
             selectFolder("");
-            System.out.println(accountName + ": Fully Connected!");
+            log.info("{}: Fully Connected!", accountName);
             onConnect();
         } catch (MessagingException ex) {
             connected = false;

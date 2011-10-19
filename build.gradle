@@ -35,6 +35,7 @@ dependencies {
     compileOnly group: "org.projectlombok", name: "lombok", version: "0.10.1"
     compile group: "javax.mail", name: "mail", version: "1.4.4"
     compile group: "net.java.dev.timingframework", name: "timingframework", version: "1.0"
+    compile group: "ch.qos.logback", name: "logback-classic", version: "0.9.30"
     compile fileTree(dir: 'libs', include: '*.jar')
 }
 

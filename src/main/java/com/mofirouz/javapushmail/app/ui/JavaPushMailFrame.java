@@ -25,7 +25,7 @@ public class JavaPushMailFrame {
     public static final Image dockIcon;
 
     static {
-        dockIcon = (Toolkit.getDefaultToolkit().createImage(JavaPushMailFrame.class.getResource("dock.png")));
+        dockIcon = (Toolkit.getDefaultToolkit().createImage(JavaPushMailFrame.class.getResource("/dock.png")));
     }
 
     public JavaPushMailFrame() {

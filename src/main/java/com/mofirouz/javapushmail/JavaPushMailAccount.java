@@ -2,6 +2,8 @@ package com.mofirouz.javapushmail;
 
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPStore;
+import com.sun.mail.imap.SortTerm;
+
 import java.util.EventListener;
 import java.util.Properties;
 import javax.mail.Folder;
@@ -35,8 +37,8 @@ public abstract class JavaPushMailAccount implements Runnable {
     private IMAPStore server;
     private Session session;
     private IMAPFolder folder;
-    private MessageCountListener messageCountListener;
-    private MessageChangedListener messageChangedListener;
+    private MessageCountListener messageCountListener, externalCountListener;
+    private MessageChangedListener messageChangedListener, externalChangedListener;
     private NetworkProber prober;
     private MailPoller poller;
     private Thread pushThread;
@@ -72,6 +74,19 @@ public abstract class JavaPushMailAccount implements Runnable {
                 }
             }
         };
+        
+        poller = new MailPoller(folder) {
+			@Override
+			public void onNewMessage() {
+				try {
+				if (externalCountListener != null)
+					externalCountListener.messagesAdded(new MessageCountEvent(folder, MessageCountEvent.ADDED, false, getAllUnreadMessages()));
+				} catch (Exception e) {
+					log.debug("Error: ", e);
+				}
+				
+			}
+		};
 
         Properties props = System.getProperties();
         String imapProtocol = "imap";
@@ -107,12 +122,16 @@ public abstract class JavaPushMailAccount implements Runnable {
         }
     }
 
-    public void addMessageChangedListerer(MessageChangedListener listener) {
-        addListener(listener);
+    public void setMessageChangedListerer(MessageChangedListener listener) {
+        removeListener(externalChangedListener);
+        externalChangedListener = listener;
+    	addListener(externalChangedListener);
     }
 
-    public void addMessageCounterListerer(MessageCountListener listener) {
-        addListener(listener);
+    public void setMessageCounterListerer(MessageCountListener listener) {
+    	removeListener(externalCountListener);
+    	externalCountListener = listener;
+        addListener(externalCountListener);
     }
 
     private void selectFolder(String folderName) {
@@ -240,6 +259,17 @@ public abstract class JavaPushMailAccount implements Runnable {
         }
     }
 
+    public Message[] getAllUnreadMessages() throws MessagingException {
+    	Message[] mess = new Message[folder.getUnreadMessageCount()];
+    	
+    	Message[] allmess = folder.getSortedMessages(new SortTerm[] {SortTerm.ARRIVAL, SortTerm.DATE});
+    	
+    	for (int i = 0; i < folder.getUnreadMessageCount(); i++)
+    		mess[i] = allmess[i];
+    	
+    	return mess;
+    }
+    
     public Message[] getMessages() throws MessagingException {
         return folder.getMessages();
     }

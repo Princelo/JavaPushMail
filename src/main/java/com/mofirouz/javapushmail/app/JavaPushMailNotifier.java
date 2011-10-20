@@ -30,8 +30,8 @@ public class JavaPushMailNotifier {
     }
 
     private void addListeners() {
-        mail.addMessageCounterListerer(messageCountListener);
-        //mail.addMessageChangedListerer(messageChangedListener);
+        mail.setMessageCounterListerer(messageCountListener);
+        //mail.setMessageChangedListerer(messageChangedListener);
     }
 
     private void initialiseListeners() {

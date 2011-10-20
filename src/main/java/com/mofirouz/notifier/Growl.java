@@ -56,7 +56,8 @@ public class Growl {
         return count > 0;
     }
 
-    private <T> T executeScript(String script, T defaultValue) {
+    @SuppressWarnings("unchecked")
+	private <T> T executeScript(String script, T defaultValue) {
         try {
             return (T) appleScriptEngine.eval(script, appleScriptEngine.getContext());
         } catch (ScriptException e) {

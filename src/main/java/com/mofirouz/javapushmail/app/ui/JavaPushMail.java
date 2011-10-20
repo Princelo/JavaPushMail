@@ -2,7 +2,6 @@ package com.mofirouz.javapushmail.app.ui;
 
 import com.mofirouz.javapushmail.JavaPushMailAccount;
 import com.mofirouz.javapushmail.app.JavaPushMailAccountsManager;
-import javax.mail.MessagingException;
 
 /**
  *
@@ -28,7 +27,8 @@ public class JavaPushMail {
     public JavaPushMail() {
     }
 
-    public void init() {
+    @SuppressWarnings("deprecation")
+	public void init() {
         initFrame();
         initManager();
         frame.init(manager);

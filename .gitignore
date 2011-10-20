@@ -3,6 +3,7 @@ gradle-app.setting
 .gradle
 build
 tmp
+bin
 
 ## intellij metadata files
 whiteboard.iml
@@ -22,5 +23,6 @@ whiteboard.iws
 *.out
 Icon?
 Thumbs.db
+*.credentials
 
 

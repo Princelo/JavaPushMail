@@ -1,7 +1,6 @@
 package com.mofirouz.javapushmail.app.ui;
 
 import com.mofirouz.javapushmail.app.JavaPushMailAccountsManager;
-import java.awt.AWTEventMulticaster;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;

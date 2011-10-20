@@ -38,6 +38,7 @@ public abstract class JavaPushMailAccount implements Runnable {
     private MessageCountListener messageCountListener;
     private MessageChangedListener messageChangedListener;
     private NetworkProber prober;
+    private MailPoller poller;
     private Thread pushThread;
 
     public JavaPushMailAccount(String accountName, String serverAddress, int serverPort, boolean useSSL) {
@@ -63,8 +64,8 @@ public abstract class JavaPushMailAccount implements Runnable {
             @Override
             public void onNetworkChange(boolean change) {
                 connected = true;
-                if (getFailureCount() >= 3) {
-                    System.err.println(accountName + " Network Disconnected: " + getFailureCount() + " fails");
+                if (getPingFailureCount() >= 2 || getSessionFailureCount() != 0) {
+                    log.error(accountName + " Ping fail: " + getPingFailureCount() + " | Session fail: " + getSessionFailureCount());
                     prober.stop();
                     connected = false;
                     reconnect();
@@ -249,6 +250,10 @@ public abstract class JavaPushMailAccount implements Runnable {
 
     public boolean isConnected() {
         return connected;
+    }
+    
+    public boolean isSessionValid() {
+    	return server.isConnected();
     }
 
     public abstract void onDisconnect(Exception e);

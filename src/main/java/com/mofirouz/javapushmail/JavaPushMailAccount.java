@@ -69,6 +69,7 @@ public abstract class JavaPushMailAccount implements Runnable {
                 if (getPingFailureCount() >= 2 || getSessionFailureCount() != 0) {
                     log.error(accountName + " Ping fail: " + getPingFailureCount() + " | Session fail: " + getSessionFailureCount());
                     prober.stop();
+                    poller.stop();
                     connected = false;
                     reconnect();
                 }
@@ -111,6 +112,7 @@ public abstract class JavaPushMailAccount implements Runnable {
             connected = true;
             prober.start();
             selectFolder("");
+            poller.start(accountName);
             log.info("{}: Fully Connected!", accountName);
             onConnect();
         } catch (MessagingException ex) {
@@ -143,33 +145,13 @@ public abstract class JavaPushMailAccount implements Runnable {
                 folder = (IMAPFolder) server.getFolder(folderName);
             }
             openFolder();
+            addInternalListeners(messageChangedListener);
+            addInternalListeners(messageCountListener);
         } catch (MessagingException ex) {
             onDisconnect(ex);
         } catch (IllegalStateException ex) {
             ex.printStackTrace();
         }
-    }
-
-    private void usePush() {
-        if (folder == null)
-            return;
-
-        addInternalListeners(messageChangedListener);
-        addInternalListeners(messageCountListener);
-
-        Runnable r = new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    folder.idle(false);
-                } catch (Exception e) {
-                }
-            }
-        };
-        pushThread = new Thread(r, "Push-" + accountName);
-        pushThread.setDaemon(true);
-        pushThread.start();
     }
 
     private void openFolder() throws MessagingException {
@@ -194,6 +176,25 @@ public abstract class JavaPushMailAccount implements Runnable {
         folder = null;
     }
 
+    private void usePush() {
+        if (folder == null)
+            return;
+        
+        Runnable r = new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    folder.idle(false);
+                } catch (Exception e) {
+                }
+            }
+        };
+        pushThread = new Thread(r, "Push-" + accountName);
+        pushThread.setDaemon(true);
+        pushThread.start();
+    }
+    
     private void removeAllListenersFromFolder() {
         removeListener(messageChangedListener);
         removeListener(messageCountListener);

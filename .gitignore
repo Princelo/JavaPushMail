@@ -21,8 +21,6 @@ whiteboard.iws
 *.DS_Store
 *.swp
 *.out
+*.credentials
 Icon?
 Thumbs.db
-*.credentials
-
-

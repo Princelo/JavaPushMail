@@ -10,11 +10,14 @@ import javax.mail.event.MessageChangedListener;
 import javax.mail.event.MessageCountEvent;
 import javax.mail.event.MessageCountListener;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  *
  * @author Mo Firouz
  * @since 2/10/11
  */
+@Slf4j
 public class JavaPushMailNotifier {
 
     private MessageCountListener messageCountListener;
@@ -40,19 +43,19 @@ public class JavaPushMailNotifier {
             @Override
             public void messagesAdded(final MessageCountEvent e) {
                 try {
-                    System.err.println("Message Added: " + e.getMessages()[0].getSubject());
+                    log.info("Message Added: " + e.getMessages()[0].getSubject());
                     showNotification(e.getMessages()[0]);
                 } catch (MessagingException ex) {
-//                    ex.printStackTrace();
+                	log.error("Error: ", ex);
                 }
             }
 
             @Override
             public void messagesRemoved(MessageCountEvent e) {
                 try {
-                    System.err.println("Message Removed: " + e.getMessages()[0].getSubject());
+                    log.info("Message Removed: " + e.getMessages()[0].getSubject());
                 } catch (MessagingException ex) {
-//                    ex.printStackTrace();
+                	log.error("Error: ", ex);
                 }
             }
         };
@@ -61,9 +64,9 @@ public class JavaPushMailNotifier {
             @Override
             public void messageChanged(MessageChangedEvent e) {
                 try {
-                    System.err.println("Message Changed: " + e.getMessage().getSubject());
+                    log.info("Message Changed: " + e.getMessage().getSubject());
                 } catch (MessagingException ex) {
-//                    ex.printStackTrace();
+                	log.error("Error: ", ex);
                 }
             }
         };

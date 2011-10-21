@@ -1,6 +1,5 @@
 package com.mofirouz.javapushmail;
 
-import java.net.InetAddress;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -10,7 +9,7 @@ import com.sun.mail.imap.IMAPFolder;
 /**
  *
  * @author Mo Firouz
- * @since 16/10/11
+ * @since 20/10/11
  */
 public abstract class MailPoller {
 

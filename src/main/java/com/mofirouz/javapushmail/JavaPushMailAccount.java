@@ -81,7 +81,7 @@ public abstract class JavaPushMailAccount implements Runnable {
 			public void onNewMessage() {
 				try {
 				if (externalCountListener != null)
-					externalCountListener.messagesAdded(new MessageCountEvent(folder, MessageCountEvent.ADDED, false, getAllUnreadMessages()));
+					externalCountListener.messagesAdded(new MessageCountEvent(folder, MessageCountEvent.ADDED, false, getNewMessages()));
 				} catch (Exception e) {
 					log.debug("Error: ", e);
 				}
@@ -260,12 +260,12 @@ public abstract class JavaPushMailAccount implements Runnable {
         }
     }
 
-    public Message[] getAllUnreadMessages() throws MessagingException {
-    	Message[] mess = new Message[folder.getUnreadMessageCount()];
+    public Message[] getNewMessages() throws MessagingException {
+    	Message[] mess = new Message[folder.getNewMessageCount()];
     	
     	Message[] allmess = folder.getSortedMessages(new SortTerm[] {SortTerm.ARRIVAL, SortTerm.DATE});
     	
-    	for (int i = 0; i < folder.getUnreadMessageCount(); i++)
+    	for (int i = 0; i < folder.getNewMessageCount(); i++)
     		mess[i] = allmess[i];
     	
     	return mess;

@@ -3,7 +3,6 @@ package com.mofirouz.notifier;
 import ch.swingfx.twinkle.NotificationBuilder;
 import ch.swingfx.twinkle.manager.NotificationManagers;
 import ch.swingfx.twinkle.style.AbstractNotificationStyle;
-import java.awt.AWTEventMulticaster;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;

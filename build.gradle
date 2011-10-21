@@ -23,12 +23,8 @@ configurations {
 }
 
 sourceSets {
-    main {
-        compileClasspath += configurations.compileOnly
-    }
-    test {
-        compileClasspath += configurations.compileOnly + configurations.testCompileOnly
-    }
+    main { compileClasspath += configurations.compileOnly }
+    test { compileClasspath += configurations.compileOnly + configurations.testCompileOnly }
 }
 
 dependencies {
@@ -37,6 +33,10 @@ dependencies {
     compile group: "net.java.dev.timingframework", name: "timingframework", version: "1.0"
     compile group: "ch.qos.logback", name: "logback-classic", version: "0.9.30"
     compile fileTree(dir: 'libs', include: '*.jar')
+}
+
+eclipseClasspath {
+    plusConfigurations += [ configurations.compileOnly ]
 }
 
 jar {
@@ -49,7 +49,8 @@ jar {
                     "Manifest-Version": 1.0
     }
 
-    // create a fat jar
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    // create a fat jar (including runtime deps)
+    dependsOn configurations.runtime
+    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 

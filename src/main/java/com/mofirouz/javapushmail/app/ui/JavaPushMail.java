@@ -38,16 +38,12 @@ public class JavaPushMail {
         NOTIFICATION_ICON = getTempImagePath((new ImageIcon(this.getClass().getResource("email48x48.png"))).getImage());
         NOTIFICATION_ICON_FILE = new File(NOTIFICATION_ICON);
     }
-
-    @SuppressWarnings("deprecation")
+    
     public void init() {
         initFrame();
         initManager();
         frame.init(manager);
         frame.showMe(!frame.isUsingPerferences());
-
-        manager.readAccounts("credentials.credentials");
-        //manager.addAccount(false, "Java Mo", "mail.webfaction.com", Integer.parseInt("993"), true, "mofirouz_java", "mofirouzjava");
     }
 
     private void initManager() {

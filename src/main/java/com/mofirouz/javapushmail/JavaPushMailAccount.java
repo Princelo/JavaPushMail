@@ -281,6 +281,26 @@ public abstract class JavaPushMailAccount implements Runnable {
         return accountName;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public String getServerAddress() {
+        return serverAddress;
+    }
+
+    public int getServerPort() {
+        return serverPort;
+    }
+
+    public boolean isSSL() {
+        return useSSL;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+    
     public boolean isConnected() {
         return connected;
     }

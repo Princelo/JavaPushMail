@@ -52,10 +52,18 @@ public class SystemNotification {
         NOTIFY_OSD_PATH = path;
     }
 
-    public void showNotification(boolean showFallback, String title, String[] message, File iconFile) {
+    public void showNotification(boolean showFallback, String title, String[] message) {
         if (title == null || title.isEmpty() || message == null || message.length == 0)
             return;
 
+        this.title = title;
+        this.message = message;
+        this.showFallback = showFallback;
+        showTrayIcon();
+        showNotification();
+    }
+
+    public void setIcon(File iconFile) {
         if (iconFile != null) {
             try {
                 iconPath = iconFile.getAbsolutePath().replaceFirst("file:/", "/");
@@ -67,12 +75,6 @@ public class SystemNotification {
             icon = null;
             iconPath = null;
         }
-
-        this.title = title;
-        this.message = message;
-        this.showFallback = showFallback;
-        showTrayIcon();
-        showNotification();
     }
 
     public void setPopupMenu(PopupMenu popup) {
@@ -93,6 +95,7 @@ public class SystemNotification {
             trayIcon.displayMessage(title, createSingleLineString(message), TrayIcon.MessageType.INFO);
             trayIcon.setImageAutoSize(true);
             trayIcon.addActionListener(new ActionListener() {
+
                 @Override
                 public void actionPerformed(ActionEvent ae) {
                     tray.remove(trayIcon);
@@ -209,6 +212,7 @@ public class SystemNotification {
     private void initTrayPopup() {
         MenuItem hide = new MenuItem("Hide Icon");
         hide.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 tray.remove(trayIcon);

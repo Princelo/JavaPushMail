@@ -1,6 +1,7 @@
 package com.mofirouz.javapushmail.app;
 
 import com.mofirouz.javapushmail.JavaPushMailAccount;
+import com.mofirouz.javapushmail.app.ui.JavaPushMail;
 import com.mofirouz.notifier.SystemNotification;
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,6 +22,7 @@ public abstract class JavaPushMailAccountsManager {
 
     public JavaPushMailAccountsManager() {
         sysnot = new SystemNotification();
+        sysnot.setIcon(JavaPushMail.NOTIFICATION_ICON_FILE);
     }
 
     public synchronized void addAccount(final boolean testSettings, final String name, final String server, final int port, final boolean useSSL, final String username, final String password) {

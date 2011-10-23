@@ -2,7 +2,6 @@ package com.mofirouz.javapushmail.app;
 
 import com.mofirouz.notifier.SystemNotification;
 import com.mofirouz.javapushmail.JavaPushMailAccount;
-import java.io.File;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.event.MessageChangedEvent;
@@ -78,6 +77,6 @@ public class JavaPushMailNotifier {
 
         mess[0] = from;
         mess[1] = message.getSubject();
-        sysnot.showNotification(false, title, mess, new File("email48x48.png"));
+        sysnot.showNotification(false, title, mess);
     }
 }

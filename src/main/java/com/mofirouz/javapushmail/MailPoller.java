@@ -13,7 +13,7 @@ import com.sun.mail.imap.IMAPFolder;
  */
 public abstract class MailPoller {
 
-    private final static int SLEEP_TIME = 3000; //300000; // check mail every 5 min
+    private final static int SLEEP_TIME = 300000; // check mail every 5 min
     private IMAPFolder folder;
     private String name = "";
     private int previousCount = -1;

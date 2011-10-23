@@ -20,14 +20,15 @@ public class JavaPushMailFrame {
     protected JavaPushMailAccountsManager manager;
     protected JFrame frame;
     protected JMenuBar menu;
+    protected static Image dockIcon;
     private JButton connectBut;
-    public static final Image dockIcon;
 
     static {
         dockIcon = (Toolkit.getDefaultToolkit().createImage(JavaPushMailFrame.class.getResource("/dock.png")));
     }
 
     public JavaPushMailFrame() {
+        dockIcon = (new ImageIcon(this.getClass().getResource("dock.png"))).getImage();
     }
 
     public void init(JavaPushMailAccountsManager manager) {

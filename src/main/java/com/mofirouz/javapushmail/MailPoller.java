@@ -15,6 +15,8 @@ public abstract class MailPoller {
 
     private final static int SLEEP_TIME = 3000; //300000; // check mail every 5 min
     private IMAPFolder folder;
+    private String name = "";
+    private int previousCount = -1;
     protected Timer timer;
 
     public MailPoller(IMAPFolder folder) {
@@ -23,34 +25,49 @@ public abstract class MailPoller {
 
     private boolean poll() {
         try {
-            return folder.hasNewMessages();
+            int newCount = folder.getMessageCount();
+            if (previousCount == -1) {
+                previousCount = newCount;
+                return false;
+            } else {
+                if (previousCount < newCount) {
+                    previousCount = newCount;
+                    return true;
+                }
+                return false;
+            }
         } catch (Exception ex) {
-        	return false;
+            ex.printStackTrace();
+            return false;
         }
     }
-    
+
     private void periodicPoller() {
         TimerTask task = new TimerTask() {
-        	
+
             @Override
             public void run() {
-            	if (poll())
-            		onNewMessage();
+                boolean p = poll();
+                if (p)
+                    onNewMessage();
             }
         };
         stop();
-        timer = new Timer(true);
+        timer = new Timer(name, true);
         timer.scheduleAtFixedRate(task, Calendar.getInstance().getTime(), SLEEP_TIME);
     }
 
     public void start(String name) {
+        this.name = "MailPoller-" + name;
         Runnable r = new Runnable() {
+
             @Override
             public void run() {
                 periodicPoller();
             }
         };
-        Thread t = new Thread(r, "MailPoller-" + name);
+        stop();
+        Thread t = new Thread(r, this.name);
         t.setDaemon(true);
         t.start();
     }
@@ -62,6 +79,10 @@ public abstract class MailPoller {
         timer.cancel();
         timer.purge();
         timer = null;
+    }
+    
+    public void setFolder(IMAPFolder folder) {
+        this.folder = folder;
     }
 
     public abstract void onNewMessage();

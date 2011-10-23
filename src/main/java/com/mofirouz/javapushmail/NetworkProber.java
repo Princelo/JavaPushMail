@@ -16,17 +16,20 @@ public abstract class NetworkProber {
     private final static int SLEEP_TIME = 5000; // wait 5secs between each ping
     private JavaPushMailAccount mail;
     private String host;
+    private String name = "NetworkProber";
     private int pingFailureCount = 0;
     private int sessionFailureCount = 0;
     protected Timer timer;
 
-    public NetworkProber(String host) {
+    public NetworkProber(String host, String accountName) {
         this.host = host;
+        this.name = "NetworkProper-" + accountName;
     }
 
     public NetworkProber(JavaPushMailAccount mail, String host) {
         this.host = host;
         this.mail = mail;
+        this.name = "NetworkProper-" + mail.getAccountName();
     }
 
     private boolean probe() {
@@ -70,7 +73,7 @@ public abstract class NetworkProber {
             }
         };
         stop();
-        timer = new Timer(true);
+        timer = new Timer(name, true);
         timer.scheduleAtFixedRate(task, Calendar.getInstance().getTime(), SLEEP_TIME);
     }
 
@@ -83,7 +86,7 @@ public abstract class NetworkProber {
         };
         sessionFailureCount = 0;
         pingFailureCount = 0;
-        Thread t = new Thread(r, "NetworkProber");
+        Thread t = new Thread(r, name);
         t.setDaemon(true);
         t.start();
     }

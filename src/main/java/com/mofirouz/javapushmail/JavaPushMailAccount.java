@@ -25,6 +25,7 @@ public abstract class JavaPushMailAccount implements Runnable {
     public final static int READ_ONLY_FOLDER = Folder.READ_ONLY;
     public final static int READ_WRITE_FOLDER = Folder.READ_WRITE;
     private boolean connected = false;
+    private boolean usePush = true;
     private String accountName;
     private String serverAddress;
     private String username;
@@ -58,20 +59,21 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     private void initConnection() {
-        prober = new NetworkProber(serverAddress) {
+        prober = new NetworkProber(serverAddress, accountName) {
 
             @Override
             public void onNetworkChange(boolean change) {
                 connected = true;
                 if (getPingFailureCount() >= 2 || getSessionFailureCount() != 0) {
-                    prober.stop();
-                    poller.stop();
                     connected = false;
+                    prober.stop();
+                    if (!usePush)
+                        poller.stop();
                     connect();
                 }
             }
         };
-
+        
         poller = new MailPoller(folder) {
 
             @Override
@@ -107,10 +109,11 @@ public abstract class JavaPushMailAccount implements Runnable {
     public void connect() {
         try {
             server.connect(serverAddress, serverPort, username, password);
+            selectFolder("");
             connected = true;
             prober.start();
-            selectFolder("");
-            poller.start(accountName);
+            if (!usePush)
+                poller.start(accountName);
             System.err.println("Fully Connected: " + accountName);
             onConnect();
         } catch (MessagingException ex) {
@@ -138,7 +141,7 @@ public abstract class JavaPushMailAccount implements Runnable {
         try {
             closeFolder();
             if (folderName.equalsIgnoreCase("")) {
-                folder = (IMAPFolder) server.getFolder("INBOX"); //server.getDefaultFolder();
+                folder = (IMAPFolder) server.getFolder("INBOX");
             } else {
                 folder = (IMAPFolder) server.getFolder(folderName);
             }
@@ -158,6 +161,7 @@ public abstract class JavaPushMailAccount implements Runnable {
         folder.setSubscribed(true);
         removeAllListenersFromFolder();
         addAllListenersFromFolder();
+        poller.setFolder(folder);
         usePush();
     }
 
@@ -173,9 +177,6 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     private void usePush() {
-        if (true)
-            return;
-
         if (folder == null)
             return;
 
@@ -184,8 +185,10 @@ public abstract class JavaPushMailAccount implements Runnable {
             @Override
             public void run() {
                 try {
-                    folder.idle(false);
+                    if (usePush)
+                        folder.idle(false);
                 } catch (Exception e) {
+                    usePush = false;
                 }
             }
         };

@@ -3,29 +3,12 @@ package com.mofirouz.javapushmail.app.ui;
 import com.mofirouz.javapushmail.JavaPushMailAccount;
 import com.mofirouz.javapushmail.app.JavaPushMailAccountsManager;
 
-import org.slf4j.LoggerFactory;
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
-
 /**
  *
  * @author Mo Firouz 
  * @since 2/10/11
  */
 public class JavaPushMail {
-
-	static {
-		// set "production" logging to WARN+ by default
-		Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-		root.setLevel(Level.WARN);
-
-		// to enable "testing" output to console use:
-        // 'java -Djavapushmail.debug=INFO -jar javapushmail.jar <params>'
-        String s = System.getProperty("javapushmail.debug");
-        if (s != null) {
-            root.setLevel(Level.INFO);
-        }
-	}
 
     JavaPushMailFrame frame;
     JavaPushMailAccountsManager manager;

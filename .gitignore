@@ -4,6 +4,7 @@ gradle-app.setting
 build
 tmp
 bin
+target
 
 ## intellij metadata files
 whiteboard.iml

@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=libs/twinkle-1.0.0.jar -DgroupId=ch.swingfx.twinkle -DartifactId=twinkle -Dversion=1.0.0 -Dpackaging=jar -DgeneratePom=true

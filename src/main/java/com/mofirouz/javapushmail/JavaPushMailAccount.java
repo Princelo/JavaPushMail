@@ -15,14 +15,11 @@ import javax.mail.event.MessageChangedListener;
 import javax.mail.event.MessageCountEvent;
 import javax.mail.event.MessageCountListener;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  *
  * @author Mo Firouz
  * @since 2/10/11
  */
-@Slf4j
 public abstract class JavaPushMailAccount implements Runnable {
 
     public final static int READ_ONLY_FOLDER = Folder.READ_ONLY;
@@ -67,27 +64,28 @@ public abstract class JavaPushMailAccount implements Runnable {
             public void onNetworkChange(boolean change) {
                 connected = true;
                 if (getPingFailureCount() >= 2 || getSessionFailureCount() != 0) {
-                    log.error(accountName + " Ping fail: " + getPingFailureCount() + " | Session fail: " + getSessionFailureCount());
                     prober.stop();
                     poller.stop();
                     connected = false;
-                    reconnect();
+                    connect();
                 }
             }
         };
-        
+
         poller = new MailPoller(folder) {
-			@Override
-			public void onNewMessage() {
-				try {
-				if (externalCountListener != null)
-					externalCountListener.messagesAdded(new MessageCountEvent(folder, MessageCountEvent.ADDED, false, getNewMessages()));
-				} catch (Exception e) {
-					log.debug("Error: ", e);
-				}
-				
-			}
-		};
+
+            @Override
+            public void onNewMessage() {
+                try {
+                    if (externalCountListener != null) {
+                        externalCountListener.messagesAdded(new MessageCountEvent(folder, MessageCountEvent.ADDED, false, getNewMessages()));
+                        messageCountListener.messagesAdded(new MessageCountEvent(folder, MessageCountEvent.ADDED, false, getNewMessages()));
+                    }
+                } catch (Exception e) {
+                }
+
+            }
+        };
 
         Properties props = System.getProperties();
         String imapProtocol = "imap";
@@ -100,20 +98,20 @@ public abstract class JavaPushMailAccount implements Runnable {
         session = Session.getDefaultInstance(props, null);
         try {
             server = (IMAPStore) session.getStore("imaps");
-            reconnect();
+            connect();
         } catch (MessagingException ex) {
             onDisconnect(ex);
         }
     }
 
-    public void reconnect() {
+    public void connect() {
         try {
             server.connect(serverAddress, serverPort, username, password);
             connected = true;
             prober.start();
             selectFolder("");
             poller.start(accountName);
-            log.info("{}: Fully Connected!", accountName);
+            System.err.println("Fully Connected: " + accountName);
             onConnect();
         } catch (MessagingException ex) {
             connected = false;
@@ -127,12 +125,12 @@ public abstract class JavaPushMailAccount implements Runnable {
     public void setMessageChangedListerer(MessageChangedListener listener) {
         removeListener(externalChangedListener);
         externalChangedListener = listener;
-    	addListener(externalChangedListener);
+        addListener(externalChangedListener);
     }
 
     public void setMessageCounterListerer(MessageCountListener listener) {
-    	removeListener(externalCountListener);
-    	externalCountListener = listener;
+        removeListener(externalCountListener);
+        externalCountListener = listener;
         addListener(externalCountListener);
     }
 
@@ -145,8 +143,6 @@ public abstract class JavaPushMailAccount implements Runnable {
                 folder = (IMAPFolder) server.getFolder(folderName);
             }
             openFolder();
-            addInternalListeners(messageChangedListener);
-            addInternalListeners(messageCountListener);
         } catch (MessagingException ex) {
             onDisconnect(ex);
         } catch (IllegalStateException ex) {
@@ -177,9 +173,12 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     private void usePush() {
+        if (true)
+            return;
+
         if (folder == null)
             return;
-        
+
         Runnable r = new Runnable() {
 
             @Override
@@ -194,10 +193,10 @@ public abstract class JavaPushMailAccount implements Runnable {
         pushThread.setDaemon(true);
         pushThread.start();
     }
-    
+
     private void removeAllListenersFromFolder() {
-        removeListener(messageChangedListener);
-        removeListener(messageCountListener);
+        removeListener(externalChangedListener);
+        removeListener(externalCountListener);
     }
 
     private void removeListener(EventListener listener) {
@@ -212,8 +211,8 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     private void addAllListenersFromFolder() {
-        addListener(messageChangedListener);
-        addListener(messageCountListener);
+        addListener(externalCountListener);
+        addListener(externalChangedListener);
     }
 
     private void addListener(EventListener listener) {
@@ -261,16 +260,16 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     public Message[] getNewMessages() throws MessagingException {
-    	Message[] mess = new Message[folder.getNewMessageCount()];
-    	
-    	Message[] allmess = folder.getSortedMessages(new SortTerm[] {SortTerm.ARRIVAL, SortTerm.DATE});
-    	
-    	for (int i = 0; i < folder.getNewMessageCount(); i++)
-    		mess[i] = allmess[i];
-    	
-    	return mess;
+        Message[] mess = new Message[folder.getNewMessageCount()];
+
+        Message[] allmess = folder.getSortedMessages(new SortTerm[]{SortTerm.ARRIVAL, SortTerm.DATE});
+
+        for (int i = 0; i < folder.getNewMessageCount(); i++)
+            mess[i] = allmess[i];
+
+        return mess;
     }
-    
+
     public Message[] getMessages() throws MessagingException {
         return folder.getMessages();
     }
@@ -282,9 +281,9 @@ public abstract class JavaPushMailAccount implements Runnable {
     public boolean isConnected() {
         return connected;
     }
-    
+
     public boolean isSessionValid() {
-    	return server.isConnected();
+        return server.isConnected();
     }
 
     public abstract void onDisconnect(Exception e);

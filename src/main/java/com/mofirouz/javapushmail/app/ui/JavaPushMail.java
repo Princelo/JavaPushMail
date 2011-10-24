@@ -26,7 +26,6 @@ public class JavaPushMail {
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
 
-            @Override
             public void run() {
                 JavaPushMail jpm = new JavaPushMail();
                 jpm.init();
@@ -44,6 +43,8 @@ public class JavaPushMail {
         initManager();
         frame.init(manager);
         frame.showMe(!frame.isUsingPerferences());
+        
+        manager.readAccounts("credentials.credentials");
     }
 
     private void initManager() {

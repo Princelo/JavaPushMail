@@ -79,7 +79,6 @@ public abstract class NetworkProber {
 
     public void start() {
         Runnable r = new Runnable() {
-            @Override
             public void run() {
                 periodicProber();
             }

@@ -62,7 +62,6 @@ public class JavaPushMailFrame {
         settingsPanel.getConnectButton().setEnabled(false); // temp
         settingsPanel.getConnectButton().addActionListener(new ActionListener() {
 
-            @Override
             public void actionPerformed(ActionEvent ae) {
                 settingsPanel.getConnectButton().setEnabled(false);
                 manager.reconnectAllDisconnected();
@@ -88,7 +87,7 @@ public class JavaPushMailFrame {
         accountsTable.getModel().addTableModelListener(new TableModelListener() {
 
             public void tableChanged(TableModelEvent tme) {
-                System.out.println("Table changed!");
+                //System.out.println("Table changed!");
             }
         });
     }
@@ -97,7 +96,6 @@ public class JavaPushMailFrame {
         MenuItem exit = new MenuItem("Exit Notifier");
         exit.addActionListener(new ActionListener() {
 
-            @Override
             public void actionPerformed(ActionEvent e) {
                 quitApplication(false);
             }
@@ -105,7 +103,6 @@ public class JavaPushMailFrame {
         MenuItem settings = new MenuItem("Settings");
         settings.addActionListener(new ActionListener() {
 
-            @Override
             public void actionPerformed(ActionEvent e) {
                 frame.setVisible(true);
             }
@@ -162,8 +159,9 @@ public class JavaPushMailFrame {
             return;
 
         DefaultTableModel model = (DefaultTableModel) accountsTable.getModel();
-        for (int i = 0; i < model.getRowCount(); i++)
-            model.removeRow(i);
+        model.setRowCount(0);
+//        for (int i = 0; i < model.getRowCount(); i++)
+//            model.removeRow(i);
         
         for (JavaPushMailAccount mail : manager.getAccounts()) {
             Vector data = new Vector();

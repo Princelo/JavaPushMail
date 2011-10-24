@@ -96,7 +96,6 @@ public class SystemNotification {
             trayIcon.setImageAutoSize(true);
             trayIcon.addActionListener(new ActionListener() {
 
-                @Override
                 public void actionPerformed(ActionEvent ae) {
                     tray.remove(trayIcon);
                 }
@@ -213,7 +212,6 @@ public class SystemNotification {
         MenuItem hide = new MenuItem("Hide Icon");
         hide.addActionListener(new ActionListener() {
 
-            @Override
             public void actionPerformed(ActionEvent e) {
                 tray.remove(trayIcon);
             }

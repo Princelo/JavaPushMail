@@ -36,7 +36,6 @@ public class JavaPushMailNotifier {
     private void initialiseListeners() {
         messageCountListener = new MessageCountListener() {
 
-            @Override
             public void messagesAdded(final MessageCountEvent e) {
                 try {
                     System.err.println("Message Added: " + e.getMessages()[0].getSubject());
@@ -45,7 +44,6 @@ public class JavaPushMailNotifier {
                 }
             }
 
-            @Override
             public void messagesRemoved(MessageCountEvent e) {
                 try {
                     System.err.println("Message Removed: " + e.getMessages()[0].getSubject());
@@ -56,7 +54,6 @@ public class JavaPushMailNotifier {
         };
         messageChangedListener = new MessageChangedListener() {
 
-            @Override
             public void messageChanged(MessageChangedEvent e) {
                 try {
                     System.err.println("Message Changed: " + e.getMessage().getSubject());

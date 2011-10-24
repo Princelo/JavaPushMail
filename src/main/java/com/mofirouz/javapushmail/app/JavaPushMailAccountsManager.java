@@ -103,6 +103,8 @@ public abstract class JavaPushMailAccountsManager {
 
     @Deprecated
     public void readAccounts(String filepath) {
+    	if ((new File(ACCOUNT_FILE)).exists()) return;
+    	
         try {
             BufferedReader in = new BufferedReader(new FileReader(filepath));
             String str;
@@ -114,8 +116,7 @@ public abstract class JavaPushMailAccountsManager {
             }
             in.close();
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Error: " + e.getMessage());
+            System.err.println(filepath + " was not found. Ignoring...");
         }
     }
 

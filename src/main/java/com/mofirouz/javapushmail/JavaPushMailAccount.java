@@ -53,7 +53,6 @@ public abstract class JavaPushMailAccount implements Runnable {
         this.password = p;
     }
 
-    @Override
     public void run() {
         this.initConnection();
     }
@@ -122,6 +121,8 @@ public abstract class JavaPushMailAccount implements Runnable {
             messageChangedListener = null;
             messageCountListener = null;
             onDisconnect(ex);
+        } catch (IllegalStateException ex) {
+        	
         }
     }
 
@@ -182,7 +183,6 @@ public abstract class JavaPushMailAccount implements Runnable {
 
         Runnable r = new Runnable() {
 
-            @Override
             public void run() {
                 try {
                     if (usePush)
@@ -239,7 +239,6 @@ public abstract class JavaPushMailAccount implements Runnable {
         if (listener instanceof MessageChangedListener && messageChangedListener == null) {
             messageChangedListener = new MessageChangedListener() {
 
-                @Override
                 public void messageChanged(MessageChangedEvent mce) {
                     usePush();
                 }
@@ -248,12 +247,10 @@ public abstract class JavaPushMailAccount implements Runnable {
         } else if (listener instanceof MessageCountListener && messageCountListener == null) {
             messageCountListener = new MessageCountListener() {
 
-                @Override
                 public void messagesAdded(MessageCountEvent mce) {
                     usePush();
                 }
 
-                @Override
                 public void messagesRemoved(MessageCountEvent mce) {
                     usePush();
                 }

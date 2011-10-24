@@ -61,7 +61,6 @@ public abstract class MailPoller {
         this.name = "MailPoller-" + name;
         Runnable r = new Runnable() {
 
-            @Override
             public void run() {
                 periodicPoller();
             }

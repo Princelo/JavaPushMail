@@ -4,8 +4,11 @@ import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPStore;
 import com.sun.mail.imap.SortTerm;
 
+import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.Properties;
+
+import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -188,6 +191,9 @@ public abstract class JavaPushMailAccount implements Runnable {
                     if (usePush)
                         folder.idle(false);
                 } catch (Exception e) {
+                	System.err.println("Push Error: " + accountName);
+                	e.printStackTrace();
+                	connect();
                     usePush = false;
                 }
             }
@@ -260,14 +266,20 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     public Message[] getNewMessages() throws MessagingException {
-        Message[] mess = new Message[folder.getNewMessageCount()];
+    	ArrayList<Message> mess = new ArrayList<Message>();
 
         Message[] allmess = folder.getSortedMessages(new SortTerm[]{SortTerm.ARRIVAL, SortTerm.DATE});
 
-        for (int i = 0; i < folder.getNewMessageCount(); i++)
-            mess[i] = allmess[i];
+        for (int i = 0; i < poller.getDiffCount(); i++) {
+        	if (allmess[i].isSet(Flags.Flag.SEEN) == false)
+        		mess.add(allmess[i]);
+        }
 
-        return mess;
+        Message[] messages = new Message[mess.size()];
+        for (int i = 0; i < mess.size(); i++)
+        	messages[i] = mess.get(i);
+        
+        return messages;
     }
 
     public Message[] getMessages() throws MessagingException {

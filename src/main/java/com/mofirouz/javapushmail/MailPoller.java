@@ -17,6 +17,7 @@ public abstract class MailPoller {
     private IMAPFolder folder;
     private String name = "";
     private int previousCount = -1;
+    private int diffCount = -1;
     protected Timer timer;
 
     public MailPoller(IMAPFolder folder) {
@@ -27,10 +28,12 @@ public abstract class MailPoller {
         try {
             int newCount = folder.getMessageCount();
             if (previousCount == -1) {
+            	diffCount = 0;
                 previousCount = newCount;
                 return false;
             } else {
                 if (previousCount < newCount) {
+                	diffCount = newCount - previousCount;
                     previousCount = newCount;
                     return true;
                 }
@@ -78,6 +81,10 @@ public abstract class MailPoller {
         timer.cancel();
         timer.purge();
         timer = null;
+    }
+    
+    public int getDiffCount() {
+    	return diffCount;
     }
     
     public void setFolder(IMAPFolder folder) {

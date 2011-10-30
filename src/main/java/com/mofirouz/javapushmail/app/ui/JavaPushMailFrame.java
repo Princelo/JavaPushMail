@@ -154,17 +154,17 @@ public class JavaPushMailFrame {
         ex.printStackTrace();
     }
 
-    public void refreshFrame() {
+    public synchronized void refreshFrame() {
         if (accountsTable == null)
             return;
 
         DefaultTableModel model = (DefaultTableModel) accountsTable.getModel();
         model.setRowCount(0);
-//        for (int i = 0; i < model.getRowCount(); i++)
-//            model.removeRow(i);
-        
+
+        int count = 0;
         for (JavaPushMailAccount mail : manager.getAccounts()) {
             Vector data = new Vector();
+            data.add(count);
             data.add(mail.getAccountName());
             data.add(mail.getServerAddress());
             data.add(mail.getServerPort());
@@ -173,6 +173,7 @@ public class JavaPushMailFrame {
             data.add(JavaPushMailAccountSettingsPanel.PASSWORD_FIELD);
             data.add(Boolean.TRUE);
             model.addRow(data);
+            count++;
         }
     }
 

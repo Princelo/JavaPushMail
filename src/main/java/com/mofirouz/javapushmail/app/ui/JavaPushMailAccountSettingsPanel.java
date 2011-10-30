@@ -10,8 +10,16 @@
  */
 package com.mofirouz.javapushmail.app.ui;
 
+import java.awt.Component;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -20,10 +28,11 @@ import javax.swing.JTable;
 public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
 
     public final static String PASSWORD_FIELD = "*****";
-    
+
     /** Creates new form JavaPushMailAccountSettingsPanel */
     public JavaPushMailAccountSettingsPanel() {
         initComponents();
+        configTableUI();
     }
 
     /** This method is called from within the constructor to
@@ -48,20 +57,29 @@ public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Account Name", "Server Address", "Server Port", "Use SSL?", "Username", "Password", "Enabled"
+                "ID", "Name", "Address", "Port", "SSL?", "Username", "Password", "Enabled?"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         accountTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        accountTable.setColumnSelectionAllowed(true);
         accountTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(accountTable);
+        accountTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         quitButton.setText("Quit");
 
@@ -138,5 +156,31 @@ public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
         return accountTable;
     }
 
+    private void configTableUI() {
+        TableColumnModel colModel = accountTable.getColumnModel();
+        colModel.getColumn(0).setPreferredWidth(25);
+        colModel.getColumn(1).setPreferredWidth(175);
+        colModel.getColumn(2).setPreferredWidth(175);
+        colModel.getColumn(3).setPreferredWidth(50);
+        colModel.getColumn(4).setPreferredWidth(50);
+        colModel.getColumn(5).setPreferredWidth(100);
+        colModel.getColumn(6).setPreferredWidth(100);
+        colModel.getColumn(7).setPreferredWidth(80);
 
+        for (int i = 0; i < accountTable.getColumnCount(); i++) {
+            alignCenter(accountTable, i);
+        }
+        
+    }
+    
+    private void alignCenter(JTable table, int column) {
+        JTableHeader header = table.getTableHeader();
+        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer)header.getDefaultRenderer();
+        renderer.setHorizontalAlignment(JLabel.CENTER);
+        table.getColumnModel().getColumn(column).setHeaderRenderer(renderer);
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        table.getColumnModel().getColumn(column).setCellRenderer(centerRenderer);
+    }
 }

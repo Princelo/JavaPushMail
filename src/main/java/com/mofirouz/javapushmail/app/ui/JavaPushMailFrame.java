@@ -4,10 +4,13 @@ import com.mofirouz.javapushmail.JavaPushMailAccount;
 import com.mofirouz.javapushmail.app.JavaPushMailAccountsManager;
 import java.awt.Image;
 import java.awt.MenuItem;
+import java.awt.Point;
 import java.awt.PopupMenu;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Vector;
 import javax.mail.MessagingException;
 import javax.swing.*;
@@ -42,6 +45,7 @@ public class JavaPushMailFrame {
         buildTrayPopup();
         frame = new JFrame("Push Mail Configuration Wizard");
         buildPanels();
+        buildPopup();
         buildFrame();
         loadPreferences();
         initKeyboardHook();
@@ -57,7 +61,6 @@ public class JavaPushMailFrame {
 
     private void buildPanels() {
         settingsPanel = new JavaPushMailAccountSettingsPanel();
-
         settingsPanel.getConnectButton().setEnabled(!isUsingPerferences());
         settingsPanel.getConnectButton().setEnabled(false); // temp
         settingsPanel.getConnectButton().addActionListener(new ActionListener() {
@@ -92,6 +95,41 @@ public class JavaPushMailFrame {
         });
     }
 
+    private void buildPopup() {
+        class TablePopup extends JPopupMenu {
+            int row;
+            public void setSelectedRow(int i) {
+                row = i;
+            }
+        }
+
+        final TablePopup tablePopup = new TablePopup();
+        
+        JMenuItem deleteItem = new JMenuItem("Remove");
+        deleteItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                tablePopup.setVisible(false);
+                deleteRow(tablePopup.row);
+            }
+        });
+        tablePopup.add(deleteItem);
+
+        accountsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                if (me.getButton() == MouseEvent.BUTTON3) {
+                    tablePopup.setLocation(me.getLocationOnScreen());
+                    if (accountsTable.rowAtPoint(me.getPoint()) != -1) {
+                        tablePopup.setVisible(true);
+                        tablePopup.setSelectedRow(accountsTable.rowAtPoint(me.getPoint()));
+                    }
+                } else {
+                    tablePopup.setVisible(false);
+                }
+            }
+        });
+    }
+
     private void buildTrayPopup() {
         MenuItem exit = new MenuItem("Exit Notifier");
         exit.addActionListener(new ActionListener() {
@@ -116,6 +154,20 @@ public class JavaPushMailFrame {
     }
 
     protected void fixMenuBar() {
+    }
+
+    private void initKeyboardHook() {
+    }
+
+    // should only be called upon pressing Save button on the frame,
+    // or when the app is closing by the main frame, not the system tray.
+    protected boolean savePreferences() {
+        return false;
+    }
+
+    // should be called automatically at startup, if perferences exists.
+    protected boolean loadPreferences() {
+        return false;
     }
 
     public void showMe(boolean go) {
@@ -161,10 +213,8 @@ public class JavaPushMailFrame {
         DefaultTableModel model = (DefaultTableModel) accountsTable.getModel();
         model.setRowCount(0);
 
-        int count = 0;
         for (JavaPushMailAccount mail : manager.getAccounts()) {
             Vector data = new Vector();
-            data.add(count);
             data.add(mail.getAccountName());
             data.add(mail.getServerAddress());
             data.add(mail.getServerPort());
@@ -173,22 +223,11 @@ public class JavaPushMailFrame {
             data.add(JavaPushMailAccountSettingsPanel.PASSWORD_FIELD);
             data.add(Boolean.TRUE);
             model.addRow(data);
-            count++;
         }
     }
-
-    private void initKeyboardHook() {
-    }
-
-    // should only be called upon pressing Save button on the frame,
-    // or when the app is closing by the main frame, not the system tray.
-    protected boolean savePreferences() {
-        return false;
-    }
-
-    // should be called automatically at startup, if perferences exists.
-    protected boolean loadPreferences() {
-        return false;
+    
+    private void deleteRow(int row) {
+        //TODO: fill in deleteRow;
     }
 
     public boolean isUsingPerferences() {

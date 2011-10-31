@@ -57,22 +57,15 @@ public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Name", "Address", "Port", "SSL?", "Username", "Password", "Enabled?"
+                "Name", "Address", "Port", "SSL?", "Username", "Password", "Enabled?"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true, true, true
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
             }
         });
         accountTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -158,19 +151,17 @@ public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
 
     private void configTableUI() {
         TableColumnModel colModel = accountTable.getColumnModel();
-        colModel.getColumn(0).setPreferredWidth(25);
+        colModel.getColumn(0).setPreferredWidth(175);
         colModel.getColumn(1).setPreferredWidth(175);
-        colModel.getColumn(2).setPreferredWidth(175);
+        colModel.getColumn(2).setPreferredWidth(50);
         colModel.getColumn(3).setPreferredWidth(50);
-        colModel.getColumn(4).setPreferredWidth(50);
+        colModel.getColumn(4).setPreferredWidth(100);
         colModel.getColumn(5).setPreferredWidth(100);
-        colModel.getColumn(6).setPreferredWidth(100);
-        colModel.getColumn(7).setPreferredWidth(80);
+        colModel.getColumn(6).setPreferredWidth(80);
 
         for (int i = 0; i < accountTable.getColumnCount(); i++) {
             alignCenter(accountTable, i);
         }
-        
     }
     
     private void alignCenter(JTable table, int column) {

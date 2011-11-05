@@ -25,7 +25,7 @@ public abstract class JavaPushMailAccountsManager {
 
     private static final String ENCRYPTION_KEY = "mofirouz6874134567$££";
     private static final String ACCOUNT_FILE = "accounts.jpm";
-    private ArrayList<JavaPushMailAccount> accounts = new ArrayList<JavaPushMailAccount>();
+    private MailAccountList accounts = new MailAccountList();
     private ArrayList<JavaPushMailNotifier> notifiers = new ArrayList<JavaPushMailNotifier>();
     private SystemNotification sysnot;
     private static boolean connected = false;
@@ -33,44 +33,49 @@ public abstract class JavaPushMailAccountsManager {
     public JavaPushMailAccountsManager() {
         sysnot = new SystemNotification();
         sysnot.setIcon(JavaPushMail.NOTIFICATION_ICON_FILE);
-        loadAccounts();
     }
 
-    public synchronized void addAccount(final boolean testSettings, final String name, final String server, final int port, final boolean useSSL, final String username, final String password) {
+    public synchronized void addAccount(final String name, final String server, final int port, final boolean useSSL, final String username, final String password) {
         final JavaPushMailAccount mail = new JavaPushMailAccount(name, server, port, useSSL) {
 
             @Override
-            public void onDisconnect(Exception e) {
+            public void onError(Exception e) {
                 connected = false;
-                handleDisconnect(e, testSettings);
+                handleError(e);
             }
 
             @Override
             public void onConnect() {
                 connected = true;
-                if (!testSettings) {
-                    accounts.add(this);
-                    notifiers.add(new JavaPushMailNotifier(this, sysnot));
-                    saveAccounts();
-                }
-                handleConnect(this, testSettings);
+                onStateChange();
+            }
+
+            @Override
+            public void onDisconnect() {
+                connected = false;
+                onStateChange();
             }
         };
         mail.setCredentials(username, password);
+        accounts.add(mail);
+        notifiers.add(new JavaPushMailNotifier(mail, sysnot));
+        onModelChange();
+        saveAccounts();
         startMailDaemon(mail);
     }
 
-    public void reconnectAllDisconnected() {
+    public synchronized void removeAccount(int remove) {
+        accounts.get(remove).disconnect();
+        accounts.removeAccount(accounts.get(remove));
+        //saveAccounts();
+    }
 
+    public void reconnectAllDisconnected() {
         for (JavaPushMailAccount mail : accounts) {
             startMailDaemon(mail);
         }
     }
 
-    public ArrayList<JavaPushMailAccount> getAccounts() {
-        return accounts;
-    }
-    
     public JavaPushMailAccount getAccount(int i) {
         return accounts.get(i);
     }
@@ -91,9 +96,11 @@ public abstract class JavaPushMailAccountsManager {
         return connected;
     }
 
-    public abstract void handleDisconnect(Exception ex, boolean testSettings);
+    public abstract void handleError(Exception ex);
 
-    public abstract void handleConnect(JavaPushMailAccount mail, boolean testSettings);
+    public abstract void onModelChange();
+    
+    public abstract void onStateChange();
 
     private void startMailDaemon(JavaPushMailAccount mail) {
         Thread t = new Thread(mail);
@@ -103,15 +110,16 @@ public abstract class JavaPushMailAccountsManager {
 
     @Deprecated
     public void readAccounts(String filepath) {
-    	if ((new File(ACCOUNT_FILE)).exists()) return;
-    	
+        if ((new File(ACCOUNT_FILE)).exists() && accounts.size() > 0)
+            return;
+
         try {
             BufferedReader in = new BufferedReader(new FileReader(filepath));
             String str;
             while ((str = in.readLine()) != null) {
                 if (!str.startsWith("##")) {
                     String[] line = str.split(",");
-                    addAccount(false, line[0].replaceAll("\"", "").trim(), line[1].replaceAll("\"", "").trim(), Integer.parseInt(line[2].replaceAll("\"", "").trim()), Boolean.getBoolean(line[3].replaceAll("\"", "").trim()), line[4].replaceAll("\"", "").trim(), line[5].replaceAll("\"", "").trim());
+                    addAccount(line[0].replaceAll("\"", "").trim(), line[1].replaceAll("\"", "").trim(), Integer.parseInt(line[2].replaceAll("\"", "").trim()), Boolean.getBoolean(line[3].replaceAll("\"", "").trim()), line[4].replaceAll("\"", "").trim(), line[5].replaceAll("\"", "").trim());
                 }
             }
             in.close();
@@ -158,7 +166,7 @@ public abstract class JavaPushMailAccountsManager {
             while (sc.hasNextLine()) {
                 String str = sc.nextLine();
                 String[] line = str.split(",");
-                addAccount(false, line[0].replaceAll("\"", "").trim(), line[1].replaceAll("\"", "").trim(), Integer.parseInt(line[2].replaceAll("\"", "").trim()), Boolean.getBoolean(line[3].replaceAll("\"", "").trim()), line[4].replaceAll("\"", "").trim(), line[5].replaceAll("\"", "").trim());
+                addAccount(line[0].replaceAll("\"", "").trim(), line[1].replaceAll("\"", "").trim(), Integer.parseInt(line[2].replaceAll("\"", "").trim()), Boolean.getBoolean(line[3].replaceAll("\"", "").trim()), line[4].replaceAll("\"", "").trim(), line[5].replaceAll("\"", "").trim());
             }
 
         } catch (Exception e) {
@@ -196,5 +204,37 @@ public abstract class JavaPushMailAccountsManager {
             ex.printStackTrace();
         }
         return "";
+    }
+
+    class MailAccountList extends ArrayList<JavaPushMailAccount> {
+
+        /**
+         * Normal behaviour + Calls the onModelChange
+         * @param e
+         * @return 
+         */
+        @Override
+        public boolean add(JavaPushMailAccount e) {
+            boolean add = super.add(e);
+            onModelChange();
+            return add;
+        }
+
+        /**
+         * Normal behaviour + Calls the onModelChange
+         * @param e
+         * @return 
+         */
+        @Override
+        public JavaPushMailAccount remove(int i) {
+            JavaPushMailAccount removed = super.remove(i);
+            onModelChange();
+            return removed;
+        }
+
+        public void removeAccount(JavaPushMailAccount e) {
+            super.remove(e);
+            onModelChange();
+        }
     }
 }

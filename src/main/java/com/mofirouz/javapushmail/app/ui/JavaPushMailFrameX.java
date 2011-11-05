@@ -24,7 +24,7 @@ public class JavaPushMailFrameX extends JavaPushMailFrame {
 //            app = new Application();
 //            com.apple.resources.MacOSXResourceBundle.clearCache();
 //            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//            app.setDockIconImage(JavaPushMailFrame.dockIcon);
+//            app.setDockIconImage(super.dockIcon);
 //            app.setEnabledAboutMenu(false);
 //            app.setEnabledPreferencesMenu(true);
 //        } catch (Exception ex) {

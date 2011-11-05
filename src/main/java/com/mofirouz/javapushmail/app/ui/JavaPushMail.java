@@ -1,6 +1,5 @@
 package com.mofirouz.javapushmail.app.ui;
 
-import com.mofirouz.javapushmail.JavaPushMailAccount;
 import com.mofirouz.javapushmail.app.JavaPushMailAccountsManager;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -21,7 +20,6 @@ public class JavaPushMail {
     private JavaPushMailAccountsManager manager;
     public static String NOTIFICATION_ICON;
     public static File NOTIFICATION_ICON_FILE;
-    
 
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -34,34 +32,41 @@ public class JavaPushMail {
     }
 
     public JavaPushMail() {
-        NOTIFICATION_ICON = getTempImagePath((new ImageIcon(this.getClass().getResource("email48x48.png"))).getImage());
+        NOTIFICATION_ICON = getTempImagePath(new ImageIcon(getClass().getResource("email48x48.png")).getImage());
         NOTIFICATION_ICON_FILE = new File(NOTIFICATION_ICON);
     }
-    
+
     public void init() {
         initFrame();
         initManager();
         frame.init(manager);
         frame.showMe(!frame.isUsingPerferences());
-        
+
+        manager.loadAccounts();
         manager.readAccounts("credentials.credentials");
+
+        // for the initial waiting to connect...
+        if (manager.countAccounts() > 0) {
+            frame.setWaitingState(true);
+        }
     }
 
     private void initManager() {
         manager = new JavaPushMailAccountsManager() {
 
             @Override
-            public void handleConnect(JavaPushMailAccount mail, boolean testSettings) {
-                frame.onConnectCallback();
+            public void handleError(Exception ex) {
+                frame.onErrorCallback(ex);
             }
 
             @Override
-            public void handleDisconnect(Exception ex, boolean testSettings) {
-                if (testSettings) {
-                    return;
-                }
+            public void onModelChange() {
+                frame.updateOnModelChange();
+            }
 
-                frame.onDisconnectCallback(ex);
+            @Override
+            public void onStateChange() {
+                frame.updateOnStateChange();
             }
         };
     }
@@ -90,7 +95,7 @@ public class JavaPushMail {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         iconFile.deleteOnExit();
 
         return iconFile.getAbsolutePath();

@@ -2,6 +2,7 @@ package com.mofirouz.javapushmail.app.ui;
 
 import com.mofirouz.javapushmail.JavaPushMailAccount;
 import com.mofirouz.javapushmail.app.JavaPushMailAccountsManager;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.Point;
@@ -16,7 +17,9 @@ import javax.mail.MessagingException;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -29,15 +32,11 @@ public class JavaPushMailFrame {
     protected JFrame frame;
     protected JTable accountsTable;
     protected JMenuBar menu;
-    protected static Image dockIcon;
+    protected Image dockIcon;
     private JavaPushMailAccountSettingsPanel settingsPanel;
 
-    static {
-        dockIcon = (Toolkit.getDefaultToolkit().createImage(JavaPushMailFrame.class.getResource("/dock.png")));
-    }
-
     public JavaPushMailFrame() {
-        dockIcon = (new ImageIcon(this.getClass().getResource("dock.png"))).getImage();
+        dockIcon = Toolkit.getDefaultToolkit().createImage(getClass().getResource("dock.png"));//(new ImageIcon(this.getClass().getResource("dock.png"))).getImage();
     }
 
     public void init(JavaPushMailAccountsManager manager) {
@@ -55,29 +54,19 @@ public class JavaPushMailFrame {
         frame.add(settingsPanel);
         frame.setResizable(false);
         frame.setIconImage(dockIcon);
+        frame.getRootPane().setDefaultButton(settingsPanel.getHideButton());
         fixMenuBar();
         frame.pack();
     }
 
     private void buildPanels() {
         settingsPanel = new JavaPushMailAccountSettingsPanel();
-        settingsPanel.getConnectButton().setEnabled(!isUsingPerferences());
-        settingsPanel.getConnectButton().setEnabled(false); // temp
-        settingsPanel.getConnectButton().addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent ae) {
-                settingsPanel.getConnectButton().setEnabled(false);
-                manager.reconnectAllDisconnected();
-            }
-        });
-
         settingsPanel.getQuitButton().addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent ae) {
                 quitApplication(true);
             }
         });
-
         settingsPanel.getHideButton().addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent ae) {
@@ -85,43 +74,111 @@ public class JavaPushMailFrame {
                 frame.dispose();
             }
         });
-
         accountsTable = settingsPanel.getAccountTable();
+        configTable();
         accountsTable.getModel().addTableModelListener(new TableModelListener() {
 
             public void tableChanged(TableModelEvent tme) {
-                //System.out.println("Table changed!");
+                updateModel(tme.getFirstRow());
             }
         });
     }
 
+    private void configTable() {
+        for (int column = 0; column < accountsTable.getColumnCount(); column++) {
+            JTableHeader header = accountsTable.getTableHeader();
+            DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
+            renderer.setHorizontalAlignment(JLabel.CENTER);
+            accountsTable.getColumnModel().getColumn(column).setHeaderRenderer(renderer);
+
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            accountsTable.getColumnModel().getColumn(column).setCellRenderer(centerRenderer);
+        }
+    }
+
     private void buildPopup() {
         class TablePopup extends JPopupMenu {
+
             int row;
+
             public void setSelectedRow(int i) {
                 row = i;
             }
         }
 
         final TablePopup tablePopup = new TablePopup();
-        
         JMenuItem deleteItem = new JMenuItem("Remove");
         deleteItem.addActionListener(new ActionListener() {
+
             public void actionPerformed(ActionEvent ae) {
                 tablePopup.setVisible(false);
-                deleteRow(tablePopup.row);
+                
+                setWaitingState(true);
+                SwingWorker worker = new SwingWorker<String, Object>() {
+
+                    @Override
+                    public String doInBackground() {
+                        manager.removeAccount(tablePopup.row);
+                        return "";
+                    }
+
+                    @Override
+                    protected void done() {
+                        setWaitingState(false);
+                    }
+                };
+                worker.execute();
             }
         });
+
+        final JMenuItem dis_connectItem = new JMenuItem("Connect");
+        dis_connectItem.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent ae) {
+                tablePopup.setVisible(false);
+                setWaitingState(true);
+
+                SwingWorker worker = new SwingWorker<String, Object>() {
+
+                    @Override
+                    public String doInBackground() {
+                        if (manager.getAccount(tablePopup.row).isConnected())
+                            manager.getAccount(tablePopup.row).disconnect();
+                        else
+                            manager.getAccount(tablePopup.row).connect();
+                        return "";
+                    }
+
+                    @Override
+                    protected void done() {
+                    }
+                };
+                worker.execute();
+            }
+        });
+
+        tablePopup.add(dis_connectItem);
+        tablePopup.addSeparator();
         tablePopup.add(deleteItem);
 
         accountsTable.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mouseClicked(MouseEvent me) {
+                if (!accountsTable.isEnabled())
+                    return;
+
                 if (me.getButton() == MouseEvent.BUTTON3) {
                     tablePopup.setLocation(me.getLocationOnScreen());
                     if (accountsTable.rowAtPoint(me.getPoint()) != -1) {
-                        tablePopup.setVisible(true);
                         tablePopup.setSelectedRow(accountsTable.rowAtPoint(me.getPoint()));
+
+                        dis_connectItem.setText("Connect");
+                        if (manager.getAccount(tablePopup.row).isConnected())
+                            dis_connectItem.setText("Disconnect");
+
+                        tablePopup.setVisible(true);
                     }
                 } else {
                     tablePopup.setVisible(false);
@@ -157,17 +214,18 @@ public class JavaPushMailFrame {
     }
 
     private void initKeyboardHook() {
+        //TODO:
     }
 
-    // should only be called upon pressing Save button on the frame,
-    // or when the app is closing by the main frame, not the system tray.
-    protected boolean savePreferences() {
-        return false;
+    private void updateModel(int rowChanged) {
+        //TODO:
+        //setWaitingState(true);
     }
 
-    // should be called automatically at startup, if perferences exists.
-    protected boolean loadPreferences() {
-        return false;
+    public void setWaitingState(boolean show) {
+        accountsTable.setEnabled(!show);
+        accountsTable.clearSelection();
+        settingsPanel.getWorkingLabel().setVisible(show);
     }
 
     public void showMe(boolean go) {
@@ -184,13 +242,7 @@ public class JavaPushMailFrame {
         System.exit(0);
     }
 
-    public void onConnectCallback() {
-        settingsPanel.getConnectButton().setEnabled(false);
-        refreshFrame();
-    }
-
-    public void onDisconnectCallback(Exception ex) {
-        settingsPanel.getConnectButton().setEnabled(true);
+    public void onErrorCallback(Exception ex) {
         refreshFrame();
         if (ex instanceof MessagingException) {
             String error = "";
@@ -206,6 +258,15 @@ public class JavaPushMailFrame {
         ex.printStackTrace();
     }
 
+    public synchronized void updateOnModelChange() {
+        refreshFrame();
+    }
+
+    public synchronized void updateOnStateChange() {
+        refreshFrame();
+        setWaitingState(false);
+    }
+
     public synchronized void refreshFrame() {
         if (accountsTable == null)
             return;
@@ -213,7 +274,8 @@ public class JavaPushMailFrame {
         DefaultTableModel model = (DefaultTableModel) accountsTable.getModel();
         model.setRowCount(0);
 
-        for (JavaPushMailAccount mail : manager.getAccounts()) {
+        for (int i = 0; i < manager.countAccounts(); i++) {
+            JavaPushMailAccount mail = manager.getAccount(i);
             Vector data = new Vector();
             data.add(mail.getAccountName());
             data.add(mail.getServerAddress());
@@ -221,13 +283,19 @@ public class JavaPushMailFrame {
             data.add(mail.isSSL());
             data.add(mail.getUsername());
             data.add(JavaPushMailAccountSettingsPanel.PASSWORD_FIELD);
-            data.add(Boolean.TRUE);
             model.addRow(data);
         }
     }
-    
-    private void deleteRow(int row) {
-        //TODO: fill in deleteRow;
+
+    // should only be called upon pressing Save button on the frame,
+    // or when the app is closing by the main frame, not the system tray.
+    protected boolean savePreferences() {
+        return false;
+    }
+
+    // should be called automatically at startup, if perferences exists.
+    protected boolean loadPreferences() {
+        return false;
     }
 
     public boolean isUsingPerferences() {

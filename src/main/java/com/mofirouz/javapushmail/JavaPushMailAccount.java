@@ -60,54 +60,6 @@ public abstract class JavaPushMailAccount implements Runnable {
         this.initConnection();
     }
 
-    private void initConnection() {
-        prober = new NetworkProber(serverAddress, accountName) {
-
-            @Override
-            public void onNetworkChange(boolean change) {
-                connected = true;
-                if (getPingFailureCount() >= 2 || getSessionFailureCount() != 0) {
-                    connected = false;
-                    prober.stop();
-                    if (!usePush)
-                        poller.stop();
-                    connect();
-                }
-            }
-        };
-        
-        poller = new MailPoller(folder) {
-
-            @Override
-            public void onNewMessage() {
-                try {
-                    if (externalCountListener != null) {
-                        externalCountListener.messagesAdded(new MessageCountEvent(folder, MessageCountEvent.ADDED, false, getNewMessages()));
-                        messageCountListener.messagesAdded(new MessageCountEvent(folder, MessageCountEvent.ADDED, false, getNewMessages()));
-                    }
-                } catch (Exception e) {
-                }
-
-            }
-        };
-
-        Properties props = System.getProperties();
-        String imapProtocol = "imap";
-        if (useSSL) {
-            imapProtocol = "imaps";
-            props.setProperty("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-            props.setProperty("mail.imap.socketFactory.fallback", "false");
-        }
-        props.setProperty("mail.store.protocol", imapProtocol);
-        session = Session.getDefaultInstance(props, null);
-        try {
-            server = (IMAPStore) session.getStore("imaps");
-            connect();
-        } catch (MessagingException ex) {
-            onDisconnect(ex);
-        }
-    }
-
     public void connect() {
         try {
             server.connect(serverAddress, serverPort, username, password);
@@ -123,9 +75,8 @@ public abstract class JavaPushMailAccount implements Runnable {
             folder = null;
             messageChangedListener = null;
             messageCountListener = null;
-            onDisconnect(ex);
+            onError(ex);
         } catch (IllegalStateException ex) {
-        	
         }
     }
 
@@ -141,6 +92,80 @@ public abstract class JavaPushMailAccount implements Runnable {
         addListener(externalCountListener);
     }
 
+    public void disconnect() {
+        if (!connected || server == null || !server.isConnected())
+            return;
+
+        Thread t = new Thread(new Runnable() {
+
+            public void run() {
+                try {
+                    closeFolder();
+                    server.close();
+                    prober.stop();
+                    poller.stop();
+                    connected = false;
+                    onDisconnect();
+                } catch (Exception e) {
+                    onError(e);
+                }
+            }
+        });
+        t.start();
+    }
+
+    private void initConnection() {
+        prober = new NetworkProber(serverAddress, accountName) {
+
+            @Override
+            public void onNetworkChange(boolean change) {
+                connected = true;
+                if (getPingFailureCount() >= 2 || getSessionFailureCount() != 0) {
+                    connected = false;
+                    prober.stop();
+                    if (!usePush)
+                        poller.stop();
+                    connect();
+                }
+            }
+        };
+
+        poller = new MailPoller(folder) {
+
+            @Override
+            public void onNewMessage() {
+                try {
+                    if (externalCountListener != null) {
+                        externalCountListener.messagesAdded(new MessageCountEvent(folder, MessageCountEvent.ADDED, false, getNewMessages()));
+                        messageCountListener.messagesAdded(new MessageCountEvent(folder, MessageCountEvent.ADDED, false, getNewMessages()));
+                    }
+                } catch (Exception e) {
+                    onError(e);
+                }
+
+            }
+        };
+
+        Properties props = System.getProperties();
+
+        //props.put("mail.debug", "true");
+
+        String imapProtocol = "imap";
+        if (useSSL) {
+            imapProtocol = "imaps";
+            props.setProperty("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+            props.setProperty("mail.imap.socketFactory.fallback", "false");
+        }
+        props.setProperty("mail.store.protocol", imapProtocol);
+        session = Session.getDefaultInstance(props, null);
+        try {
+            server = (IMAPStore) session.getStore("imaps");
+            connect();
+        } catch (MessagingException ex) {
+            onError(ex);
+        }
+    }
+
     private void selectFolder(String folderName) {
         try {
             closeFolder();
@@ -151,7 +176,7 @@ public abstract class JavaPushMailAccount implements Runnable {
             }
             openFolder();
         } catch (MessagingException ex) {
-            onDisconnect(ex);
+            onError(ex);
         } catch (IllegalStateException ex) {
             ex.printStackTrace();
         }
@@ -170,9 +195,8 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     private void closeFolder() throws MessagingException {
-        if (folder == null) {
+        if (folder == null)
             return;
-        }
 
         removeAllListenersFromFolder();
         folder.setSubscribed(false);
@@ -191,9 +215,9 @@ public abstract class JavaPushMailAccount implements Runnable {
                     if (usePush)
                         folder.idle(false);
                 } catch (Exception e) {
-                	System.err.println("Push Error: " + accountName);
-                	e.printStackTrace();
-                	connect();
+                    System.err.println("Push Error: " + accountName);
+                    e.printStackTrace();
+                    connect();
                     usePush = false;
                 }
             }
@@ -266,19 +290,19 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     public Message[] getNewMessages() throws MessagingException {
-    	ArrayList<Message> mess = new ArrayList<Message>();
+        ArrayList<Message> mess = new ArrayList<Message>();
 
         Message[] allmess = folder.getSortedMessages(new SortTerm[]{SortTerm.ARRIVAL, SortTerm.DATE});
 
         for (int i = 0; i < poller.getDiffCount(); i++) {
-        	if (allmess[i].isSet(Flags.Flag.SEEN) == false)
-        		mess.add(allmess[i]);
+            if (allmess[i].isSet(Flags.Flag.SEEN) == false)
+                mess.add(allmess[i]);
         }
 
         Message[] messages = new Message[mess.size()];
         for (int i = 0; i < mess.size(); i++)
-        	messages[i] = mess.get(i);
-        
+            messages[i] = mess.get(i);
+
         return messages;
     }
 
@@ -309,7 +333,7 @@ public abstract class JavaPushMailAccount implements Runnable {
     public String getUsername() {
         return username;
     }
-    
+
     public boolean isConnected() {
         return connected;
     }
@@ -318,7 +342,9 @@ public abstract class JavaPushMailAccount implements Runnable {
         return server.isConnected();
     }
 
-    public abstract void onDisconnect(Exception e);
+    public abstract void onError(Exception e);
+
+    public abstract void onDisconnect();
 
     public abstract void onConnect();
 }

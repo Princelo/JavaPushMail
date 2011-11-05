@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.UIManager;
 
 /**
  *
@@ -15,15 +16,18 @@ import javax.swing.ImageIcon;
  * @since 2/10/11
  */
 public class JavaPushMail {
-
     private JavaPushMailFrame frame;
     private JavaPushMailAccountsManager manager;
     public static String NOTIFICATION_ICON;
     public static File NOTIFICATION_ICON_FILE;
 
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+        }
 
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 JavaPushMail jpm = new JavaPushMail();
                 jpm.init();
@@ -53,7 +57,6 @@ public class JavaPushMail {
 
     private void initManager() {
         manager = new JavaPushMailAccountsManager() {
-
             @Override
             public void handleError(Exception ex) {
                 frame.onErrorCallback(ex);
@@ -73,15 +76,17 @@ public class JavaPushMail {
 
     private void initFrame() {
         String os = System.getProperty("os.name");
-        if (os.contains("Mac"))
+        if (os.contains("Mac")) {
             frame = new JavaPushMailFrameX();
-        else
+        } else {
             frame = new JavaPushMailFrame();
+        }
     }
 
     protected static String getTempImagePath(Image icon) {
-        if (icon == null)
+        if (icon == null) {
             return null;
+        }
 
         File iconFile = new File(".");
 

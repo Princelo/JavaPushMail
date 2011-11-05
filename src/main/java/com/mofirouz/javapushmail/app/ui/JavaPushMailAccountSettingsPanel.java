@@ -78,15 +78,15 @@ public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
         jLayeredPane1.add(workingLabel, javax.swing.JLayeredPane.MODAL_LAYER);
 
         quitButton.setText("Quit");
-        quitButton.setBounds(510, 310, 75, 29);
+        quitButton.setBounds(520, 310, 70, 23);
         jLayeredPane1.add(quitButton, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         hideButton.setText("Hide");
-        hideButton.setBounds(440, 310, 75, 29);
+        hideButton.setBounds(440, 310, 70, 23);
         jLayeredPane1.add(hideButton, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         newAccountButton.setText("New Account");
-        newAccountButton.setBounds(20, 310, 127, 29);
+        newAccountButton.setBounds(20, 310, 110, 23);
         jLayeredPane1.add(newAccountButton, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);

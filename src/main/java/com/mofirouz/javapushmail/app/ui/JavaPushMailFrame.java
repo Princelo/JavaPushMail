@@ -30,13 +30,16 @@ public class JavaPushMailFrame {
 
     protected JavaPushMailAccountsManager manager;
     protected JFrame frame;
+    protected JTabbedPane tabbedPanel;
     protected JTable accountsTable;
     protected JMenuBar menu;
     protected Image dockIcon;
     private JavaPushMailAccountSettingsPanel settingsPanel;
+    private NewAccountDialog accountDialog;
 
     public JavaPushMailFrame() {
         dockIcon = Toolkit.getDefaultToolkit().createImage(getClass().getResource("dock.png"));//(new ImageIcon(this.getClass().getResource("dock.png"))).getImage();
+        accountDialog = new NewAccountDialog(frame, true);
     }
 
     public void init(JavaPushMailAccountsManager manager) {
@@ -45,13 +48,14 @@ public class JavaPushMailFrame {
         frame = new JFrame("Push Mail Configuration Wizard");
         buildPanels();
         buildPopup();
+        buildTabs();
         buildFrame();
         loadPreferences();
         initKeyboardHook();
     }
 
     private void buildFrame() {
-        frame.add(settingsPanel);
+        frame.add(tabbedPanel);
         frame.setResizable(false);
         frame.setIconImage(dockIcon);
         frame.getRootPane().setDefaultButton(settingsPanel.getHideButton());
@@ -59,10 +63,20 @@ public class JavaPushMailFrame {
         frame.pack();
     }
 
+    private void buildTabs() {
+        tabbedPanel = new JTabbedPane();
+        tabbedPanel.add(settingsPanel);
+    }
+    
     private void buildPanels() {
         settingsPanel = new JavaPushMailAccountSettingsPanel();
+        settingsPanel.getNewAccountButton().addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                accountDialog.dispose();
+                accountDialog.setVisible(true);
+            }
+        });
         settingsPanel.getQuitButton().addActionListener(new ActionListener() {
-
             public void actionPerformed(ActionEvent ae) {
                 quitApplication(true);
             }
@@ -224,6 +238,7 @@ public class JavaPushMailFrame {
 
     public void setWaitingState(boolean show) {
         accountsTable.setEnabled(!show);
+        settingsPanel.getNewAccountButton().setEnabled(!show);
         accountsTable.clearSelection();
         settingsPanel.getWorkingLabel().setVisible(show);
     }
@@ -235,7 +250,10 @@ public class JavaPushMailFrame {
     }
 
     public void quitApplication(boolean save) {
-        if (save) {
+        frame.dispose();
+        
+        manager.disconnectAllAccounts();
+        if (save && accountsTable.isEnabled()) {
             manager.saveAccounts();
             savePreferences();
         }

@@ -68,7 +68,7 @@ public abstract class JavaPushMailAccount implements Runnable {
             prober.start();
             if (!usePush)
                 poller.start(accountName);
-            System.err.println("Fully Connected: " + accountName);
+            System.err.println(accountName + " connected!");
             onConnect();
         } catch (MessagingException ex) {
             connected = false;
@@ -97,7 +97,6 @@ public abstract class JavaPushMailAccount implements Runnable {
             return;
 
         Thread t = new Thread(new Runnable() {
-
             public void run() {
                 try {
                     closeFolder();
@@ -105,6 +104,7 @@ public abstract class JavaPushMailAccount implements Runnable {
                     prober.stop();
                     poller.stop();
                     connected = false;
+                    System.err.println(accountName + " disconnected!");
                     onDisconnect();
                 } catch (Exception e) {
                     onError(e);

@@ -1,13 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * JavaPushMailAccountSettingsPanel.java
- *
- * Created on Oct 23, 2011, 7:22:45 PM
- */
 package com.mofirouz.javapushmail.app.ui;
 
 import java.awt.Image;
@@ -23,8 +13,8 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 /**
- *
- * @author mo
+ * @since 23/10/2011
+ * @author Mo Firouz
  */
 public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
 
@@ -33,6 +23,7 @@ public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
     /** Creates new form JavaPushMailAccountSettingsPanel */
     public JavaPushMailAccountSettingsPanel() {
         initComponents();
+        this.setName("Account Settings");
         workingLabel.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(getClass().getResource("workingAnimation.gif")).getScaledInstance(128, 128, Image.SCALE_DEFAULT)));
         workingLabel.setVisible(false);
         configTableUI();
@@ -53,8 +44,9 @@ public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
         workingLabel = new javax.swing.JLabel();
         quitButton = new javax.swing.JButton();
         hideButton = new javax.swing.JButton();
-        accountListLabel = new javax.swing.JLabel();
         newAccountButton = new javax.swing.JButton();
+
+        setOpaque(false);
 
         accountTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -78,11 +70,11 @@ public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(accountTable);
         accountTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-        jScrollPane1.setBounds(20, 40, 570, 260);
+        jScrollPane1.setBounds(20, 10, 570, 290);
         jLayeredPane1.add(jScrollPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         workingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        workingLabel.setBounds(20, 40, 570, 260);
+        workingLabel.setBounds(20, 10, 570, 290);
         jLayeredPane1.add(workingLabel, javax.swing.JLayeredPane.MODAL_LAYER);
 
         quitButton.setText("Quit");
@@ -92,10 +84,6 @@ public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
         hideButton.setText("Hide");
         hideButton.setBounds(440, 310, 75, 29);
         jLayeredPane1.add(hideButton, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        accountListLabel.setText(" Account List:");
-        accountListLabel.setBounds(20, 10, 87, 16);
-        jLayeredPane1.add(accountListLabel, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         newAccountButton.setText("New Account");
         newAccountButton.setBounds(20, 310, 127, 29);
@@ -113,7 +101,6 @@ public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel accountListLabel;
     private javax.swing.JTable accountTable;
     private javax.swing.JButton hideButton;
     private javax.swing.JLayeredPane jLayeredPane1;

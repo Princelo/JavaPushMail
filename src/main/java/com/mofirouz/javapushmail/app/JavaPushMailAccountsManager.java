@@ -76,6 +76,12 @@ public abstract class JavaPushMailAccountsManager {
         }
     }
 
+    public void disconnectAllAccounts() {
+        for (JavaPushMailAccount mail : accounts) {
+            mail.disconnect();
+        }
+    }
+
     public JavaPushMailAccount getAccount(int i) {
         return accounts.get(i);
     }
@@ -95,12 +101,6 @@ public abstract class JavaPushMailAccountsManager {
     public static boolean isConnected() {
         return connected;
     }
-
-    public abstract void handleError(Exception ex);
-
-    public abstract void onModelChange();
-    
-    public abstract void onStateChange();
 
     private void startMailDaemon(JavaPushMailAccount mail) {
         Thread t = new Thread(mail);
@@ -205,6 +205,12 @@ public abstract class JavaPushMailAccountsManager {
         }
         return "";
     }
+
+    public abstract void handleError(Exception ex);
+
+    public abstract void onModelChange();
+
+    public abstract void onStateChange();
 
     class MailAccountList extends ArrayList<JavaPushMailAccount> {
 

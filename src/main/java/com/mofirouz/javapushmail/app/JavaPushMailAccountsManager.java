@@ -88,7 +88,7 @@ public abstract class JavaPushMailAccountsManager {
         
         return true;
     }
-
+    
     public JavaPushMailAccount getAccount(int i) {
         return accounts.get(i);
     }

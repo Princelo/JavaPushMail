@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.Properties;
 
+import java.util.Vector;
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
@@ -24,7 +25,6 @@ import javax.mail.event.MessageCountListener;
  * @since 2/10/11
  */
 public abstract class JavaPushMailAccount implements Runnable {
-
     public final static int READ_ONLY_FOLDER = Folder.READ_ONLY;
     public final static int READ_WRITE_FOLDER = Folder.READ_WRITE;
     private boolean connected = false;
@@ -51,9 +51,9 @@ public abstract class JavaPushMailAccount implements Runnable {
         this.useSSL = useSSL;
     }
 
-    public void setCredentials(String u, String p) {
-        this.username = u;
-        this.password = p;
+    public void setCredentials(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public void run() {
@@ -66,8 +66,9 @@ public abstract class JavaPushMailAccount implements Runnable {
             selectFolder("");
             connected = true;
             prober.start();
-            if (!usePush)
+            if (!usePush) {
                 poller.start(accountName);
+            }
             System.err.println(accountName + " connected!");
             onConnect();
         } catch (MessagingException ex) {
@@ -77,6 +78,7 @@ public abstract class JavaPushMailAccount implements Runnable {
             messageCountListener = null;
             onError(ex);
         } catch (IllegalStateException ex) {
+            connected = true;
         }
     }
 
@@ -93,8 +95,9 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     public void disconnect() {
-        if (!connected || server == null || !server.isConnected())
+        if (!connected || server == null || !server.isConnected()) {
             return;
+        }
 
         Thread t = new Thread(new Runnable() {
             public void run() {
@@ -116,22 +119,21 @@ public abstract class JavaPushMailAccount implements Runnable {
 
     private void initConnection() {
         prober = new NetworkProber(serverAddress, accountName) {
-
             @Override
             public void onNetworkChange(boolean change) {
                 connected = true;
                 if (getPingFailureCount() >= 2 || getSessionFailureCount() != 0) {
                     connected = false;
                     prober.stop();
-                    if (!usePush)
+                    if (!usePush) {
                         poller.stop();
+                    }
                     connect();
                 }
             }
         };
 
         poller = new MailPoller(folder) {
-
             @Override
             public void onNewMessage() {
                 try {
@@ -183,8 +185,9 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     private void openFolder() throws MessagingException {
-        if (folder == null)
+        if (folder == null) {
             return;
+        }
 
         folder.open(Folder.READ_ONLY);
         folder.setSubscribed(true);
@@ -195,8 +198,9 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     private void closeFolder() throws MessagingException {
-        if (folder == null)
+        if (folder == null) {
             return;
+        }
 
         removeAllListenersFromFolder();
         folder.setSubscribed(false);
@@ -205,15 +209,16 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     private void usePush() {
-        if (folder == null)
+        if (folder == null) {
             return;
+        }
 
         Runnable r = new Runnable() {
-
             public void run() {
                 try {
-                    if (usePush)
+                    if (usePush) {
                         folder.idle(false);
+                    }
                 } catch (Exception e) {
                     System.err.println("Push Error: " + accountName);
                     e.printStackTrace();
@@ -233,13 +238,16 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     private void removeListener(EventListener listener) {
-        if (listener == null || folder == null)
+        if (listener == null || folder == null) {
             return;
+        }
 
         if (listener instanceof MessageChangedListener) {
             folder.removeMessageChangedListener((MessageChangedListener) listener);
-        } else if (listener instanceof MessageCountListener) {
-            folder.removeMessageCountListener((MessageCountListener) listener);
+        } else {
+            if (listener instanceof MessageCountListener) {
+                folder.removeMessageCountListener((MessageCountListener) listener);
+            }
         }
     }
 
@@ -249,13 +257,16 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     private void addListener(EventListener listener) {
-        if (listener == null || folder == null)
+        if (listener == null || folder == null) {
             return;
+        }
 
         if (listener instanceof MessageChangedListener) {
             folder.addMessageChangedListener((MessageChangedListener) listener);
-        } else if (listener instanceof MessageCountListener) {
-            folder.addMessageCountListener((MessageCountListener) listener);
+        } else {
+            if (listener instanceof MessageCountListener) {
+                folder.addMessageCountListener((MessageCountListener) listener);
+            }
         }
 
         addInternalListeners(listener);
@@ -263,29 +274,30 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     private void addInternalListeners(EventListener listener) {
-        if (listener == null || folder == null)
+        if (listener == null || folder == null) {
             return;
+        }
 
         if (listener instanceof MessageChangedListener && messageChangedListener == null) {
             messageChangedListener = new MessageChangedListener() {
-
                 public void messageChanged(MessageChangedEvent mce) {
                     usePush();
                 }
             };
             folder.addMessageChangedListener(messageChangedListener);
-        } else if (listener instanceof MessageCountListener && messageCountListener == null) {
-            messageCountListener = new MessageCountListener() {
+        } else {
+            if (listener instanceof MessageCountListener && messageCountListener == null) {
+                messageCountListener = new MessageCountListener() {
+                    public void messagesAdded(MessageCountEvent mce) {
+                        usePush();
+                    }
 
-                public void messagesAdded(MessageCountEvent mce) {
-                    usePush();
-                }
-
-                public void messagesRemoved(MessageCountEvent mce) {
-                    usePush();
-                }
-            };
-            folder.addMessageCountListener(messageCountListener);
+                    public void messagesRemoved(MessageCountEvent mce) {
+                        usePush();
+                    }
+                };
+                folder.addMessageCountListener(messageCountListener);
+            }
         }
     }
 
@@ -295,13 +307,15 @@ public abstract class JavaPushMailAccount implements Runnable {
         Message[] allmess = folder.getSortedMessages(new SortTerm[]{SortTerm.ARRIVAL, SortTerm.DATE});
 
         for (int i = 0; i < poller.getDiffCount(); i++) {
-            if (allmess[i].isSet(Flags.Flag.SEEN) == false)
+            if (allmess[i].isSet(Flags.Flag.SEEN) == false) {
                 mess.add(allmess[i]);
+            }
         }
 
         Message[] messages = new Message[mess.size()];
-        for (int i = 0; i < mess.size(); i++)
+        for (int i = 0; i < mess.size(); i++) {
             messages[i] = mess.get(i);
+        }
 
         return messages;
     }
@@ -346,8 +360,42 @@ public abstract class JavaPushMailAccount implements Runnable {
     public String toString() {
         return accountName;
     }
-    
 
+    public Vector getVectorData() {
+        Vector data = new Vector();
+        data.add(accountName);
+        data.add(serverAddress);
+        data.add(serverPort);
+        data.add(useSSL);
+        data.add(username);
+        data.add(password);
+        return data;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setServerAddress(String serverAddress) {
+        this.serverAddress = serverAddress;
+    }
+
+    public void setServerPort(int serverPort) {
+        this.serverPort = serverPort;
+    }
+
+    public void setUseSSL(boolean useSSL) {
+        this.useSSL = useSSL;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    
     public abstract void onError(Exception e);
 
     public abstract void onDisconnect();

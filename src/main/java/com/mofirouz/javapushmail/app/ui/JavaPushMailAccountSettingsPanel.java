@@ -17,7 +17,6 @@ import javax.swing.table.TableColumnModel;
  * @author Mo Firouz
  */
 public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
-
     public final static String PASSWORD_FIELD = "*****";
 
     /** Creates new form JavaPushMailAccountSettingsPanel */
@@ -143,7 +142,7 @@ public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
         colModel.getColumn(3).setPreferredWidth(50);
         colModel.getColumn(4).setPreferredWidth(100);
         colModel.getColumn(5).setPreferredWidth(100);
-        
+
         for (int column = 0; column < accountTable.getColumnCount(); column++) {
             JTableHeader header = accountTable.getTableHeader();
             DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) header.getDefaultRenderer();

@@ -159,7 +159,7 @@ public abstract class JavaPushMailAccount implements Runnable {
         props.setProperty("mail.store.protocol", imapProtocol);
         session = Session.getDefaultInstance(props, null);
         try {
-            server = (IMAPStore) session.getStore("imaps");
+            server = (IMAPStore) session.getStore(imapProtocol);
             connect();
         } catch (MessagingException ex) {
             onError(ex);

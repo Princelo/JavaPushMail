@@ -42,7 +42,6 @@ public class JavaPushMailFrame {
 
     public void init(JavaPushMailAccountsManager manager) {
         this.manager = manager;
-        accountDialog = new NewAccountDialog(frame, manager);
         buildTrayPopup();
         frame = new JFrame("Push Mail Configuration Wizard");
         buildPanels();
@@ -72,8 +71,7 @@ public class JavaPushMailFrame {
         settingsPanel.getNewAccountButton().addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent ae) {
-                accountDialog.dispose();
-                accountDialog.setVisible(true);
+                showAddNewAccountDialog();
             }
         });
         settingsPanel.getQuitButton().addActionListener(new ActionListener() {
@@ -232,6 +230,11 @@ public class JavaPushMailFrame {
         //setWaitingState(true);
     }
 
+    private void showAddNewAccountDialog() {
+        accountDialog = new NewAccountDialog(this, manager);
+        accountDialog.setVisible(true);
+    }
+
     public void setWaitingState(boolean show) {
         waitingState = show;
         accountsTable.setEnabled(!show);
@@ -280,6 +283,7 @@ public class JavaPushMailFrame {
             JOptionPane.showMessageDialog(frame, error);
         }
         ex.printStackTrace();
+        setWaitingState(false);
     }
 
     public synchronized void updateOnModelChange() {

@@ -18,10 +18,12 @@ public class NewAccountDialog extends javax.swing.JDialog {
 
     private ArrayList<JTextField> fields = new ArrayList<JTextField>();
     private JavaPushMailAccountsManager manager;
+    private JavaPushMailFrame mailFrame;
     
     /** Creates new form NewAccountDialog */
-    public NewAccountDialog(JFrame parentFrame, JavaPushMailAccountsManager manager) {
-        super(parentFrame, true);
+    public NewAccountDialog(JavaPushMailFrame mailFrame, JavaPushMailAccountsManager manager) {
+        super(mailFrame.frame, true);
+        this.mailFrame = mailFrame;
         this.manager = manager;
         initComponents();
         fields.add(accountNameField);
@@ -43,7 +45,7 @@ public class NewAccountDialog extends javax.swing.JDialog {
             }
         });
         this.getRootPane().setDefaultButton(addAccountButton);
-        this.setLocationRelativeTo(parentFrame);
+        this.setLocationRelativeTo(mailFrame.frame);
     }
 
     private void createNewAccount() {
@@ -53,8 +55,8 @@ public class NewAccountDialog extends javax.swing.JDialog {
         boolean useSSL = useSSLCheckbox.isSelected();
         String username = usernameField.getText();
         String password = String.valueOf(passwordField.getPassword());
+        mailFrame.setWaitingState(true);
         manager.addAccount(accountName, server, port, useSSL, username, password);
-        
         passwordField.setText("");
         this.dispose();
     }

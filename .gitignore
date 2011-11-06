@@ -1,5 +1,3 @@
-.jpm
-
 ## build system files to ignore
 gradle-app.setting
 .gradle
@@ -27,3 +25,5 @@ whiteboard.iws
 *.credentials
 Icon?
 Thumbs.db
+
+accounts.jpm

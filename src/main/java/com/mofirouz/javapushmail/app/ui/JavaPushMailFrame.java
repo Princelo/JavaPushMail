@@ -287,6 +287,7 @@ public class JavaPushMailFrame {
 
                 @Override
                 protected void done() {
+                    setWaitingState(false);
                 }
             };
             worker.execute();

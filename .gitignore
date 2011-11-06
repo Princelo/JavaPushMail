@@ -1,3 +1,5 @@
+.jpm
+
 ## build system files to ignore
 gradle-app.setting
 .gradle

@@ -101,11 +101,6 @@ public class JavaPushMailFrame {
 
     private void configTable() {
         for (int column = 0; column < accountsTable.getColumnCount(); column++) {
-            JTableHeader header = accountsTable.getTableHeader();
-            DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) header.getDefaultRenderer();
-            renderer.setHorizontalAlignment(JLabel.CENTER);
-            accountsTable.getColumnModel().getColumn(column).setHeaderRenderer(renderer);
-
             DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
             centerRenderer.setHorizontalAlignment(JLabel.CENTER);
             accountsTable.getColumnModel().getColumn(column).setCellRenderer(centerRenderer);

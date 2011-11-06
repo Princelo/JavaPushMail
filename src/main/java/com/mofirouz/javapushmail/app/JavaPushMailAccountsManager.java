@@ -75,9 +75,8 @@ public abstract class JavaPushMailAccountsManager {
     }
 
     public synchronized void disconnectAllAccounts() {
-        for (JavaPushMailAccount mail : accounts) {
+        for (JavaPushMailAccount mail : accounts) 
             mail.disconnect();
-        }
     }
     
     public synchronized boolean allDisconnected() {

@@ -191,7 +191,7 @@ public class SystemNotification {
     }
 
     private void fallbackNotification() {
-        String content = createSingleLineString(message);
+        String content = createMultiLineString(message);
         if (content.length() > MAX_MESS_LENGTH)
             content = (content.substring(0, MAX_MESS_LENGTH)) + "...";
 

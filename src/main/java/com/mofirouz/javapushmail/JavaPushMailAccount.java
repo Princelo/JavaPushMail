@@ -95,9 +95,9 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     public void disconnect() {
-        if (!connected || server == null || !server.isConnected()) {
+        if (!connected && server == null && !server.isConnected())
             return;
-        }
+        
 
         Thread t = new Thread(new Runnable() {
             public void run() {

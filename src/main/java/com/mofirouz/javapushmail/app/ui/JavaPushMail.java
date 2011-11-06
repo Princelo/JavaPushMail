@@ -47,7 +47,7 @@ public class JavaPushMail {
         frame.showMe(!frame.isUsingPerferences());
 
         manager.loadAccounts();
-        manager.readAccounts("credentials.credentials");
+        //manager.readAccounts("credentials.credentials");
 
         // for the initial waiting to connect...
         if (manager.countAccounts() > 0) {

@@ -60,26 +60,33 @@ public abstract class JavaPushMailAccountsManager {
         accounts.add(mail);
         notifiers.add(new JavaPushMailNotifier(mail, sysnot));
         onModelChange();
-        saveAccounts();
         startMailDaemon(mail);
     }
 
     public synchronized void removeAccount(int remove) {
         accounts.get(remove).disconnect();
         accounts.removeAccount(accounts.get(remove));
-        //saveAccounts();
     }
 
-    public void reconnectAllDisconnected() {
+    public synchronized void reconnectAllDisconnected() {
         for (JavaPushMailAccount mail : accounts) {
             startMailDaemon(mail);
         }
     }
 
-    public void disconnectAllAccounts() {
+    public synchronized void disconnectAllAccounts() {
         for (JavaPushMailAccount mail : accounts) {
             mail.disconnect();
         }
+    }
+    
+    public synchronized boolean allDisconnected() {
+        for (JavaPushMailAccount mail : accounts) {
+            if (mail.isConnected()) 
+                return false;
+        }
+        
+        return true;
     }
 
     public JavaPushMailAccount getAccount(int i) {
@@ -119,7 +126,7 @@ public abstract class JavaPushMailAccountsManager {
             while ((str = in.readLine()) != null) {
                 if (!str.startsWith("##")) {
                     String[] line = str.split(",");
-                    addAccount(line[0].replaceAll("\"", "").trim(), line[1].replaceAll("\"", "").trim(), Integer.parseInt(line[2].replaceAll("\"", "").trim()), Boolean.getBoolean(line[3].replaceAll("\"", "").trim()), line[4].replaceAll("\"", "").trim(), line[5].replaceAll("\"", "").trim());
+                    addAccount(line[0].replaceAll("\"", "").trim(), line[1].replaceAll("\"", "").trim(), Integer.parseInt(line[2].replaceAll("\"", "").trim()), Boolean.parseBoolean(line[3].replaceAll("\"", "").trim()), line[4].replaceAll("\"", "").trim(), line[5].replaceAll("\"", "").trim());
                 }
             }
             in.close();
@@ -133,6 +140,10 @@ public abstract class JavaPushMailAccountsManager {
             File saveFile = new File(ACCOUNT_FILE);
             if (saveFile.exists())
                 saveFile.delete();
+            
+            if (accounts.isEmpty())
+                return true;
+            
             FileOutputStream outputStream = new FileOutputStream(saveFile, false);
             SecretKeySpec key = new SecretKeySpec(new DESKeySpec(ENCRYPTION_KEY.getBytes()).getKey(), "DES");
             Cipher cipher = Cipher.getInstance("DES");
@@ -150,7 +161,6 @@ public abstract class JavaPushMailAccountsManager {
             return true;
 
         } catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -165,12 +175,11 @@ public abstract class JavaPushMailAccountsManager {
 
             while (sc.hasNextLine()) {
                 String str = sc.nextLine();
-                String[] line = str.split(",");
-                addAccount(line[0].replaceAll("\"", "").trim(), line[1].replaceAll("\"", "").trim(), Integer.parseInt(line[2].replaceAll("\"", "").trim()), Boolean.getBoolean(line[3].replaceAll("\"", "").trim()), line[4].replaceAll("\"", "").trim(), line[5].replaceAll("\"", "").trim());
+                String[] line = str.replaceAll("\"", "").split(",");
+                addAccount(line[0].trim(), line[1].trim(), Integer.parseInt(line[2].trim()), Boolean.parseBoolean(line[3].trim()), line[4].trim(), line[5].trim());
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return false;
     }

@@ -32,16 +32,17 @@ public class JavaPushMailFrame {
     protected JTable accountsTable;
     protected JMenuBar menu;
     protected Image dockIcon;
+    protected boolean waitingState = false;
     private JavaPushMailAccountSettingsPanel settingsPanel;
     private NewAccountDialog accountDialog;
 
     public JavaPushMailFrame() {
         dockIcon = Toolkit.getDefaultToolkit().createImage(getClass().getResource("dock.png"));//(new ImageIcon(this.getClass().getResource("dock.png"))).getImage();
-        accountDialog = new NewAccountDialog(frame, true);
     }
 
     public void init(JavaPushMailAccountsManager manager) {
         this.manager = manager;
+        accountDialog = new NewAccountDialog(frame, manager);
         buildTrayPopup();
         frame = new JFrame("Push Mail Configuration Wizard");
         buildPanels();
@@ -65,16 +66,18 @@ public class JavaPushMailFrame {
         tabbedPanel = new JTabbedPane();
         tabbedPanel.add(settingsPanel);
     }
-    
+
     private void buildPanels() {
         settingsPanel = new JavaPushMailAccountSettingsPanel();
         settingsPanel.getNewAccountButton().addActionListener(new ActionListener() {
+
             public void actionPerformed(ActionEvent ae) {
                 accountDialog.dispose();
                 accountDialog.setVisible(true);
             }
         });
         settingsPanel.getQuitButton().addActionListener(new ActionListener() {
+
             public void actionPerformed(ActionEvent ae) {
                 quitApplication(true);
             }
@@ -125,7 +128,7 @@ public class JavaPushMailFrame {
 
             public void actionPerformed(ActionEvent ae) {
                 tablePopup.setVisible(false);
-                
+
                 setWaitingState(true);
                 SwingWorker worker = new SwingWorker<String, Object>() {
 
@@ -204,7 +207,7 @@ public class JavaPushMailFrame {
         exit.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                quitApplication(false);
+                quitApplication(true);
             }
         });
         MenuItem settings = new MenuItem("Settings");
@@ -235,10 +238,15 @@ public class JavaPushMailFrame {
     }
 
     public void setWaitingState(boolean show) {
+        waitingState = show;
         accountsTable.setEnabled(!show);
         settingsPanel.getNewAccountButton().setEnabled(!show);
         accountsTable.clearSelection();
         settingsPanel.getWorkingLabel().setVisible(show);
+    }
+
+    public boolean isInWaitingState() {
+        return waitingState;
     }
 
     public void showMe(boolean go) {
@@ -249,17 +257,22 @@ public class JavaPushMailFrame {
 
     public void quitApplication(boolean save) {
         frame.dispose();
-        
+
         manager.disconnectAllAccounts();
-        if (save && accountsTable.isEnabled()) {
-            manager.saveAccounts();
-            savePreferences();
+        while (true) {
+            if (manager.allDisconnected()) {
+                if (save) {
+                    manager.saveAccounts();
+                    savePreferences();
+                }
+                break;
+            }
         }
         System.exit(0);
     }
 
     public void onErrorCallback(Exception ex) {
-        refreshFrame();
+        refreshTable();
         if (ex instanceof MessagingException) {
             String error = "";
             error += "You have been disconnected. Please reconnect manually.\n";
@@ -275,15 +288,15 @@ public class JavaPushMailFrame {
     }
 
     public synchronized void updateOnModelChange() {
-        refreshFrame();
+        refreshTable();
     }
 
     public synchronized void updateOnStateChange() {
-        refreshFrame();
+        refreshTable();
         setWaitingState(false);
     }
 
-    public synchronized void refreshFrame() {
+    public synchronized void refreshTable() {
         if (accountsTable == null)
             return;
 

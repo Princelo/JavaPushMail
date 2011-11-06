@@ -1,8 +1,10 @@
 package com.mofirouz.javapushmail.app.ui;
 
+import com.mofirouz.javapushmail.app.JavaPushMailAccountsManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
@@ -15,10 +17,12 @@ import javax.swing.event.DocumentListener;
 public class NewAccountDialog extends javax.swing.JDialog {
 
     private ArrayList<JTextField> fields = new ArrayList<JTextField>();
-
+    private JavaPushMailAccountsManager manager;
+    
     /** Creates new form NewAccountDialog */
-    public NewAccountDialog(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public NewAccountDialog(JFrame parentFrame, JavaPushMailAccountsManager manager) {
+        super(parentFrame, true);
+        this.manager = manager;
         initComponents();
         fields.add(accountNameField);
         fields.add(serverAddressField);
@@ -39,10 +43,20 @@ public class NewAccountDialog extends javax.swing.JDialog {
             }
         });
         this.getRootPane().setDefaultButton(addAccountButton);
-        this.setLocationRelativeTo(parent);
+        this.setLocationRelativeTo(parentFrame);
     }
 
     private void createNewAccount() {
+        String accountName = accountNameField.getText();
+        String server = serverAddressField.getText();
+        int port = Integer.parseInt(serverPortField.getText());
+        boolean useSSL = useSSLCheckbox.isSelected();
+        String username = usernameField.getText();
+        String password = String.valueOf(passwordField.getPassword());
+        manager.addAccount(accountName, server, port, useSSL, username, password);
+        
+        passwordField.setText("");
+        this.dispose();
     }
 
     private void validatePortNumber() {
@@ -154,7 +168,7 @@ public class NewAccountDialog extends javax.swing.JDialog {
         cancelButton.setText("Cancel");
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("Account Name:");
+        jLabel1.setText("Name:");
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Server Address:");
@@ -198,7 +212,7 @@ public class NewAccountDialog extends javax.swing.JDialog {
                     .add(serverAddressField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
                     .add(usernameField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
                     .add(passwordField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE))
-                .add(19, 19, 19))
+                .add(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -234,49 +248,6 @@ public class NewAccountDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewAccountDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewAccountDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewAccountDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewAccountDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                NewAccountDialog dialog = new NewAccountDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField accountNameField;
     private javax.swing.JButton addAccountButton;

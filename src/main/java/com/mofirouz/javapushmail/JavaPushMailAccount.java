@@ -342,6 +342,12 @@ public abstract class JavaPushMailAccount implements Runnable {
         return server.isConnected();
     }
 
+    @Override
+    public String toString() {
+        return accountName;
+    }
+    
+
     public abstract void onError(Exception e);
 
     public abstract void onDisconnect();

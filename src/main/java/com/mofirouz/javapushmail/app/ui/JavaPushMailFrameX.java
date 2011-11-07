@@ -1,7 +1,7 @@
 package com.mofirouz.javapushmail.app.ui;
 
 import javax.swing.*;
-import com.apple.eawt.*;
+//import com.apple.eawt.*;
 
 /**
  *
@@ -10,15 +10,15 @@ import com.apple.eawt.*;
  */
 public class JavaPushMailFrameX extends JavaPushMailFrame {
 
-    private Application app;
+//    private Application app;
 
     public JavaPushMailFrameX() {
         super();
-        initAppleFrame();
-        setAppleHandlers();
+//        initAppleFrame();
+//        setAppleHandlers();
     }
 
-    private void initAppleFrame() {
+/*    private void initAppleFrame() {
         try {
             app = new Application();
             com.apple.resources.MacOSXResourceBundle.clearCache();
@@ -79,5 +79,5 @@ public class JavaPushMailFrameX extends JavaPushMailFrame {
                 frame.repaint();
             }
         });
-    }
+    }*/
 }

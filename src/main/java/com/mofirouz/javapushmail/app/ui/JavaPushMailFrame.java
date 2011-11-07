@@ -158,6 +158,8 @@ public class JavaPushMailFrame {
 
         final JMenuItem dis_connectItem = new JMenuItem("Connect");
         dis_connectItem.addActionListener(new ActionListener() {
+            
+            @Override
             public void actionPerformed(ActionEvent ae) {
                 tablePopup.setVisible(false);
                 setWaitingState(true);
@@ -165,11 +167,11 @@ public class JavaPushMailFrame {
                 SwingWorker worker = new SwingWorker<String, Object>() {
                     @Override
                     public String doInBackground() {
-                        if (manager.getAccount(tablePopup.row).isConnected()) {
+                        if (manager.getAccount(tablePopup.row).isConnected())
                             manager.getAccount(tablePopup.row).disconnect();
-                        } else {
+                        else
                             manager.getAccount(tablePopup.row).connect();
-                        }
+                        
                         return "";
                     }
 

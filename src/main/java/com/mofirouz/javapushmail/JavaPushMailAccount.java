@@ -66,9 +66,6 @@ public abstract class JavaPushMailAccount implements Runnable {
             selectFolder("");
             connected = true;
             prober.start();
-            if (!usePush) {
-                poller.start(accountName);
-            }
             System.err.println(accountName + " connected!");
             onConnect();
         } catch (MessagingException ex) {
@@ -98,7 +95,6 @@ public abstract class JavaPushMailAccount implements Runnable {
         if (!connected && server == null && !server.isConnected())
             return;
         
-
         Thread t = new Thread(new Runnable() {
             public void run() {
                 try {
@@ -180,21 +176,23 @@ public abstract class JavaPushMailAccount implements Runnable {
         } catch (MessagingException ex) {
             onError(ex);
         } catch (IllegalStateException ex) {
-            ex.printStackTrace();
         }
     }
 
     private void openFolder() throws MessagingException {
-        if (folder == null) {
+        if (folder == null)
             return;
-        }
 
         folder.open(Folder.READ_ONLY);
         folder.setSubscribed(true);
         removeAllListenersFromFolder();
         addAllListenersFromFolder();
         poller.setFolder(folder);
-        usePush();
+        
+        if (usePush)
+            usePush();
+        else 
+            poller.start(accountName);
     }
 
     private void closeFolder() throws MessagingException {
@@ -209,21 +207,28 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     private void usePush() {
-        if (folder == null) {
+        if (folder == null || !usePush)
             return;
-        }
-
+        
         Runnable r = new Runnable() {
             public void run() {
                 try {
-                    if (usePush) {
-                        folder.idle(false);
-                    }
-                } catch (Exception e) {
-                    System.err.println("Push Error: " + accountName);
+                    folder.idle(false);
+                } catch (IllegalStateException e) {
+                    System.err.println("Push Error: [Misc] " + accountName);
                     e.printStackTrace();
-                    connect();
+                    usePush = true;
+                    selectFolder("");
+                } catch (MessagingException e) {
+                    System.err.println("Push Error: [No IDLE] " + accountName);
+                    e.printStackTrace();
                     usePush = false;
+                    selectFolder("");
+                } catch (Exception e) {
+                    System.err.println("Push Error: [Unknown] " + accountName);
+                    e.printStackTrace();
+                    usePush = false;
+                    selectFolder("");
                 }
             }
         };

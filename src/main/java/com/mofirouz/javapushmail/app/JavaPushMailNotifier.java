@@ -41,7 +41,7 @@ public class JavaPushMailNotifier {
                     System.err.println("Message Added: " + e.getMessages()[0].getSubject());
                     showNotification(e.getMessages()[0]);
                 } catch (MessagingException ex) {
-                }
+                } catch (Exception ex) {}
             }
 
             public void messagesRemoved(MessageCountEvent e) {

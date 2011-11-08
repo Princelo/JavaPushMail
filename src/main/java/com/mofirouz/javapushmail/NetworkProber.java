@@ -41,6 +41,7 @@ public abstract class NetworkProber {
             else
             	pingFailureCount++;
         } catch (Exception ex) {
+            JavaPushMailLogger.debug("Prober Error: ", ex);
             pingFailureCount++;
         }
         

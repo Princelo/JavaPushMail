@@ -2,6 +2,7 @@ package com.mofirouz.javapushmail.app;
 
 import com.mofirouz.notifier.SystemNotification;
 import com.mofirouz.javapushmail.JavaPushMailAccount;
+import com.mofirouz.javapushmail.JavaPushMailLogger;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.event.MessageChangedEvent;
@@ -38,17 +39,20 @@ public class JavaPushMailNotifier {
 
             public void messagesAdded(final MessageCountEvent e) {
                 try {
-                    System.err.println("Message Added: " + e.getMessages()[0].getSubject());
+                    JavaPushMailLogger.info("Message Added: " + e.getMessages()[0].getSubject());
                     showNotification(e.getMessages()[0]);
                 } catch (MessagingException ex) {
-                } catch (Exception ex) {}
+                    JavaPushMailLogger.debug(ex);
+                } catch (Exception ex) {
+                    JavaPushMailLogger.debug(ex);
+                }
             }
 
             public void messagesRemoved(MessageCountEvent e) {
                 try {
-                    System.err.println("Message Removed: " + e.getMessages()[0].getSubject());
+                    JavaPushMailLogger.info("Message Removed: " + e.getMessages()[0].getSubject());
                 } catch (MessagingException ex) {
-                    
+                    JavaPushMailLogger.debug(ex);
                 }
             }
         };
@@ -56,8 +60,9 @@ public class JavaPushMailNotifier {
 
             public void messageChanged(MessageChangedEvent e) {
                 try {
-                    System.err.println("Message Changed: " + e.getMessage().getSubject());
+                    JavaPushMailLogger.info("Message Changed: " + e.getMessage().getSubject());
                 } catch (MessagingException ex) {
+                    JavaPushMailLogger.debug(ex);
                 }
             }
         };

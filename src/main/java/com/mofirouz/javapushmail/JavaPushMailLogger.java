@@ -123,4 +123,24 @@ public class JavaPushMailLogger {
         init();
         logger.print("[ERROR]: " + text, e, 3);
     }
+    
+    public static void debug(Exception e) {
+        init();
+        logger.print("[DEBUG]: ", e, 0);
+    }
+
+    public static void info(Exception e) {
+        init();
+        logger.print("[INFO]: ", e, 1);
+    }
+
+    public static void warn(Exception e) {
+        init();
+        logger.print("[WARN]: ", e, 2);
+    }
+
+    public static void error(Exception e) {
+        init();
+        logger.print("[ERROR]: ", e, 3);
+    }
 }

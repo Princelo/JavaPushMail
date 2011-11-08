@@ -11,6 +11,7 @@ import java.util.Properties;
 import java.util.Vector;
 import javax.mail.Flags;
 import javax.mail.Folder;
+import javax.mail.FolderClosedException;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -66,15 +67,17 @@ public abstract class JavaPushMailAccount implements Runnable {
             selectFolder("");
             connected = true;
             prober.start();
-            System.err.println(accountName + " connected!");
+            JavaPushMailLogger.info(accountName + " connected!");
             onConnect();
         } catch (MessagingException ex) {
             connected = false;
             folder = null;
             messageChangedListener = null;
             messageCountListener = null;
+            JavaPushMailLogger.warn(ex);
             onError(ex);
         } catch (IllegalStateException ex) {
+            JavaPushMailLogger.warn(ex);
             connected = true;
         }
     }
@@ -103,9 +106,10 @@ public abstract class JavaPushMailAccount implements Runnable {
                     prober.stop();
                     poller.stop();
                     connected = false;
-                    System.err.println(accountName + " disconnected!");
+                    JavaPushMailLogger.info(accountName + " disconnected!");
                     onDisconnect();
                 } catch (Exception e) {
+                    JavaPushMailLogger.debug(e);
                     onError(e);
                 }
             }
@@ -160,6 +164,7 @@ public abstract class JavaPushMailAccount implements Runnable {
             server = (IMAPStore) session.getStore(imapProtocol);
             connect();
         } catch (MessagingException ex) {
+            JavaPushMailLogger.debug(ex);
             onError(ex);
         }
     }
@@ -174,8 +179,10 @@ public abstract class JavaPushMailAccount implements Runnable {
             }
             openFolder();
         } catch (MessagingException ex) {
+            JavaPushMailLogger.debug(ex);
             onError(ex);
         } catch (IllegalStateException ex) {
+            JavaPushMailLogger.debug(ex);
         }
     }
 
@@ -196,9 +203,8 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     private void closeFolder() throws MessagingException {
-        if (folder == null) {
+        if (folder == null || !folder.isOpen())
             return;
-        }
 
         removeAllListenersFromFolder();
         folder.setSubscribed(false);
@@ -214,19 +220,16 @@ public abstract class JavaPushMailAccount implements Runnable {
             public void run() {
                 try {
                     folder.idle(false);
-                } catch (IllegalStateException e) {
-                    System.err.println("Push Error: [Misc] " + accountName);
-                    e.printStackTrace();
+                } catch (FolderClosedException e) {
+                    JavaPushMailLogger.warn("Push Error: [DISCONNECT] " + accountName, e);
                     usePush = true;
                     selectFolder("");
                 } catch (MessagingException e) {
-                    System.err.println("Push Error: [No IDLE] " + accountName);
-                    e.printStackTrace();
+                    JavaPushMailLogger.warn("Push Error: [NO IDLE] " + accountName, e);
                     usePush = false;
                     selectFolder("");
                 } catch (Exception e) {
-                    System.err.println("Push Error: [Unknown] " + accountName);
-                    e.printStackTrace();
+                    JavaPushMailLogger.warn("Push Error: [UNKNOWN] " + accountName, e);
                     usePush = false;
                     selectFolder("");
                 }

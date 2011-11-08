@@ -1,6 +1,7 @@
 package com.mofirouz.javapushmail.app;
 
 import com.mofirouz.javapushmail.JavaPushMailAccount;
+import com.mofirouz.javapushmail.JavaPushMailLogger;
 import com.mofirouz.javapushmail.app.ui.JavaPushMail;
 import com.mofirouz.notifier.SystemNotification;
 import java.io.BufferedReader;
@@ -130,7 +131,7 @@ public abstract class JavaPushMailAccountsManager {
             }
             in.close();
         } catch (Exception e) {
-            System.err.println(filepath + " was not found. Ignoring...");
+            JavaPushMailLogger.warn(filepath + " was not found. Ignoring...");
         }
     }
 
@@ -160,6 +161,7 @@ public abstract class JavaPushMailAccountsManager {
             return true;
 
         } catch (Exception e) {
+            JavaPushMailLogger.warn("Could not save accounts", e);
             return false;
         }
     }
@@ -179,6 +181,7 @@ public abstract class JavaPushMailAccountsManager {
             }
 
         } catch (Exception e) {
+            JavaPushMailLogger.warn("Could not load accounts", e);
         }
         return false;
     }
@@ -209,7 +212,7 @@ public abstract class JavaPushMailAccountsManager {
             bufferData = new String(by);
             return bufferData;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            JavaPushMailLogger.warn("Could not decrypt save file", ex);
         }
         return "";
     }

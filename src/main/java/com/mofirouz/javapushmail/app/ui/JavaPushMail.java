@@ -1,5 +1,6 @@
 package com.mofirouz.javapushmail.app.ui;
 
+import com.mofirouz.javapushmail.JavaPushMailLogger;
 import com.mofirouz.javapushmail.app.JavaPushMailAccountsManager;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -20,6 +21,7 @@ public class JavaPushMail {
     private JavaPushMailAccountsManager manager;
     public static String NOTIFICATION_ICON;
     public static File NOTIFICATION_ICON_FILE;
+    public static File LOG_FILE;
 
     public static void main(String[] args) {
         try {
@@ -38,9 +40,11 @@ public class JavaPushMail {
     public JavaPushMail() {
         NOTIFICATION_ICON = getTempImagePath(new ImageIcon(getClass().getResource("email48x48.png")).getImage());
         NOTIFICATION_ICON_FILE = new File(NOTIFICATION_ICON);
+        LOG_FILE = new File("JavaPushMail.log");
     }
 
     public void init() {
+        initLogger();
         initFrame();
         initManager();
         frame.init(manager);
@@ -83,6 +87,12 @@ public class JavaPushMail {
         }
     }
 
+    private void initLogger() {
+        JavaPushMailLogger.setLevel(0);
+        JavaPushMailLogger.setWriteToFile(true);
+        JavaPushMailLogger.setWriteFile(LOG_FILE);
+    }
+    
     protected static String getTempImagePath(Image icon) {
         if (icon == null) {
             return null;

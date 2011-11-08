@@ -32,7 +32,7 @@ public class JavaPushMail {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 JavaPushMail jpm = new JavaPushMail();
-                jpm.init();
+                 jpm.init();
             }
         });
     }

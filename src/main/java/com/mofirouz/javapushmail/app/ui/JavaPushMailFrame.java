@@ -57,19 +57,19 @@ public class JavaPushMailFrame {
     private void buildFrame() {
         frame.add(tabbedPanel);
         frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setIconImage(dockIcon);
         frame.getRootPane().setDefaultButton(settingsPanel.getHideButton());
         frame.addWindowListener(new WindowListener() {
             public void windowOpened(WindowEvent e) {
-                tablePopup.setVisible(false);
+               tablePopup.setVisible(false);
             }
 
             public void windowClosing(WindowEvent e) {
-                tablePopup.setVisible(false);
+                hideApplication(true);
             }
 
             public void windowClosed(WindowEvent e) {
-                tablePopup.setVisible(false);
             }
 
             public void windowIconified(WindowEvent e) {
@@ -111,9 +111,7 @@ public class JavaPushMailFrame {
         });
         settingsPanel.getHideButton().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                tablePopup.setVisible(false);
-                manager.saveAccounts();
-                frame.dispose();
+               hideApplication(true);
             }
         });
         accountsTable = settingsPanel.getAccountTable();
@@ -335,6 +333,15 @@ public class JavaPushMailFrame {
             }
         }
         System.exit(0);
+    }
+    
+    public void hideApplication(boolean save) {
+         tablePopup.setVisible(false);
+        if (save) {
+            manager.saveAccounts();
+            savePreferences();
+        }
+        frame.setVisible(false);
     }
 
     public void onErrorCallback(Exception ex) {

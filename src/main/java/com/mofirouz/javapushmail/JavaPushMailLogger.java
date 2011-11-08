@@ -27,28 +27,31 @@ public class JavaPushMailLogger {
     }
 
     private void initWriter() throws IOException {
-        if (writeFile == null)
+        if (writeFile == null )
             return;
 
-        if (writeFile.exists()) 
-            writeFile.delete();
-        
-        writer = new BufferedWriter(new FileWriter(writeFile));
+            if (writeFile.exists()) 
+                writeFile.delete();
+            
+                writer = new BufferedWriter(new FileWriter(writeFile));
     }
 
     private void write(String text, Exception e) {
-        if (writeOut == false || writeFile == null)
+        if (writeOut == false || writeFile == null || writer == null)
             return;
 
         try {
-            initWriter();
-
             writer.write(text + newline);
-            writer.write(e.getMessage() + newline);
-            StackTraceElement[] stack = e.getStackTrace();
-            for (int i = 0; i < stack.length; i++) {
-                writer.write(stack[i].getLineNumber() + ": " + stack[i].getClassName() + " @ " + stack[i].getMethodName() + newline);
+            if (e != null) {
+                writer.write(e.getMessage() + newline);
+                StackTraceElement[] stack = e.getStackTrace();
+                for (int i = 0; i < stack.length; i++) {
+                    writer.write(stack[i].getLineNumber() + ": " + stack[i].getClassName() + " @ " + stack[i].getMethodName() + newline);
+                }
             }
+            
+            writer.flush();
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -77,6 +80,9 @@ public class JavaPushMailLogger {
     public static void setWriteFile(File f) {
         init();
         logger.writeFile = f;
+        try {
+            logger.initWriter();
+        } catch (Exception e) {}
     }
     
     public static void setWriteToFile(boolean val) {

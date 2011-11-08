@@ -82,6 +82,7 @@ public abstract class JavaPushMailAccountsManager {
     
     public synchronized boolean allDisconnected() {
         for (JavaPushMailAccount mail : accounts) {
+            System.out.println("connected? " + mail.getAccountName() + ": " + mail.isConnected());
             if (mail.isConnected()) 
                 return false;
         }

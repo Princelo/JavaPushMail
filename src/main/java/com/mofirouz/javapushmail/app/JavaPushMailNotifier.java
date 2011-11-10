@@ -3,6 +3,7 @@ package com.mofirouz.javapushmail.app;
 import com.mofirouz.notifier.SystemNotification;
 import com.mofirouz.javapushmail.JavaPushMailAccount;
 import com.mofirouz.javapushmail.JavaPushMailLogger;
+import java.io.IOException;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.event.MessageChangedEvent;
@@ -42,43 +43,60 @@ public class JavaPushMailNotifier {
                     JavaPushMailLogger.info("Message Added: " + e.getMessages()[0].getSubject());
                     showNotification(e.getMessages()[0]);
                 } catch (MessagingException ex) {
-                    JavaPushMailLogger.debug(ex);
+                    showPlainNotification();
                 } catch (Exception ex) {
-                    JavaPushMailLogger.debug(ex);
+                    showPlainNotification();
                 }
             }
 
             public void messagesRemoved(MessageCountEvent e) {
-                try {
-                    JavaPushMailLogger.info("Message Removed: " + e.getMessages()[0].getSubject());
-                } catch (MessagingException ex) {
-                    JavaPushMailLogger.debug(ex);
-                }
+//                try {
+//                    JavaPushMailLogger.info("Message Removed: " + e.getMessages()[0].getSubject());
+//                } catch (MessagingException ex) {
+//                    JavaPushMailLogger.debug(ex);
+//                }
             }
         };
         messageChangedListener = new MessageChangedListener() {
 
             public void messageChanged(MessageChangedEvent e) {
-                try {
-                    JavaPushMailLogger.info("Message Changed: " + e.getMessage().getSubject());
-                } catch (MessagingException ex) {
-                    JavaPushMailLogger.debug(ex);
-                }
+//                try {
+//                    JavaPushMailLogger.info("Message Changed: " + e.getMessage().getSubject());
+//                } catch (MessagingException ex) {
+//                    JavaPushMailLogger.debug(ex);
+//                }
             }
         };
     }
 
     private void showNotification(Message message) throws MessagingException {
 
-        String title = mail.getAccountName();
+        if (message == null) {
+            showPlainNotification();
+            return;
+        } 
+        
         String[] mess = new String[2];
-
+        
         String from = message.getFrom()[0].toString();
         if (from.contains("<") && from.contains(">"))
             from = from.substring(0, from.indexOf("<"));
 
-        mess[0] = from;
-        mess[1] = message.getSubject();
+        String title = message.getFrom() + " (" + mail.getAccountName() + ")";//mail.getAccountName();
+        mess[0] = message.getSubject(); 
+        mess[1] = "";
+        try {
+            if (message.getContentType().startsWith("text/plain")) 
+                mess[1] = message.getContent().toString().substring(0,40);
+        } catch (IOException e) {
+        }
         sysnot.showNotification(false, title, mess);
+    }
+    
+    private void showPlainNotification() {
+            String[] mess = new String[2];
+            mess[0] = "You have new mail!"; 
+            mess[1] = "";
+            sysnot.showNotification(false,  mail.getAccountName(), mess);    
     }
 }

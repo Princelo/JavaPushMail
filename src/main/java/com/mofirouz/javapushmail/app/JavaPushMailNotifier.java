@@ -82,12 +82,12 @@ public class JavaPushMailNotifier {
         if (from.contains("<") && from.contains(">"))
             from = from.substring(0, from.indexOf("<"));
 
-        String title = message.getFrom() + " (" + mail.getAccountName() + ")";//mail.getAccountName();
-        mess[0] = message.getSubject(); 
+        String title = message.getFrom()[0] + " (" + mail.getAccountName() + ")";//mail.getAccountName();
+        mess[0] = message.getSubject().trim(); 
         mess[1] = "";
         try {
             if (message.getContentType().startsWith("text/plain")) 
-                mess[1] = message.getContent().toString().substring(0,40);
+                mess[1] = message.getContent().toString().substring(0,40).trim();
         } catch (IOException e) {
         }
         sysnot.showNotification(false, title, mess);

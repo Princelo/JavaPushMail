@@ -82,7 +82,7 @@ public class JavaPushMailNotifier {
         if (from.contains("<") && from.contains(">"))
             from = from.substring(0, from.indexOf("<"));
 
-        String title = message.getFrom()[0] + " (" + mail.getAccountName() + ")";//mail.getAccountName();
+        String title = from + " (" + mail.getAccountName() + ")";//mail.getAccountName();
         mess[0] = message.getSubject().trim(); 
         mess[1] = "";
         try {

@@ -36,6 +36,7 @@ public class JavaPushMailFrame {
     protected boolean waitingState = false;
     private TablePopup tablePopup;
     private JavaPushMailAccountSettingsPanel settingsPanel;
+    private JavaPushMailNotificationSettingsPanel notificationPanel;
     private NewAccountDialog accountDialog;
 
     public JavaPushMailFrame() {
@@ -95,6 +96,7 @@ public class JavaPushMailFrame {
     private void buildTabs() {
         tabbedPanel = new JTabbedPane();
         tabbedPanel.add(settingsPanel);
+        tabbedPanel.add(notificationPanel);
     }
 
     private void buildPanels() {
@@ -116,6 +118,9 @@ public class JavaPushMailFrame {
         });
         accountsTable = settingsPanel.getAccountTable();
         configTable();
+        
+        notificationPanel = new JavaPushMailNotificationSettingsPanel();
+        
     }
 
     private void configTable() {

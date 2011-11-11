@@ -125,9 +125,9 @@ public abstract class JavaPushMailAccount implements Runnable {
                 if (getPingFailureCount() >= 2 || getSessionFailureCount() != 0) {
                     connected = false;
                     prober.stop();
-                    if (!usePush) {
+                    if (!usePush)
                         poller.stop();
-                    }
+                    
                     connect();
                 }
             }

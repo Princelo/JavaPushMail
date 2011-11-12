@@ -32,11 +32,7 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
-        jPanel1 = new javax.swing.JPanel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        jSpinner1 = new javax.swing.JSpinner();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
@@ -44,52 +40,140 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
         jComboBox2 = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         jComboBox3 = new javax.swing.JComboBox();
-        jLabel4 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jComboBox4 = new javax.swing.JComboBox();
-        jPanel3 = new javax.swing.JPanel();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jCheckBox4 = new javax.swing.JCheckBox();
-        jCheckBox5 = new javax.swing.JCheckBox();
-        jPanel4 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jRadioButton3 = new javax.swing.JRadioButton();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
         jRadioButton4 = new javax.swing.JRadioButton();
         jRadioButton5 = new javax.swing.JRadioButton();
-        jTextArea1 = new javax.swing.JTextArea();
-        quitButton = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jTextField1 = new javax.swing.JTextField();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBox4 = new javax.swing.JCheckBox();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
+        jPanel3 = new javax.swing.JPanel();
         hideButton = new javax.swing.JButton();
+        quitButton = new javax.swing.JButton();
+        newAccountButton = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JSeparator();
 
         setMinimumSize(new java.awt.Dimension(612, 352));
         setName("Notification Settings"); // NOI18N
         setOpaque(false);
         setPreferredSize(new java.awt.Dimension(612, 352));
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Notification Style"));
+        jPanel2.setOpaque(false);
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel1.setText("Notification Title:");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Account Name", "Subject", "From", "Content", "Generic Text" }));
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel2.setText("First Line:");
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Account Name", "Subject", "From", "Content", "Generic Text" }));
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel3.setText("Second Line:");
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Account Name", "Subject", "From", "Content", "Generic Text" }));
+
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel7.setText("Duration:");
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "5 seconds", "10 seconds", "30 seconds" }));
+
+        jLabel8.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel8.setText("Notification Text");
+
+        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 59, Short.MAX_VALUE)
+                        .add(jLabel2)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jComboBox2, 0, 170, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .add(jLabel7, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jComboBox4, 0, 170, Short.MAX_VALUE))
+                    .add(jPanel2Layout.createSequentialGroup()
+                        .add(42, 42, 42)
+                        .add(jLabel3)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jComboBox3, 0, 170, Short.MAX_VALUE))
+                    .add(jLabel8)
+                    .add(jPanel2Layout.createSequentialGroup()
+                        .add(jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jComboBox1, 0, 170, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jLabel8)
+                .add(18, 18, 18)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jComboBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel1))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(jPanel2Layout.createSequentialGroup()
+                        .add(jLabel2)
+                        .add(13, 13, 13))
+                    .add(jPanel2Layout.createSequentialGroup()
+                        .add(jComboBox2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)))
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jComboBox3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel3))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel7)
+                    .add(jComboBox4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(11, 11, 11))
+        );
+
         jPanel1.setOpaque(false);
-
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setText("Growl");
-        jRadioButton1.setOpaque(false);
-
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("NotifyOSD");
-        jRadioButton2.setOpaque(false);
 
         buttonGroup1.add(jRadioButton3);
         jRadioButton3.setText("Fallback Notification");
-        jRadioButton3.setOpaque(false);
         jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButton3ActionPerformed(evt);
             }
         });
 
-        jCheckBox1.setText("Show Icon");
-        jCheckBox1.setOpaque(false);
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
-            }
-        });
+        buttonGroup1.add(jRadioButton1);
+        jRadioButton1.setText("Growl");
+
+        buttonGroup1.add(jRadioButton2);
+        jRadioButton2.setText("NotifyOSD");
+
+        buttonGroup2.add(jRadioButton4);
+        jRadioButton4.setText("Light Theme");
+
+        buttonGroup2.add(jRadioButton5);
+        jRadioButton5.setText("Dark Theme");
+
+        jLabel9.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel9.setText("Notification Style");
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -98,211 +182,130 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
             .add(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jLabel9)
                     .add(jRadioButton1)
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(29, 29, 29)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jRadioButton4)
+                            .add(jRadioButton5)))
                     .add(jRadioButton2)
-                    .add(jRadioButton3)
-                    .add(jCheckBox1))
-                .addContainerGap(73, Short.MAX_VALUE))
+                    .add(jRadioButton3))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel1Layout.createSequentialGroup()
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jLabel9)
+                .add(18, 18, 18)
                 .add(jRadioButton1)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jRadioButton2)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 5, Short.MAX_VALUE)
                 .add(jRadioButton3)
-                .add(18, 18, 18)
-                .add(jCheckBox1))
-        );
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Notification Text"));
-        jPanel2.setOpaque(false);
-
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("Notification Title");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Account Name", "Subject", "From", "Content", "Generic Text" }));
-        jComboBox1.setOpaque(false);
-
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("First Line");
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Account Name", "Subject", "From", "Content", "Generic Text" }));
-        jComboBox2.setOpaque(false);
-
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText("Second Line");
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Account Name", "Subject", "From", "Content", "Generic Text" }));
-        jComboBox3.setOpaque(false);
-
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel4.setText("Notification Duration");
-
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "5 Seconds", "10 Seconds", "30 Seconds", "1 Minute" }));
-        jComboBox4.setOpaque(false);
-
-        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel2Layout.createSequentialGroup()
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(jPanel2Layout.createSequentialGroup()
-                        .add(20, 20, 20)
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)))
-                    .add(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(jLabel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .add(23, 23, 23)
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jComboBox4, 0, 151, Short.MAX_VALUE)
-                    .add(jComboBox2, 0, 151, Short.MAX_VALUE)
-                    .add(jComboBox1, 0, 151, Short.MAX_VALUE)
-                    .add(jComboBox3, 0, 151, Short.MAX_VALUE))
-                .add(50, 50, 50))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel2Layout.createSequentialGroup()
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel1)
-                    .add(jComboBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel2)
-                    .add(jComboBox2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jComboBox3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel3))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabel4)
-                    .add(jComboBox4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(3, Short.MAX_VALUE))
-        );
-
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Tray Notification"));
-        jPanel3.setOpaque(false);
-
-        jCheckBox2.setText("Show Tray Icon");
-        jCheckBox2.setOpaque(false);
-
-        jCheckBox3.setText("Automatically remove icon if mail is read");
-        jCheckBox3.setOpaque(false);
-        jCheckBox3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox3ActionPerformed(evt);
-            }
-        });
-
-        jCheckBox4.setText("Show notification upon single click");
-        jCheckBox4.setOpaque(false);
-
-        jCheckBox5.setText("Show unread message count in submenu");
-        jCheckBox5.setOpaque(false);
-
-        org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jCheckBox2)
-                    .add(jCheckBox4)
-                    .add(jCheckBox3)
-                    .add(jCheckBox5))
-                .addContainerGap(135, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel3Layout.createSequentialGroup()
-                .add(jCheckBox2)
-                .add(23, 23, 23)
-                .add(jCheckBox4)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jCheckBox5)
+                .add(jRadioButton4)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jCheckBox3)
-                .add(9, 9, 9))
+                .add(jRadioButton5)
+                .addContainerGap())
         );
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Fallback Theme"));
         jPanel4.setOpaque(false);
 
-        buttonGroup2.add(jRadioButton4);
-        jRadioButton4.setText("Light Theme");
-        jRadioButton4.setOpaque(false);
+        jCheckBox1.setText("Ctrl");
 
-        buttonGroup2.add(jRadioButton5);
-        jRadioButton5.setText("Dark Theme");
-        jRadioButton5.setOpaque(false);
+        jCheckBox4.setText("Alt");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setEditable(false);
-        jTextArea1.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(1);
-        jTextArea1.setText("Themes can only be set for the\nFallback Notification");
-        jTextArea1.setWrapStyleWord(true);
-        jTextArea1.setBorder(null);
-        jTextArea1.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        jTextArea1.setEnabled(false);
-        jTextArea1.setFocusable(false);
-        jTextArea1.setOpaque(false);
+        jLabel4.setText("+");
+
+        jLabel5.setText("+");
+
+        jLabel6.setText("Keyboard Shortcut (to bring the application up):");
 
         org.jdesktop.layout.GroupLayout jPanel4Layout = new org.jdesktop.layout.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jTextArea1)
-                    .add(jRadioButton5)
-                    .add(jRadioButton4))
-                .addContainerGap())
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel4Layout.createSequentialGroup()
+                .add(jLabel6)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 40, Short.MAX_VALUE)
+                .add(jCheckBox1)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jLabel4)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jCheckBox4)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jLabel5)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 34, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(8, 8, 8))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jTextArea1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 44, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(13, 13, 13)
-                .add(jRadioButton4)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jRadioButton5)
-                .addContainerGap())
+            .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                .add(jCheckBox1)
+                .add(jLabel4)
+                .add(jCheckBox4)
+                .add(jLabel5)
+                .add(jTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jLabel6))
         );
+
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        jPanel3.setOpaque(false);
+
+        hideButton.setText("Hide");
 
         quitButton.setText("Quit");
 
-        hideButton.setText("Hide");
+        newAccountButton.setText("Save Settings");
+
+        org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(newAccountButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 110, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 277, Short.MAX_VALUE)
+                .add(hideButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(quitButton)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(25, Short.MAX_VALUE)
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(newAccountButton)
+                    .add(hideButton)
+                    .add(quitButton))
+                .add(17, 17, 17))
+        );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+            .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
+                        .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(jSeparator2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(hideButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(quitButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(12, 12, 12))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .add(24, 24, 24)
+                        .add(jPanel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(18, 18, 18))
+                    .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jSeparator3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -310,17 +313,18 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(jPanel2, 0, 139, Short.MAX_VALUE)
-                    .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(quitButton)
-                    .add(hideButton))
-                .add(15, 15, 15))
+                    .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 184, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE))
+                .add(6, 6, 6)
+                .add(jSeparator2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(7, 7, 7)
+                .add(jPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(7, 7, 7)
+                .add(jSeparator3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(1, 1, 1)
+                .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(17, 17, 17))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -328,23 +332,12 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton3ActionPerformed
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
-
-    private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox3ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton hideButton;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JCheckBox jCheckBox5;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;
@@ -353,6 +346,11 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -362,7 +360,12 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JRadioButton jRadioButton5;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton newAccountButton;
     private javax.swing.JButton quitButton;
     // End of variables declaration//GEN-END:variables
 }

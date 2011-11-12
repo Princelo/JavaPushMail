@@ -6,6 +6,8 @@
     </Component>
     <Component class="javax.swing.ButtonGroup" name="buttonGroup2">
     </Component>
+    <Component class="javax.swing.JSpinner" name="jSpinner1">
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -32,22 +34,24 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jPanel3" max="32767" attributes="1"/>
-                  <Component id="jPanel2" alignment="1" max="32767" attributes="1"/>
-              </Group>
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="hideButton" min="-2" pref="70" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="quitButton" min="-2" pref="70" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jPanel2" min="-2" max="-2" attributes="1"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jSeparator1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jPanel1" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="jPanel1" alignment="1" max="32767" attributes="0"/>
-                  <Component id="jPanel4" alignment="1" max="32767" attributes="0"/>
+                  <Component id="jSeparator2" alignment="0" pref="572" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="24" pref="24" max="24" attributes="0"/>
+                      <Component id="jPanel4" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="jPanel3" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jSeparator3" alignment="1" pref="572" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -58,32 +62,26 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jPanel2" min="0" pref="139" max="32767" attributes="1"/>
-                  <Component id="jPanel1" alignment="0" max="32767" attributes="1"/>
+                  <Component id="jPanel1" max="32767" attributes="1"/>
+                  <Component id="jSeparator1" alignment="1" min="-2" pref="184" max="-2" attributes="1"/>
+                  <Component id="jPanel2" alignment="0" pref="204" max="32767" attributes="1"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jPanel3" min="-2" max="-2" attributes="1"/>
-                  <Component id="jPanel4" min="-2" max="-2" attributes="1"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="quitButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="hideButton" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+              <Component id="jSeparator2" min="-2" pref="10" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+              <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+              <Component id="jSeparator3" min="-2" pref="10" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+              <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="jPanel1">
+    <Container class="javax.swing.JPanel" name="jPanel2">
       <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Notification Style"/>
-          </Border>
-        </Property>
         <Property name="opaque" type="boolean" value="false"/>
       </Properties>
 
@@ -93,133 +91,65 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jRadioButton1" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jRadioButton2" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jRadioButton3" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jCheckBox1" alignment="0" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace pref="73" max="32767" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jRadioButton2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jRadioButton3" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-      </Layout>
-      <SubComponents>
-        <Component class="javax.swing.JRadioButton" name="jRadioButton1">
-          <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-              <ComponentRef name="buttonGroup1"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Growl"/>
-            <Property name="opaque" type="boolean" value="false"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JRadioButton" name="jRadioButton2">
-          <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-              <ComponentRef name="buttonGroup1"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="NotifyOSD"/>
-            <Property name="opaque" type="boolean" value="false"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JRadioButton" name="jRadioButton3">
-          <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-              <ComponentRef name="buttonGroup1"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Fallback Notification"/>
-            <Property name="opaque" type="boolean" value="false"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButton3ActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="jCheckBox1">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Show Icon"/>
-            <Property name="opaque" type="boolean" value="false"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox1ActionPerformed"/>
-          </Events>
-        </Component>
-      </SubComponents>
-    </Container>
-    <Container class="javax.swing.JPanel" name="jPanel2">
-      <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Notification Text"/>
-          </Border>
-        </Property>
-        <Property name="opaque" type="boolean" value="false"/>
-      </Properties>
-
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="jLabel1" alignment="0" max="32767" attributes="1"/>
-                              <Component id="jLabel2" alignment="0" max="32767" attributes="1"/>
-                              <Component id="jLabel3" alignment="0" pref="123" max="32767" attributes="1"/>
-                          </Group>
-                      </Group>
-                      <Group type="102" attributes="1">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace pref="59" max="32767" attributes="0"/>
+                          <Component id="jLabel2" min="-2" max="-2" attributes="1"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel4" max="32767" attributes="1"/>
+                          <Component id="jComboBox2" pref="170" max="32767" attributes="1"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="jLabel7" pref="121" max="32767" attributes="1"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jComboBox4" pref="170" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                          <Component id="jLabel3" min="-2" max="-2" attributes="1"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jComboBox3" pref="170" max="32767" attributes="1"/>
+                      </Group>
+                      <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jLabel1" pref="121" max="32767" attributes="1"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jComboBox1" pref="170" max="32767" attributes="1"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jComboBox4" pref="151" max="32767" attributes="1"/>
-                      <Component id="jComboBox2" alignment="0" pref="151" max="32767" attributes="1"/>
-                      <Component id="jComboBox1" alignment="0" pref="151" max="32767" attributes="1"/>
-                      <Component id="jComboBox3" alignment="0" pref="151" max="32767" attributes="1"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jComboBox2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="jComboBox2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jComboBox3" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                      <Component id="jComboBox4" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jComboBox4" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="3" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -228,7 +158,7 @@
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="Notification Title"/>
+            <Property name="text" type="java.lang.String" value="Notification Title:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="jComboBox1">
@@ -242,13 +172,12 @@
                 <StringItem index="4" value="Generic Text"/>
               </StringArray>
             </Property>
-            <Property name="opaque" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="First Line"/>
+            <Property name="text" type="java.lang.String" value="First Line:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="jComboBox2">
@@ -262,13 +191,12 @@
                 <StringItem index="4" value="Generic Text"/>
               </StringArray>
             </Property>
-            <Property name="opaque" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="Second Line"/>
+            <Property name="text" type="java.lang.String" value="Second Line:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="jComboBox3">
@@ -282,37 +210,37 @@
                 <StringItem index="4" value="Generic Text"/>
               </StringArray>
             </Property>
-            <Property name="opaque" type="boolean" value="false"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel4">
+        <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="Notification Duration"/>
+            <Property name="text" type="java.lang.String" value="Duration:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="jComboBox4">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="5 Seconds"/>
-                <StringItem index="1" value="10 Seconds"/>
-                <StringItem index="2" value="30 Seconds"/>
-                <StringItem index="3" value="1 Minute"/>
+              <StringArray count="3">
+                <StringItem index="0" value="5 seconds"/>
+                <StringItem index="1" value="10 seconds"/>
+                <StringItem index="2" value="30 seconds"/>
               </StringArray>
             </Property>
-            <Property name="opaque" type="boolean" value="false"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel8">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Lucida Grande" size="13" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Notification Text"/>
           </Properties>
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="jPanel3">
+    <Container class="javax.swing.JPanel" name="jPanel1">
       <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Tray Notification"/>
-          </Border>
-        </Property>
         <Property name="opaque" type="boolean" value="false"/>
       </Properties>
 
@@ -322,81 +250,19 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jCheckBox2" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jCheckBox4" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jCheckBox3" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jCheckBox5" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jRadioButton1" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="29" pref="29" max="29" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jRadioButton4" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jRadioButton5" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Component id="jRadioButton2" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jRadioButton3" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="135" max="32767" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <Component id="jCheckBox2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                  <Component id="jCheckBox4" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jCheckBox5" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jCheckBox3" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-      </Layout>
-      <SubComponents>
-        <Component class="javax.swing.JCheckBox" name="jCheckBox2">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Show Tray Icon"/>
-            <Property name="opaque" type="boolean" value="false"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="jCheckBox3">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Automatically remove icon if mail is read"/>
-            <Property name="opaque" type="boolean" value="false"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox3ActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="jCheckBox4">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Show notification upon single click"/>
-            <Property name="opaque" type="boolean" value="false"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="jCheckBox5">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Show unread message count in submenu"/>
-            <Property name="opaque" type="boolean" value="false"/>
-          </Properties>
-        </Component>
-      </SubComponents>
-    </Container>
-    <Container class="javax.swing.JPanel" name="jPanel4">
-      <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Fallback Theme"/>
-          </Border>
-        </Property>
-        <Property name="opaque" type="boolean" value="false"/>
-      </Properties>
-
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jTextArea1" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jRadioButton5" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jRadioButton4" alignment="0" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -404,10 +270,16 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jTextArea1" min="-2" pref="44" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
-                  <Component id="jRadioButton4" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="jRadioButton2" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="5" max="32767" attributes="0"/>
+                  <Component id="jRadioButton3" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="jRadioButton4" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="jRadioButton5" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -415,13 +287,39 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
+        <Component class="javax.swing.JRadioButton" name="jRadioButton3">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="buttonGroup1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Fallback Notification"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButton3ActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="jRadioButton1">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="buttonGroup1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Growl"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="jRadioButton2">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="buttonGroup1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="NotifyOSD"/>
+          </Properties>
+        </Component>
         <Component class="javax.swing.JRadioButton" name="jRadioButton4">
           <Properties>
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="buttonGroup2"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Light Theme"/>
-            <Property name="opaque" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JRadioButton" name="jRadioButton5">
@@ -430,42 +328,144 @@
               <ComponentRef name="buttonGroup2"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Dark Theme"/>
-            <Property name="opaque" type="boolean" value="false"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextArea" name="jTextArea1">
+        <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
-            <Property name="columns" type="int" value="20"/>
-            <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="11" style="0"/>
+              <Font name="Lucida Grande" size="13" style="1"/>
             </Property>
-            <Property name="lineWrap" type="boolean" value="true"/>
-            <Property name="rows" type="int" value="1"/>
-            <Property name="text" type="java.lang.String" value="Themes can only be set for the&#xa;Fallback Notification"/>
-            <Property name="wrapStyleWord" type="boolean" value="true"/>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="null"/>
-            </Property>
-            <Property name="disabledTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="0" type="rgb"/>
-            </Property>
-            <Property name="enabled" type="boolean" value="false"/>
-            <Property name="focusable" type="boolean" value="false"/>
-            <Property name="opaque" type="boolean" value="false"/>
+            <Property name="text" type="java.lang.String" value="Notification Style"/>
           </Properties>
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="quitButton">
+    <Container class="javax.swing.JPanel" name="jPanel4">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Quit"/>
+        <Property name="opaque" type="boolean" value="false"/>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="40" max="32767" attributes="0"/>
+                  <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jCheckBox4" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jTextField1" min="-2" pref="34" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jCheckBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jCheckBox4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JTextField" name="jTextField1">
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="jCheckBox1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Ctrl"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="jCheckBox4">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Alt"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel4">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="+"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel5">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="+"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel6">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Keyboard Shortcut (to bring the application up):"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JSeparator" name="jSeparator1">
+      <Properties>
+        <Property name="orientation" type="int" value="1"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="hideButton">
+    <Component class="javax.swing.JSeparator" name="jSeparator2">
+    </Component>
+    <Container class="javax.swing.JPanel" name="jPanel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Hide"/>
+        <Property name="opaque" type="boolean" value="false"/>
       </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="newAccountButton" min="-2" pref="110" max="-2" attributes="0"/>
+                  <EmptySpace pref="277" max="32767" attributes="0"/>
+                  <Component id="hideButton" min="-2" pref="70" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="quitButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace pref="25" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="newAccountButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="hideButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="quitButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JButton" name="hideButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Hide"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="quitButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Quit"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="newAccountButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Save Settings"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JSeparator" name="jSeparator3">
     </Component>
   </SubComponents>
 </Form>

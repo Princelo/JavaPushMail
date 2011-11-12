@@ -90,7 +90,7 @@ public class JavaPushMail {
     private void initLogger() {
         JavaPushMailLogger.setWriteFile(LOG_FILE);
         JavaPushMailLogger.setWriteToFile(true);
-        JavaPushMailLogger.setLevel(0);
+        JavaPushMailLogger.setLevel(0); // on production, this should be set to 4;
     }
     
     protected static String getTempImagePath(Image icon) {

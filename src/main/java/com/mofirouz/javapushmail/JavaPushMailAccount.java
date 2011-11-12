@@ -26,6 +26,7 @@ import javax.mail.event.MessageCountListener;
  * @since 2/10/11
  */
 public abstract class JavaPushMailAccount implements Runnable {
+
     public final static int READ_ONLY_FOLDER = Folder.READ_ONLY;
     public final static int READ_WRITE_FOLDER = Folder.READ_WRITE;
     private boolean connected = false;
@@ -64,11 +65,7 @@ public abstract class JavaPushMailAccount implements Runnable {
     public void connect() {
         try {
             server.connect(serverAddress, serverPort, username, password);
-            selectFolder("");
-            connected = true;
-            prober.start();
-            JavaPushMailLogger.info(accountName + " connected!");
-            onConnect();
+            postServerConnection();
         } catch (MessagingException ex) {
             connected = false;
             folder = null;
@@ -78,7 +75,7 @@ public abstract class JavaPushMailAccount implements Runnable {
             onError(ex);
         } catch (IllegalStateException ex) {
             JavaPushMailLogger.warn(ex);
-            connected = true;
+            postServerConnection();
         }
     }
 
@@ -97,8 +94,9 @@ public abstract class JavaPushMailAccount implements Runnable {
     public void disconnect() {
         if (!connected && server == null && !server.isConnected())
             return;
-        
+
         Thread t = new Thread(new Runnable() {
+
             public void run() {
                 try {
                     closeFolder();
@@ -117,8 +115,17 @@ public abstract class JavaPushMailAccount implements Runnable {
         t.start();
     }
 
+    private void postServerConnection() {
+        selectFolder("");
+        connected = true;
+        prober.start();
+        JavaPushMailLogger.info(accountName + " connected!");
+        onConnect();
+    }
+
     private void initConnection() {
         prober = new NetworkProber(serverAddress, accountName) {
+
             @Override
             public void onNetworkChange(boolean change) {
                 connected = true;
@@ -127,13 +134,14 @@ public abstract class JavaPushMailAccount implements Runnable {
                     prober.stop();
                     if (!usePush)
                         poller.stop();
-                    
+
                     connect();
                 }
             }
         };
 
         poller = new MailPoller(folder) {
+
             @Override
             public void onNewMessage() {
                 try {
@@ -150,6 +158,7 @@ public abstract class JavaPushMailAccount implements Runnable {
 
         Properties props = System.getProperties();
 
+        // enable to throw out everything...
         //props.put("mail.debug", "true");
 
         String imapProtocol = "imap";
@@ -195,10 +204,10 @@ public abstract class JavaPushMailAccount implements Runnable {
         removeAllListenersFromFolder();
         addAllListenersFromFolder();
         poller.setFolder(folder);
-        
+
         if (usePush)
             usePush();
-        else 
+        else
             poller.start(accountName);
     }
 
@@ -215,8 +224,9 @@ public abstract class JavaPushMailAccount implements Runnable {
     private void usePush() {
         if (folder == null || !usePush)
             return;
-        
+
         Runnable r = new Runnable() {
+
             public void run() {
                 try {
                     folder.idle(false);
@@ -288,6 +298,7 @@ public abstract class JavaPushMailAccount implements Runnable {
 
         if (listener instanceof MessageChangedListener && messageChangedListener == null) {
             messageChangedListener = new MessageChangedListener() {
+
                 public void messageChanged(MessageChangedEvent mce) {
                     usePush();
                 }
@@ -296,6 +307,7 @@ public abstract class JavaPushMailAccount implements Runnable {
         } else {
             if (listener instanceof MessageCountListener && messageCountListener == null) {
                 messageCountListener = new MessageCountListener() {
+
                     public void messagesAdded(MessageCountEvent mce) {
                         usePush();
                     }
@@ -403,7 +415,7 @@ public abstract class JavaPushMailAccount implements Runnable {
     public void setUsername(String username) {
         this.username = username;
     }
-    
+
     public abstract void onError(Exception e);
 
     public abstract void onDisconnect();

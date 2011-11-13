@@ -2,6 +2,9 @@ package com.mofirouz.javapushmail.app.ui;
 
 import com.mofirouz.javapushmail.JavaPushMailAccount;
 import com.mofirouz.javapushmail.app.JavaPushMailAccountsManager;
+import com.tulskiy.keymaster.common.HotKey;
+import com.tulskiy.keymaster.common.HotKeyListener;
+import com.tulskiy.keymaster.common.Provider;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
@@ -27,7 +30,10 @@ import javax.swing.table.DefaultTableModel;
  * @since 2/10/11
  */
 public class JavaPushMailFrame {
+
     protected JavaPushMailAccountsManager manager;
+    protected Provider hotkeyProvider;
+    protected HotKeyListener hotkeyListener;
     protected JFrame frame;
     protected JTabbedPane tabbedPanel;
     protected JTable accountsTable;
@@ -40,13 +46,15 @@ public class JavaPushMailFrame {
     private NewAccountDialog accountDialog;
 
     public JavaPushMailFrame() {
-        dockIcon = Toolkit.getDefaultToolkit().createImage(getClass().getResource("dock.png"));//(new ImageIcon(this.getClass().getResource("dock.png"))).getImage();
+        dockIcon = Toolkit.getDefaultToolkit().createImage(getClass().getResource("dock.png"));
     }
 
-    public void init(JavaPushMailAccountsManager manager) {
+    public void init(JavaPushMailAccountsManager manager, Provider p) {
         this.manager = manager;
-        buildTrayPopup();
+        this.hotkeyProvider = p;
+        buildHotkeyListener();
         frame = new JFrame("Push Mail Configuration Wizard");
+        buildTrayPopup();
         buildPanels();
         buildPopup();
         buildTabs();
@@ -62,8 +70,9 @@ public class JavaPushMailFrame {
         frame.setIconImage(dockIcon);
         frame.getRootPane().setDefaultButton(settingsPanel.getHideButton());
         frame.addWindowListener(new WindowListener() {
+
             public void windowOpened(WindowEvent e) {
-               tablePopup.setVisible(false);
+                tablePopup.setVisible(false);
             }
 
             public void windowClosing(WindowEvent e) {
@@ -102,25 +111,28 @@ public class JavaPushMailFrame {
     private void buildPanels() {
         settingsPanel = new JavaPushMailAccountSettingsPanel();
         settingsPanel.getNewAccountButton().addActionListener(new ActionListener() {
+
             public void actionPerformed(ActionEvent ae) {
                 showAddNewAccountDialog();
             }
         });
         settingsPanel.getQuitButton().addActionListener(new ActionListener() {
+
             public void actionPerformed(ActionEvent ae) {
                 quitApplication(true);
             }
         });
         settingsPanel.getHideButton().addActionListener(new ActionListener() {
+
             public void actionPerformed(ActionEvent ae) {
-               hideApplication(true);
+                hideApplication(true);
             }
         });
         accountsTable = settingsPanel.getAccountTable();
         configTable();
-        
+
         notificationPanel = new JavaPushMailNotificationSettingsPanel();
-        
+
     }
 
     private void configTable() {
@@ -128,6 +140,7 @@ public class JavaPushMailFrame {
             accountsTable.getColumnModel().getColumn(column).setCellRenderer(new AccountCellRenderer());
         }
         accountsTable.getModel().addTableModelListener(new TableModelListener() {
+
             public void tableChanged(TableModelEvent tme) {
                 updateModel(tme.getFirstRow(), tme.getColumn());
             }
@@ -139,11 +152,13 @@ public class JavaPushMailFrame {
 
         final JMenuItem deleteItem = new JMenuItem("Remove");
         deleteItem.addActionListener(new ActionListener() {
+
             public void actionPerformed(ActionEvent ae) {
                 tablePopup.setVisible(false);
 
                 setWaitingState(true);
                 SwingWorker worker = new SwingWorker<String, Object>() {
+
                     @Override
                     public String doInBackground() {
                         manager.removeAccount(tablePopup.row);
@@ -161,20 +176,21 @@ public class JavaPushMailFrame {
 
         final JMenuItem dis_connectItem = new JMenuItem("Connect");
         dis_connectItem.addActionListener(new ActionListener() {
-            
+
             @Override
             public void actionPerformed(ActionEvent ae) {
                 tablePopup.setVisible(false);
                 setWaitingState(true);
 
                 SwingWorker worker = new SwingWorker<String, Object>() {
+
                     @Override
                     public String doInBackground() {
                         if (manager.getAccount(tablePopup.row).isConnected())
                             manager.getAccount(tablePopup.row).disconnect();
                         else
                             manager.getAccount(tablePopup.row).connect();
-                        
+
                         return "";
                     }
 
@@ -191,6 +207,7 @@ public class JavaPushMailFrame {
         tablePopup.add(deleteItem);
 
         accountsTable.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mouseClicked(MouseEvent me) {
                 if (!accountsTable.isEnabled())
@@ -223,12 +240,14 @@ public class JavaPushMailFrame {
     private void buildTrayPopup() {
         MenuItem exit = new MenuItem("Exit Notifier");
         exit.addActionListener(new ActionListener() {
+
             public void actionPerformed(ActionEvent e) {
                 quitApplication(true);
             }
         });
         MenuItem settings = new MenuItem("Settings");
         settings.addActionListener(new ActionListener() {
+
             public void actionPerformed(ActionEvent e) {
                 frame.setVisible(true);
             }
@@ -239,6 +258,19 @@ public class JavaPushMailFrame {
         popmenu.add(exit);
 
         manager.getSystemNotification().setPopupMenu(popmenu);
+    }
+
+    private void buildHotkeyListener() {
+        hotkeyListener = new HotKeyListener() {
+            @Override
+            public void onHotKey(HotKey hotkey) {
+                frame.setVisible(true);
+                frame.toFront();
+            }
+        };
+        
+        //TODO: get preferences from here...
+        setHotkeyProvider("ctrl alt M");
     }
 
     protected void fixMenuBar() {
@@ -282,6 +314,7 @@ public class JavaPushMailFrame {
         if (requiresDisconnect) {
             setWaitingState(true);
             SwingWorker worker = new SwingWorker<String, Object>() {
+
                 @Override
                 public String doInBackground() {
                     if (mail.isConnected())
@@ -317,6 +350,11 @@ public class JavaPushMailFrame {
         return waitingState;
     }
 
+    public void setHotkeyProvider(String stroke) {
+        hotkeyProvider.reset();
+        hotkeyProvider.register(KeyStroke.getKeyStroke(stroke), hotkeyListener);
+    }
+
     public void showMe(boolean go) {
         frame.setLocationRelativeTo(null);
         frame.pack();
@@ -339,9 +377,9 @@ public class JavaPushMailFrame {
         }
         System.exit(0);
     }
-    
+
     public void hideApplication(boolean save) {
-         tablePopup.setVisible(false);
+        tablePopup.setVisible(false);
         if (save) {
             manager.saveAccounts();
             savePreferences();
@@ -405,6 +443,7 @@ public class JavaPushMailFrame {
     }
 
     private class AccountCellRenderer extends DefaultTableCellRenderer {
+
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             setHorizontalAlignment(SwingConstants.CENTER);
@@ -423,6 +462,7 @@ public class JavaPushMailFrame {
     }
 
     private class TablePopup extends JPopupMenu {
+
         int row;
 
         public void setSelectedRow(int i) {

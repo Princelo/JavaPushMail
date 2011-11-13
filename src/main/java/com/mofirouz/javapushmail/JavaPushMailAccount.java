@@ -126,7 +126,7 @@ public abstract class JavaPushMailAccount implements Runnable {
     }
 
     private void initConnection() {
-        prober = new NetworkProber(serverAddress, serverPort, accountName) {
+        prober = new NetworkProber(this) {
 
             @Override
             public void onNetworkChange(boolean status) {
@@ -134,7 +134,7 @@ public abstract class JavaPushMailAccount implements Runnable {
                     if (status && !connected) { // if connection up, but not connected...
                         connect();
                     } else if (!status && connected) { //if previously connected, but link down...
-                        if (getPingFailureCount() >= 2) {
+                        if (getSessionFailureCount() >= 2) {
                             connected = false;
                             if (!usePush)
                                 poller.stop();

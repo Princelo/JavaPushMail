@@ -2,6 +2,7 @@ package com.mofirouz.javapushmail.app.ui;
 
 import com.mofirouz.javapushmail.JavaPushMailLogger;
 import com.mofirouz.javapushmail.app.JavaPushMailAccountsManager;
+import com.tulskiy.keymaster.common.Provider;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -19,6 +20,7 @@ import javax.swing.UIManager;
 public class JavaPushMail {
     private JavaPushMailFrame frame;
     private JavaPushMailAccountsManager manager;
+    private Provider hotkeyProvider = Provider.getCurrentProvider(false);
     public static String NOTIFICATION_ICON;
     public static File NOTIFICATION_ICON_FILE;
     public static File LOG_FILE;
@@ -47,7 +49,7 @@ public class JavaPushMail {
         initLogger();
         initFrame();
         initManager();
-        frame.init(manager);
+        frame.init(manager, hotkeyProvider);
         frame.showMe(!frame.isUsingPerferences());
 
         manager.loadAccounts();

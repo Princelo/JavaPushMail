@@ -16,7 +16,7 @@ import java.util.TimerTask;
  */
 public abstract class NetworkProber {
 
-    private final static int SLEEP_TIME = 5000; // wait 5secs between each ping
+    private final static int SLEEP_TIME = 5000; // wait 5secs between each probe
     private JavaPushMailAccount mail;
     private String host;
     private int port = 993;

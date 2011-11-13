@@ -92,20 +92,69 @@ public class JavaPushMailNotifier {
         String from = message.getFrom()[0].toString();
         if (from.contains("<") && from.contains(">"))
             from = from.substring(0, from.indexOf("<"));
-
-        String title = from + " (" + mail.getAccountName() + ")";//mail.getAccountName();
-        mess[0] = message.getSubject().trim();
-        mess[1] = "";
+        String subject = message.getSubject().trim();
+        String content = "";
         try {
             if (message.getContentType().startsWith("text/plain")) {
-                String content = message.getContent().toString();
+                content = message.getContent().toString();
                 mess[1] = content;
                 if(content.length() > 40)
                     mess[1] = content.substring(0, 40).trim() + "...";
             }
         } catch (IOException e) {
         }
+        
+        String title = getNotificationTitle(from,subject);
+        mess[0] = getNotificationFirstLine(from, subject, content);
+        mess[1] = getNotificationSecondLine(from, subject, content);;
+        
         sysnot.showNotification(getNotificationID(message), false, title, mess);
+    }
+    
+    private String getNotificationTitle(String from, String subject) {
+        int mode = 1; // replace this with preferences...
+            
+        if (mode == 0) {
+            return mail.getAccountName();
+        } else if (mode == 1) {
+            return from + " (" + mail.getAccountName() + ")";
+        } else if (mode == 2) {
+            return subject;
+        }
+        
+        return "";
+    }
+    
+    private String getNotificationFirstLine(String from, String subject, String content) {
+        int mode = 2; // replace this with preferences...
+        
+        if (mode == 0) {
+            return mail.getAccountName();
+        } else if (mode == 1) {
+            return from + " (" + mail.getAccountName() + ")";
+        } else if (mode == 2) {
+            return subject;
+        } else if (mode == 3) {
+            return content;
+        }
+        
+        return "";
+    }
+    
+    private String getNotificationSecondLine(String from, String subject, String content) {
+        int mode = 3; // replace this with preferences...
+        
+        if (mode == 0) {
+            return mail.getAccountName();
+        } else if (mode == 1) {
+            return from + " (" + mail.getAccountName() + ")";
+        } else if (mode == 2) {
+            return subject;
+        } else if (mode == 3) {
+            return content;
+        }
+        
+        return "";
     }
 
     private void showPlainNotification() {

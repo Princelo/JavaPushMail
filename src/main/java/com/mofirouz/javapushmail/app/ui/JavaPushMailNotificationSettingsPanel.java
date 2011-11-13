@@ -75,7 +75,7 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Notification Title:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Account Name", "Subject", "From", "Content", "Generic Text" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Account Name", "Subject", "From", "Generic Text" }));
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("First Line:");

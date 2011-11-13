@@ -134,7 +134,7 @@ public abstract class JavaPushMailAccount implements Runnable {
                     if (status && !connected) { // if connection up, but not connected...
                         connect();
                     } else if (!status && connected) { //if previously connected, but link down...
-                        if (getSessionFailureCount() >= 2) {
+                        if (getSessionFailureCount() >= 2 || getPingFailureCount() >= 2) {
                             connected = false;
                             if (!usePush)
                                 poller.stop();

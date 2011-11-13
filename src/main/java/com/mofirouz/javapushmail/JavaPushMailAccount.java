@@ -9,6 +9,7 @@ import java.util.EventListener;
 import java.util.Properties;
 
 import java.util.Vector;
+import javax.mail.AuthenticationFailedException;
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.FolderClosedException;
@@ -65,30 +66,27 @@ public abstract class JavaPushMailAccount implements Runnable {
     public void connect() {
         try {
             server.connect(serverAddress, serverPort, username, password);
-            postServerConnection();
+            selectFolder("");
+            prober.start();
+            connected = true;
+            JavaPushMailLogger.info(accountName + " connected!");
+            onConnect();
+        } catch (AuthenticationFailedException ex) {
+            connected = false;
+            JavaPushMailLogger.warn(accountName, ex);
+            onError(ex);
         } catch (MessagingException ex) {
             connected = false;
             folder = null;
             messageChangedListener = null;
             messageCountListener = null;
-            JavaPushMailLogger.warn(ex);
+            JavaPushMailLogger.warn(accountName, ex);
             onError(ex);
         } catch (IllegalStateException ex) {
-            JavaPushMailLogger.warn(ex);
-            postServerConnection();
+            JavaPushMailLogger.warn(accountName, ex);
+            connected = true;
+            onConnect();
         }
-    }
-
-    public void setMessageChangedListerer(MessageChangedListener listener) {
-        removeListener(externalChangedListener);
-        externalChangedListener = listener;
-        addListener(externalChangedListener);
-    }
-
-    public void setMessageCounterListerer(MessageCountListener listener) {
-        removeListener(externalCountListener);
-        externalCountListener = listener;
-        addListener(externalCountListener);
     }
 
     public void disconnect() {
@@ -115,27 +113,34 @@ public abstract class JavaPushMailAccount implements Runnable {
         t.start();
     }
 
-    private void postServerConnection() {
-        selectFolder("");
-        connected = true;
-        prober.start();
-        JavaPushMailLogger.info(accountName + " connected!");
-        onConnect();
+    public void setMessageChangedListerer(MessageChangedListener listener) {
+        removeListener(externalChangedListener);
+        externalChangedListener = listener;
+        addListener(externalChangedListener);
+    }
+
+    public void setMessageCounterListerer(MessageCountListener listener) {
+        removeListener(externalCountListener);
+        externalCountListener = listener;
+        addListener(externalCountListener);
     }
 
     private void initConnection() {
-        prober = new NetworkProber(serverAddress, accountName) {
+        prober = new NetworkProber(serverAddress, serverPort, accountName) {
 
             @Override
-            public void onNetworkChange(boolean change) {
-                connected = true;
-                if (getPingFailureCount() >= 2 || getSessionFailureCount() != 0) {
-                    connected = false;
-                    prober.stop();
-                    if (!usePush)
-                        poller.stop();
-
-                    connect();
+            public void onNetworkChange(boolean status) {
+                if (status != connected) { // if two states do not match, something has trully changed!
+                    if (status && !connected) { // if connection up, but not connected...
+                        connect();
+                    } else if (!status && connected) { //if previously connected, but link down...
+                        if (getPingFailureCount() >= 2) {
+                            connected = false;
+                            if (!usePush)
+                                poller.stop();
+                            connect();
+                        }
+                    }
                 }
             }
         };

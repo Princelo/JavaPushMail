@@ -92,7 +92,7 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
 
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "5 seconds", "10 seconds", "30 seconds" }));
 
-        jLabel8.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Lucida Grande", 1, 13));
         jLabel8.setText("Notification Text");
 
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
@@ -172,7 +172,7 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
         buttonGroup2.add(jRadioButton5);
         jRadioButton5.setText("Dark Theme");
 
-        jLabel9.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Lucida Grande", 1, 13));
         jLabel9.setText("Notification Style");
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
@@ -184,13 +184,13 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jLabel9)
                     .add(jRadioButton1)
+                    .add(jRadioButton2)
+                    .add(jRadioButton3)
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(29, 29, 29)
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jRadioButton4)
-                            .add(jRadioButton5)))
-                    .add(jRadioButton2)
-                    .add(jRadioButton3))
+                            .add(jRadioButton5)
+                            .add(jRadioButton4))))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -204,11 +204,11 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
                 .add(jRadioButton2)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 5, Short.MAX_VALUE)
                 .add(jRadioButton3)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jRadioButton4)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jRadioButton5)
-                .addContainerGap())
+                .add(23, 23, 23))
         );
 
         jPanel4.setOpaque(false);

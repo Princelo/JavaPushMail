@@ -32,7 +32,7 @@ public class JavaPushMailNotifier {
 
     private void addListeners() {
         mail.setMessageCounterListerer(messageCountListener);
-        //mail.setMessageChangedListerer(messageChangedListener);
+        mail.setMessageChangedListerer(messageChangedListener);
     }
 
     private void initialiseListeners() {
@@ -43,60 +43,82 @@ public class JavaPushMailNotifier {
                     JavaPushMailLogger.info("Message Added: " + e.getMessages()[0].getSubject());
                     showNotification(e.getMessages()[0]);
                 } catch (MessagingException ex) {
-                    showPlainNotification();
+                    JavaPushMailLogger.error("Error showing notification for new added message", ex);
+                    //showPlainNotification();
                 } catch (Exception ex) {
-                    showPlainNotification();
+                    JavaPushMailLogger.error("Error showing notification for new added message", ex);
+                    //showPlainNotification();
                 }
             }
 
             public void messagesRemoved(MessageCountEvent e) {
-//                try {
-//                    JavaPushMailLogger.info("Message Removed: " + e.getMessages()[0].getSubject());
-//                } catch (MessagingException ex) {
-//                    JavaPushMailLogger.debug(ex);
-//                }
+                try {
+                    JavaPushMailLogger.info("Message Removed: " + e.getMessages()[0].getSubject());
+                    sysnot.hideNotification(getNotificationID(e.getMessages()[0]));
+                } catch (MessagingException ex) {
+                    JavaPushMailLogger.error("Error showing notification for removed message", ex);
+                    //showPlainNotification();
+                } catch (Exception ex) {
+                    JavaPushMailLogger.error("Error showing notification for removed message", ex);
+                    //showPlainNotification();
+                }
             }
         };
         messageChangedListener = new MessageChangedListener() {
 
             public void messageChanged(MessageChangedEvent e) {
-//                try {
-//                    JavaPushMailLogger.info("Message Changed: " + e.getMessage().getSubject());
-//                } catch (MessagingException ex) {
-//                    JavaPushMailLogger.debug(ex);
-//                }
+                try {
+                    JavaPushMailLogger.info("Message Changed: " + e.getMessage().getSubject());
+                    sysnot.hideNotification(getNotificationID(e.getMessage()));
+                } catch (MessagingException ex) {
+                    JavaPushMailLogger.error("Error showing notification for changed message", ex);
+                    //showPlainNotification();
+                } catch (Exception ex) {
+                    JavaPushMailLogger.error("Error showing notification for changed message", ex);
+                    //showPlainNotification();
+                }
             }
         };
     }
 
     private void showNotification(Message message) throws MessagingException {
-
         if (message == null) {
             showPlainNotification();
             return;
-        } 
-        
+        }
+
         String[] mess = new String[2];
-        
+
         String from = message.getFrom()[0].toString();
         if (from.contains("<") && from.contains(">"))
             from = from.substring(0, from.indexOf("<"));
 
         String title = from + " (" + mail.getAccountName() + ")";//mail.getAccountName();
-        mess[0] = message.getSubject().trim(); 
+        mess[0] = message.getSubject().trim();
         mess[1] = "";
         try {
-            if (message.getContentType().startsWith("text/plain")) 
-                mess[1] = message.getContent().toString().substring(0,40).trim();
+            if (message.getContentType().startsWith("text/plain")) {
+                String content = message.getContent().toString();
+                mess[1] = content;
+                if(content.length() > 40)
+                    mess[1] = content.substring(0, 40).trim() + "...";
+            }
         } catch (IOException e) {
         }
-        sysnot.showNotification(false, title, mess);
+        sysnot.showNotification(getNotificationID(message), false, title, mess);
+    }
+
+    private void showPlainNotification() {
+        String[] mess = new String[2];
+        mess[0] = "You have new mail!";
+        mess[1] = "";
+        sysnot.showNotification(getNotificationID(null), false, mail.getAccountName(), mess);
     }
     
-    private void showPlainNotification() {
-            String[] mess = new String[2];
-            mess[0] = "You have new mail!"; 
-            mess[1] = "";
-            sysnot.showNotification(false,  mail.getAccountName(), mess);    
+    private String getNotificationID(Message message) {
+        if (message == null)
+            return mail.getUsername() + "-" + "plain";
+        
+        return mail.getUsername() + "-" + message.getMessageNumber();
     }
 }

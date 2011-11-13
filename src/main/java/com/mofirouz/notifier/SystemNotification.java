@@ -28,7 +28,7 @@ public class SystemNotification {
     private final static String GROWL_NAME = "JavaPushMail";
     private static String NOTIFY_OSD_PATH = "/usr/bin/notify-send";
     private Growl growl;
-    private String title, iconPath;
+    private String notid, title, iconPath;
     private String[] message;
     private boolean showFallback;
     private NotificationConfiguration notificationConfiguration;
@@ -52,15 +52,29 @@ public class SystemNotification {
         NOTIFY_OSD_PATH = path;
     }
 
-    public void showNotification(boolean showFallback, String title, String[] message) {
+    public void showNotification(String id, boolean showFallback, String title, String[] message) {
         if (title == null || title.isEmpty() || message == null || message.length == 0)
             return;
 
+        this.notid = id;
         this.title = title;
         this.message = message;
         this.showFallback = showFallback;
         showTrayIcon();
         showNotification();
+    }
+
+    public void hideNotification(String id) {
+        if (id == null || notid == null) 
+            return; 
+        
+        if (!notid.equals(id))
+            return;
+
+        if (icon == null || !SystemTray.isSupported() || tray == null || trayIcon == null)
+            return;
+
+        tray.remove(trayIcon);
     }
 
     public void setIcon(File iconFile) {
@@ -83,7 +97,7 @@ public class SystemNotification {
     }
 
     private void showTrayIcon() {
-        if (icon == null && !SystemTray.isSupported())
+        if (icon == null || !SystemTray.isSupported())
             return;
 
         if (tray == null)
@@ -92,16 +106,13 @@ public class SystemNotification {
         if (trayIcon == null) {
             trayIcon = new java.awt.TrayIcon(icon.getImage());
             trayIcon.setToolTip("You have new mail!");
-            trayIcon.displayMessage(title, createSingleLineString(message), TrayIcon.MessageType.INFO);
             trayIcon.setImageAutoSize(true);
             trayIcon.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent ae) {
                     tray.remove(trayIcon);
                 }
             });
             trayIcon.addMouseListener(new MouseAdapter() {
-
                 @Override
                 public void mousePressed(MouseEvent me) {
                     super.mousePressed(me);
@@ -110,10 +121,14 @@ public class SystemNotification {
                     }
                 }
             });
+            
             if (popup == null)
                 initTrayPopup();
             trayIcon.setPopupMenu(popup);
         }
+
+        trayIcon.displayMessage(title, createSingleLineString(message), TrayIcon.MessageType.INFO);
+
         try {
             if (tray.getTrayIcons().length == 0)
                 tray.add(trayIcon);

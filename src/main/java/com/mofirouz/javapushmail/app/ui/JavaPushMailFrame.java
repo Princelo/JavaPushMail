@@ -96,7 +96,7 @@ public class JavaPushMailFrame {
     private void buildTabs() {
         tabbedPanel = new JTabbedPane();
         tabbedPanel.add(settingsPanel);
-        tabbedPanel.add(notificationPanel);
+        //tabbedPanel.add(notificationPanel);
     }
 
     private void buildPanels() {

@@ -149,4 +149,9 @@ public class JavaPushMailLogger {
         init();
         logger.print("[ERROR]: ", e, 3);
     }
+    
+    public static boolean isWritingFile() {
+        init();
+        return logger.writeOut;
+    }
 }

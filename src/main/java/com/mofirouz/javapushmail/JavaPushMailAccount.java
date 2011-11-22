@@ -130,16 +130,28 @@ public abstract class JavaPushMailAccount implements Runnable {
 
             @Override
             public void onNetworkChange(boolean status) {
-                if (status != connected) { // if two states do not match, something has trully changed!
+                if (status != connected) { // if two states do not match, something has truly changed!
                     if (status && !connected) { // if connection up, but not connected...
                         connect();
-                    } else if (!status && connected) { //if previously connected, but link down...
+                    } else if (!status && connected) { //if previously connected, but link down... then just disconnect...
                         if (getSessionFailureCount() >= 2 || getPingFailureCount() >= 2) {
                             connected = false;
                             if (!usePush)
                                 poller.stop();
-                            connect();
+                            
+                            onDisconnect();
+                            //connect();
                         }
+                    }
+                } else { // something about to go wrong, me thinks!
+                    if (!status && !connected) { // something gone wrong...
+                        // server hasn't responded...
+                        // stop everying first....
+                        // right now, best action is to throw an error!
+                        JavaPushMailLogger.debug(new MessagingException("Server cannot be reached!"));
+                        prober.stop();
+                        poller.stop();
+                        onError(new MessagingException("Server cannot be reached!"));
                     }
                 }
             }

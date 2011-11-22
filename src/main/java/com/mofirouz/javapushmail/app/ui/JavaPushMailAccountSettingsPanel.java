@@ -1,10 +1,14 @@
 package com.mofirouz.javapushmail.app.ui;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -26,6 +30,7 @@ public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
         workingLabel.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(getClass().getResource("workingAnimation.gif")).getScaledInstance(128, 128, Image.SCALE_DEFAULT)));
         workingLabel.setVisible(false);
         configTableUI();
+        configErrorPanel();
     }
 
     /** This method is called from within the constructor to
@@ -38,14 +43,52 @@ public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jLayeredPane1 = new javax.swing.JLayeredPane();
+        errorPanel = new javax.swing.JPanel();
+        errorLabel = new javax.swing.JLabel();
+        dismissButton = new javax.swing.JButton();
+        workingLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         accountTable = new javax.swing.JTable();
-        workingLabel = new javax.swing.JLabel();
         quitButton = new javax.swing.JButton();
         hideButton = new javax.swing.JButton();
         newAccountButton = new javax.swing.JButton();
 
         setOpaque(false);
+
+        errorPanel.setOpaque(false);
+
+        errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        dismissButton.setText("Dismiss");
+        dismissButton.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
+
+        org.jdesktop.layout.GroupLayout errorPanelLayout = new org.jdesktop.layout.GroupLayout(errorPanel);
+        errorPanel.setLayout(errorPanelLayout);
+        errorPanelLayout.setHorizontalGroup(
+            errorPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(errorPanelLayout.createSequentialGroup()
+                .add(250, 250, 250)
+                .add(dismissButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(250, Short.MAX_VALUE))
+            .add(errorPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(errorLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE))
+        );
+        errorPanelLayout.setVerticalGroup(
+            errorPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, errorPanelLayout.createSequentialGroup()
+                .addContainerGap(262, Short.MAX_VALUE)
+                .add(dismissButton)
+                .add(8, 8, 8))
+            .add(errorPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(errorLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE))
+        );
+
+        errorPanel.setBounds(20, 10, 570, 290);
+        jLayeredPane1.add(errorPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        workingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        workingLabel.setBounds(20, 10, 570, 290);
+        jLayeredPane1.add(workingLabel, javax.swing.JLayeredPane.MODAL_LAYER);
 
         accountTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -72,20 +115,16 @@ public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
         jScrollPane1.setBounds(20, 10, 570, 290);
         jLayeredPane1.add(jScrollPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        workingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        workingLabel.setBounds(20, 10, 570, 290);
-        jLayeredPane1.add(workingLabel, javax.swing.JLayeredPane.MODAL_LAYER);
-
         quitButton.setText("Quit");
-        quitButton.setBounds(520, 310, 70, 23);
+        quitButton.setBounds(520, 310, 70, 29);
         jLayeredPane1.add(quitButton, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         hideButton.setText("Hide");
-        hideButton.setBounds(440, 310, 70, 23);
+        hideButton.setBounds(440, 310, 70, 29);
         jLayeredPane1.add(hideButton, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         newAccountButton.setText("New Account");
-        newAccountButton.setBounds(20, 310, 110, 23);
+        newAccountButton.setBounds(20, 310, 110, 29);
         jLayeredPane1.add(newAccountButton, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
@@ -101,6 +140,9 @@ public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable accountTable;
+    private javax.swing.JButton dismissButton;
+    private javax.swing.JLabel errorLabel;
+    private javax.swing.JPanel errorPanel;
     private javax.swing.JButton hideButton;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -128,7 +170,19 @@ public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
     public JTable getAccountTable() {
         return accountTable;
     }
-
+    
+    public JPanel getErrorPanel() {
+        return errorPanel;
+    }
+    
+    public JLabel getErrorLabel() {
+        return errorLabel;
+    }
+    
+    public JButton getDismissButton() {
+        return dismissButton;
+    }
+    
     private void configTableUI() {
 
         accountTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -150,4 +204,20 @@ public class JavaPushMailAccountSettingsPanel extends javax.swing.JPanel {
             accountTable.getColumnModel().getColumn(column).setHeaderRenderer(renderer);
         }
     }
+    
+    private void configErrorPanel() {
+        errorPanel.setOpaque(false);
+        errorLabel.setOpaque(true);
+        //errorPanel.setBackground(new Color(0.8f, 0.8f, 0.8f, 0.5f));
+        errorLabel.setBackground(new Color(0.95f, 0.95f, 0.95f, 0.75f));
+        errorPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                dismissButton.doClick();
+            }
+        });
+        errorPanel.setVisible(false);
+        dismissButton.setVisible(false);
+    }
 }
+

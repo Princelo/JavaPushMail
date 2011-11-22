@@ -1,6 +1,7 @@
 package com.mofirouz.javapushmail.app.ui;
 
 import com.mofirouz.javapushmail.JavaPushMailAccount;
+import com.mofirouz.javapushmail.JavaPushMailLogger;
 import com.mofirouz.javapushmail.app.JavaPushMailAccountsManager;
 import com.tulskiy.keymaster.common.HotKey;
 import com.tulskiy.keymaster.common.HotKeyListener;
@@ -40,6 +41,7 @@ public class JavaPushMailFrame {
     protected JMenuBar menu;
     protected Image dockIcon;
     protected boolean waitingState = false;
+    protected String errorMessages = "";
     private TablePopup tablePopup;
     private JavaPushMailAccountSettingsPanel settingsPanel;
     private JavaPushMailNotificationSettingsPanel notificationPanel;
@@ -128,6 +130,13 @@ public class JavaPushMailFrame {
                 hideApplication(true);
             }
         });
+        settingsPanel.getDismissButton().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                dismissError();
+            }
+        });
         accountsTable = settingsPanel.getAccountTable();
         configTable();
 
@@ -196,6 +205,7 @@ public class JavaPushMailFrame {
 
                     @Override
                     protected void done() {
+                        
                     }
                 };
                 worker.execute();
@@ -338,12 +348,20 @@ public class JavaPushMailFrame {
         accountDialog.setVisible(true);
     }
 
+    private void dismissError() {
+        errorMessages = "";
+        settingsPanel.getErrorPanel().setVisible(false);
+    }
+    
     public void setWaitingState(boolean show) {
         waitingState = show;
         accountsTable.setEnabled(!show);
         settingsPanel.getNewAccountButton().setEnabled(!show);
         accountsTable.clearSelection();
         settingsPanel.getWorkingLabel().setVisible(show);
+        
+        if (show)
+            settingsPanel.getErrorPanel().setVisible(false);
     }
 
     public boolean isInWaitingState() {
@@ -389,19 +407,26 @@ public class JavaPushMailFrame {
 
     public void onErrorCallback(Exception ex) {
         refreshTable();
+        
         if (ex instanceof MessagingException) {
+            errorMessages += "<b>" + ex.getLocalizedMessage() + "</b><br />";
             String error = "";
-            error += "You have been disconnected. Please reconnect manually.\n";
-            error += "\t\tError: " + ex.toString();
-            error += "\nPlease check the followings:";
-            error += "\n- You have Internet Connectivity";
-            error += "\n- You have entered the details correctly";
-            error += "\n- Your mail server is operational";
-            error += "\n- Your mail server supports IDLE and Push notifications";
-            JOptionPane.showMessageDialog(frame, error);
+            error += "<html><p align=center>You have been disconnected. Please reconnect manually.<br /><br />";
+            error += "" + errorMessages + "<br />";
+            
+            if (JavaPushMailLogger.isWritingFile())
+                error += "Please check log file for more information<br /><br />";
+            
+            error += "<br /><br /><font size=-2>click to dismiss</font>";
+            error += "</p></html>";
+            settingsPanel.getErrorLabel().setText(error);
+            settingsPanel.getErrorPanel().setVisible(true);
         }
-        ex.printStackTrace();
         setWaitingState(false);
+        
+        frame.setVisible(true);
+        frame.requestFocus();
+        frame.toFront();
     }
 
     public synchronized void updateOnModelChange() {
@@ -411,6 +436,9 @@ public class JavaPushMailFrame {
     public synchronized void updateOnStateChange() {
         refreshTable();
         setWaitingState(false);
+        frame.setVisible(true);
+        frame.requestFocus();
+        frame.toFront();
     }
 
     public synchronized void refreshTable() {

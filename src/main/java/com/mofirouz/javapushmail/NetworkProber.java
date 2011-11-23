@@ -24,7 +24,8 @@ public abstract class NetworkProber {
     private int pingFailureCount = 0;
     private int sessionFailureCount = 0;
     private long lastBeat = -1;
-    protected Timer timer;
+    private boolean netConnectivity = false;
+    private Timer timer;
 
     public NetworkProber(String host, int port, String accountName) {
         System.err.println("host: " + host);
@@ -59,6 +60,7 @@ public abstract class NetworkProber {
                 }
             }
         }
+        netConnectivity = status;
         return status;
     }
 
@@ -135,6 +137,10 @@ public abstract class NetworkProber {
         return sessionFailureCount;
     }
 
+    public boolean getNetConnectivity() {
+        return netConnectivity;
+    }
+    
     public abstract void onNetworkChange(boolean status);
     
     public abstract void missedBeat();

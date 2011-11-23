@@ -143,6 +143,9 @@ public abstract class JavaPushMailAccount implements Runnable {
                             //connect();
                         }
                     }
+                } else { // if link (either session or net connection) and connection down, something gone wrong...
+                    if (!isSessionValid() && getNetConnectivity()) // need to make sure that session is down, but link is up...
+                        connect();
                 }
             }
 
@@ -246,6 +249,9 @@ public abstract class JavaPushMailAccount implements Runnable {
                     JavaPushMailLogger.warn("Push Error: [DISCONNECT] " + accountName, e);
                     usePush = true;
                     selectFolder("");
+                } catch (javax.mail.StoreClosedException e) {
+                    JavaPushMailLogger.warn("Push Error: [GLOBAL DISCONNECT] " + accountName, e);
+                    usePush = true;
                 } catch (MessagingException e) {
                     JavaPushMailLogger.warn("Push Error: [NO IDLE] " + accountName, e);
                     usePush = false;

@@ -409,7 +409,7 @@ public class JavaPushMailFrame {
         refreshTable();
         
         if (ex instanceof MessagingException) {
-            errorMessages += "<b>" + ex.getLocalizedMessage() + "</b><br />";
+            errorMessages += "<b>" + ex.getCause().getLocalizedMessage() + "</b><br />";
             String error = "";
             error += "<html><p align=center>You have been disconnected. Please reconnect manually.<br /><br />";
             error += "" + errorMessages + "<br />";

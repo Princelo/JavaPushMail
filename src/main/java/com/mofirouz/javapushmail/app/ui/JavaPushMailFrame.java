@@ -421,6 +421,9 @@ public class JavaPushMailFrame {
             error += "</p></html>";
             settingsPanel.getErrorLabel().setText(error);
             settingsPanel.getErrorPanel().setVisible(true);
+            
+            settingsPanel.getErrorLabel().repaint();
+            settingsPanel.getErrorPanel().repaint();
         }
         setWaitingState(false);
         

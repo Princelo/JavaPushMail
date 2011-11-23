@@ -138,22 +138,17 @@ public abstract class JavaPushMailAccount implements Runnable {
                             connected = false;
                             if (!usePush)
                                 poller.stop();
-                            
+
                             onDisconnect();
                             //connect();
                         }
                     }
-                } else { // something about to go wrong, me thinks!
-                    if (!status && !connected) { // something gone wrong...
-                        // server hasn't responded...
-                        // stop everying first....
-                        // right now, best action is to throw an error!
-                        JavaPushMailLogger.debug(new MessagingException("Server cannot be reached!"));
-                        prober.stop();
-                        poller.stop();
-                        onError(new MessagingException("Server cannot be reached!"));
-                    }
                 }
+            }
+
+            @Override
+            public void missedBeat() { // missed beat, because of going to sleep, probably?!
+                connected = false;
             }
         };
 

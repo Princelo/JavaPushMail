@@ -23,6 +23,7 @@ public abstract class NetworkProber {
     private String name = "NetworkProber";
     private int pingFailureCount = 0;
     private int sessionFailureCount = 0;
+    private long lastBeat = -1;
     protected Timer timer;
 
     public NetworkProber(String host, int port, String accountName) {
@@ -80,6 +81,18 @@ public abstract class NetworkProber {
 
             @Override
             public void run() {
+                if (lastBeat != -1) {
+                    long currentTime = System.currentTimeMillis();
+                    if (currentTime - lastBeat > (SLEEP_TIME + 1)) { // missed beat, probably because of sleep...
+                        lastBeat = currentTime;    
+                        missedBeat();
+                        return;
+                    } 
+                    lastBeat = currentTime;
+                } else {
+                    lastBeat = System.currentTimeMillis();
+                }
+                
                 if (mail == null)
                     onNetworkChange(probe());
                 else
@@ -123,4 +136,6 @@ public abstract class NetworkProber {
     }
 
     public abstract void onNetworkChange(boolean status);
+    
+    public abstract void missedBeat();
 }

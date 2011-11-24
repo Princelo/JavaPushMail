@@ -439,9 +439,9 @@ public class JavaPushMailFrame {
     public synchronized void updateOnStateChange() {
         refreshTable();
         setWaitingState(false);
-        frame.setVisible(true);
-        frame.requestFocus();
-        frame.toFront();
+//        frame.setVisible(true);
+//        frame.requestFocus();
+//        frame.toFront();
     }
 
     public synchronized void refreshTable() {

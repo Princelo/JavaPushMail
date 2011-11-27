@@ -4,6 +4,7 @@ import com.mofirouz.notifier.SystemNotification;
 import com.mofirouz.javapushmail.JavaPushMailAccount;
 import com.mofirouz.javapushmail.JavaPushMailLogger;
 import java.io.IOException;
+import javax.mail.Flags.Flag;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.event.MessageChangedEvent;
@@ -43,10 +44,10 @@ public class JavaPushMailNotifier {
                     JavaPushMailLogger.info("Message Added: " + e.getMessages()[0].getSubject());
                     showNotification(e.getMessages()[0]);
                 } catch (MessagingException ex) {
-                    JavaPushMailLogger.error("Error showing notification for new added message", ex);
+                    //JavaPushMailLogger.error("Error showing notification for new added message", ex);
                     //showPlainNotification();
                 } catch (Exception ex) {
-                    JavaPushMailLogger.error("Error showing notification for new added message", ex);
+                    //JavaPushMailLogger.error("Error showing notification for new added message", ex);
                     //showPlainNotification();
                 }
             }
@@ -56,10 +57,10 @@ public class JavaPushMailNotifier {
                     JavaPushMailLogger.info("Message Removed: " + e.getMessages()[0].getSubject());
                     sysnot.hideNotification(getNotificationID(e.getMessages()[0]));
                 } catch (MessagingException ex) {
-                    JavaPushMailLogger.error("Error showing notification for removed message", ex);
+                    //JavaPushMailLogger.error("Error showing notification for removed message", ex);
                     //showPlainNotification();
                 } catch (Exception ex) {
-                    JavaPushMailLogger.error("Error showing notification for removed message", ex);
+                    //JavaPushMailLogger.error("Error showing notification for removed message", ex);
                     //showPlainNotification();
                 }
             }
@@ -68,13 +69,14 @@ public class JavaPushMailNotifier {
 
             public void messageChanged(MessageChangedEvent e) {
                 try {
-                    JavaPushMailLogger.info("Message Changed: " + e.getMessage().getSubject());
-                    sysnot.hideNotification(getNotificationID(e.getMessage()));
+                    //JavaPushMailLogger.info("Message Changed: " + e.getMessage().getSubject());
+                    if (e.getMessage().isSet(Flag.SEEN))
+                        sysnot.hideNotification(getNotificationID(e.getMessage()));
                 } catch (MessagingException ex) {
-                    JavaPushMailLogger.error("Error showing notification for changed message", ex);
+                    //JavaPushMailLogger.error("Error showing notification for changed message", ex);
                     //showPlainNotification();
                 } catch (Exception ex) {
-                    JavaPushMailLogger.error("Error showing notification for changed message", ex);
+                    //JavaPushMailLogger.error("Error showing notification for changed message", ex);
                     //showPlainNotification();
                 }
             }

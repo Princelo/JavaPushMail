@@ -1,7 +1,9 @@
 package com.mofirouz.javapushmail.app.ui;
 
+import com.mofirouz.javapushmail.JavaPushMailAccount;
 import com.mofirouz.javapushmail.JavaPushMailLogger;
 import com.mofirouz.javapushmail.app.JavaPushMailAccountsManager;
+import com.mofirouz.notifier.SystemNotification;
 import com.tulskiy.keymaster.common.Provider;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -18,6 +20,7 @@ import javax.swing.UIManager;
  * @since 2/10/11
  */
 public class JavaPushMail {
+    private SystemNotification sysnot;
     private JavaPushMailFrame frame;
     private JavaPushMailAccountsManager manager;
     private Provider hotkeyProvider = Provider.getCurrentProvider(false);
@@ -47,9 +50,10 @@ public class JavaPushMail {
 
     public void init() {
         initLogger();
+        initNotifier();
         initFrame();
         initManager();
-        frame.init(manager, hotkeyProvider);
+        frame.init(sysnot, manager, hotkeyProvider);
         frame.showMe(!frame.isUsingPerferences());
 
         manager.loadAccounts();
@@ -60,12 +64,17 @@ public class JavaPushMail {
             frame.setWaitingState(true);
         }
     }
+    
+    private void initNotifier() {
+        sysnot = new SystemNotification();
+        sysnot.setIcon(NOTIFICATION_ICON_FILE);
+    }
 
     private void initManager() {
-        manager = new JavaPushMailAccountsManager() {
+        manager = new JavaPushMailAccountsManager(sysnot) {
             @Override
-            public void handleError(Exception ex) {
-                frame.onErrorCallback(ex);
+            public void handleError(JavaPushMailAccount account, Exception ex) {
+                frame.onErrorCallback(account, ex);
             }
 
             @Override

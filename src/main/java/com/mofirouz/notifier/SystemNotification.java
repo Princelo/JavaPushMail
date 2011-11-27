@@ -27,6 +27,7 @@ public class SystemNotification {
     private final int MAX_MESS_LENGTH = 80;
     private final static String GROWL_NAME = "JavaPushMail";
     private static String NOTIFY_OSD_PATH = "/usr/bin/notify-send";
+    private boolean growlSupport, notifyOSDSupport;
     private Growl growl;
     private String notid, title, iconPath;
     private String[] message;
@@ -39,6 +40,7 @@ public class SystemNotification {
 
     public SystemNotification() {
         notificationConfiguration = NotificationConfiguration.getDefaultConfiguration();
+        checkNativeSupport();
         initTrayPopup();
 
     }
@@ -96,6 +98,34 @@ public class SystemNotification {
         initTrayPopup();
     }
 
+    public boolean hasGrowlSupport() {
+        return growlSupport;
+    }
+    public boolean hasNotifyOSDSupport() {
+        return notifyOSDSupport;
+    }
+    
+    private void checkSystemForGrowl() {
+        String os = System.getProperty("os.name");
+        if (os.contains("Mac"))
+            growlSupport = true;    
+    }
+    
+    private void checkSystemForNotifyOSD() {
+        String os = System.getProperty("os.name");
+        if (os.contains("Linux")) {
+            if (new File(NOTIFY_OSD_PATH).exists())
+                notifyOSDSupport = true;    
+        }
+    }
+    
+    private void checkNativeSupport() {
+        growlSupport = false;
+        notifyOSDSupport = false;
+        checkSystemForGrowl();
+        checkSystemForNotifyOSD();
+    }
+    
     private void showTrayIcon() {
         if (icon == null || !SystemTray.isSupported())
             return;
@@ -138,18 +168,14 @@ public class SystemNotification {
 
     private void showNotification() {
         try {
-
-            if (showFallback) {
+            if (showFallback) 
                 fallbackNotification();
-            } else {
-                String os = System.getProperty("os.name");
-                if (os.contains("Windows"))
-                    fallbackNotification();
-                else if (os.contains("Mac"))
-                    notifyGrowl();
-                else if (os.contains("Linux"))
-                    notifyOSD();
-            }
+            else if (growlSupport)
+                notifyGrowl();
+            else if (notifyOSDSupport)
+                notifyOSD();
+            else
+                fallbackNotification();
         } catch (Exception e) {
             fallbackNotification();
         }
@@ -251,4 +277,6 @@ public class SystemNotification {
 
         return content;
     }
+    
+    
 }

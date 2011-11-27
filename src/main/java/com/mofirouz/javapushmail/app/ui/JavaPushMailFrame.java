@@ -3,6 +3,7 @@ package com.mofirouz.javapushmail.app.ui;
 import com.mofirouz.javapushmail.JavaPushMailAccount;
 import com.mofirouz.javapushmail.JavaPushMailLogger;
 import com.mofirouz.javapushmail.app.JavaPushMailAccountsManager;
+import com.mofirouz.notifier.SystemNotification;
 import com.tulskiy.keymaster.common.HotKey;
 import com.tulskiy.keymaster.common.HotKeyListener;
 import com.tulskiy.keymaster.common.Provider;
@@ -32,6 +33,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class JavaPushMailFrame {
 
+    protected SystemNotification sysnot;
     protected JavaPushMailAccountsManager manager;
     protected Provider hotkeyProvider;
     protected HotKeyListener hotkeyListener;
@@ -51,7 +53,8 @@ public class JavaPushMailFrame {
         dockIcon = Toolkit.getDefaultToolkit().createImage(getClass().getResource("dock.png"));
     }
 
-    public void init(JavaPushMailAccountsManager manager, Provider p) {
+    public void init(SystemNotification sysnot, JavaPushMailAccountsManager manager, Provider p) {
+        this.sysnot = sysnot;
         this.manager = manager;
         this.hotkeyProvider = p;
         buildHotkeyListener();
@@ -107,7 +110,7 @@ public class JavaPushMailFrame {
     private void buildTabs() {
         tabbedPanel = new JTabbedPane();
         tabbedPanel.add(settingsPanel);
-        //tabbedPanel.add(notificationPanel);
+        tabbedPanel.add(notificationPanel);
     }
 
     private void buildPanels() {
@@ -141,6 +144,23 @@ public class JavaPushMailFrame {
         configTable();
 
         notificationPanel = new JavaPushMailNotificationSettingsPanel();
+        notificationPanel.getQuitButton().addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                quitApplication(true);
+            }
+        });
+        
+        notificationPanel.getHideButton().addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                hideApplication(true);
+            }
+        });
+        notificationPanel.getSaveSettingsButton().addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent ae) {
+                savePreferences();
+            }
+        });
 
     }
 
@@ -405,11 +425,11 @@ public class JavaPushMailFrame {
         frame.setVisible(false);
     }
 
-    public void onErrorCallback(Exception ex) {
+    public void onErrorCallback(JavaPushMailAccount account, Exception ex) {
         refreshTable();
         
         if (ex instanceof MessagingException) {
-            errorMessages += "<b>" + ex.getCause().getLocalizedMessage() + "</b><br />";
+            errorMessages += "<b>" + account.getAccountName() + "<b/> - " +  ex.getCause().getLocalizedMessage() + "<br />";
             String error = "";
             error += "<html><p align=center>You have been disconnected. Please reconnect manually.<br /><br />";
             error += "" + errorMessages + "<br />";

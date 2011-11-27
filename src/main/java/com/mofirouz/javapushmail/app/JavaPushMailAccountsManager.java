@@ -31,9 +31,8 @@ public abstract class JavaPushMailAccountsManager {
     private SystemNotification sysnot;
     private static boolean connected = false;
 
-    public JavaPushMailAccountsManager() {
-        sysnot = new SystemNotification();
-        sysnot.setIcon(JavaPushMail.NOTIFICATION_ICON_FILE);
+    public JavaPushMailAccountsManager(SystemNotification sysnot) {
+        this.sysnot = sysnot;
     }
 
     public synchronized void addAccount(final String name, final String server, final int port, final boolean useSSL, final String username, final String password) {
@@ -42,7 +41,7 @@ public abstract class JavaPushMailAccountsManager {
             @Override
             public void onError(Exception e) {
                 connected = false;
-                handleError(e);
+                handleError(this, e);
             }
 
             @Override
@@ -217,7 +216,7 @@ public abstract class JavaPushMailAccountsManager {
         return "";
     }
 
-    public abstract void handleError(Exception ex);
+    public abstract void handleError(JavaPushMailAccount acc, Exception ex);
 
     public abstract void onModelChange();
 

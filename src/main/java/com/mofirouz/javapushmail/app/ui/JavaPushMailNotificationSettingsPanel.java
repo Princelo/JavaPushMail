@@ -10,17 +10,75 @@
  */
 package com.mofirouz.javapushmail.app.ui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Vector;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+
 /**
  *
  * @author mo
  */
 public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
 
+    public static final Vector<String> notificationTextOptions = new Vector<String>();
+    public static final Vector<String> durationOptions = new Vector<String>();
+    
+    private ComboBoxModel titleModel, firstLineModel, secondLineModel, durationModel;
+    
     /** Creates new form JavaPushMailNotificationSettingsPanel */
     public JavaPushMailNotificationSettingsPanel() {
         initComponents();
+        initModels();
+        initListeners();
     }
 
+    private void initModels() {
+        notificationTextOptions.add("Account Name");
+        notificationTextOptions.add("Subject");
+        notificationTextOptions.add("From");
+        notificationTextOptions.add("Generic Text");
+        
+        durationOptions.add("5 seconds");
+        durationOptions.add("10 seconds");
+        durationOptions.add("30 seconds");
+        
+        titleModel = new DefaultComboBoxModel(notificationTextOptions);
+        firstLineModel = new DefaultComboBoxModel(notificationTextOptions);
+        secondLineModel = new DefaultComboBoxModel(notificationTextOptions);
+        durationModel = new DefaultComboBoxModel(durationOptions);
+        
+        titleComboBox.setModel(titleModel);
+        firstLineComboBox.setModel(titleModel);
+        secondLineComboBox.setModel(titleModel);
+        durationComboBox.setModel(durationModel);
+    }
+    
+    private void initListeners() {
+        ActionListener themeActionListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                refreshFallbackThemeRadios();
+            }
+        };
+        
+        fallbackNotificationRadioButton.addActionListener(themeActionListener);
+        growlRadioButton.addActionListener(themeActionListener);
+        nOSDRadioButton.addActionListener(themeActionListener);
+    }
+    
+    private void refreshFallbackThemeRadios() {
+        darkThemeRadioBox.setEnabled(fallbackNotificationRadioButton.isSelected());
+        lightThemeRadioBox.setEnabled(fallbackNotificationRadioButton.isSelected());
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -32,28 +90,27 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
-        jSpinner1 = new javax.swing.JSpinner();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        titleComboBox = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        firstLineComboBox = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox();
+        secondLineComboBox = new javax.swing.JComboBox();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox();
+        durationComboBox = new javax.swing.JComboBox();
         jLabel8 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
-        jRadioButton5 = new javax.swing.JRadioButton();
+        fallbackNotificationRadioButton = new javax.swing.JRadioButton();
+        growlRadioButton = new javax.swing.JRadioButton();
+        nOSDRadioButton = new javax.swing.JRadioButton();
+        lightThemeRadioBox = new javax.swing.JRadioButton();
+        darkThemeRadioBox = new javax.swing.JRadioButton();
         jLabel9 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox4 = new javax.swing.JCheckBox();
+        shortcutkeyField = new javax.swing.JTextField();
+        keyCtrlCheckBox = new javax.swing.JCheckBox();
+        keyAltCheckBox = new javax.swing.JCheckBox();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -62,8 +119,8 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         hideButton = new javax.swing.JButton();
         quitButton = new javax.swing.JButton();
-        newAccountButton = new javax.swing.JButton();
-        jCheckBox2 = new javax.swing.JCheckBox();
+        saveSettingsButton = new javax.swing.JButton();
+        loggingCheckBox = new javax.swing.JCheckBox();
 
         setMinimumSize(new java.awt.Dimension(612, 352));
         setName("Notification Settings"); // NOI18N
@@ -75,22 +132,14 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Notification Title:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Account Name", "Subject", "From", "Generic Text" }));
-
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("First Line:");
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Account Name", "Subject", "From", "Content", "Generic Text" }));
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Second Line:");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Account Name", "Subject", "From", "Content", "Generic Text" }));
-
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("Duration:");
-
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "5 seconds", "10 seconds", "30 seconds" }));
 
         jLabel8.setFont(new java.awt.Font("Lucida Grande", 1, 13));
         jLabel8.setText("Notification Text");
@@ -106,21 +155,21 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 59, Short.MAX_VALUE)
                         .add(jLabel2)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jComboBox2, 0, 170, Short.MAX_VALUE))
+                        .add(firstLineComboBox, 0, 170, Short.MAX_VALUE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
                         .add(jLabel7, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jComboBox4, 0, 170, Short.MAX_VALUE))
+                        .add(durationComboBox, 0, 170, Short.MAX_VALUE))
                     .add(jPanel2Layout.createSequentialGroup()
                         .add(42, 42, 42)
                         .add(jLabel3)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jComboBox3, 0, 170, Short.MAX_VALUE))
+                        .add(secondLineComboBox, 0, 170, Short.MAX_VALUE))
                     .add(jLabel8)
                     .add(jPanel2Layout.createSequentialGroup()
                         .add(jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jComboBox1, 0, 170, Short.MAX_VALUE)))
+                        .add(titleComboBox, 0, 170, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -130,7 +179,7 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
                 .add(jLabel8)
                 .add(18, 18, 18)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jComboBox1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(titleComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel1))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
@@ -138,39 +187,38 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
                         .add(jLabel2)
                         .add(13, 13, 13))
                     .add(jPanel2Layout.createSequentialGroup()
-                        .add(jComboBox2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(firstLineComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)))
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jComboBox3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(secondLineComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel3))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel7)
-                    .add(jComboBox4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(durationComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1.setOpaque(false);
 
-        buttonGroup1.add(jRadioButton3);
-        jRadioButton3.setText("Fallback Notification");
-        jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton3ActionPerformed(evt);
-            }
-        });
+        buttonGroup1.add(fallbackNotificationRadioButton);
+        fallbackNotificationRadioButton.setText("Fallback Notification");
 
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setText("Growl");
+        buttonGroup1.add(growlRadioButton);
+        growlRadioButton.setSelected(true);
+        growlRadioButton.setText("Growl");
 
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("NotifyOSD");
+        buttonGroup1.add(nOSDRadioButton);
+        nOSDRadioButton.setText("NotifyOSD");
 
-        buttonGroup2.add(jRadioButton4);
-        jRadioButton4.setText("Light Theme");
+        buttonGroup2.add(lightThemeRadioBox);
+        lightThemeRadioBox.setSelected(true);
+        lightThemeRadioBox.setText("Light Theme");
+        lightThemeRadioBox.setEnabled(false);
 
-        buttonGroup2.add(jRadioButton5);
-        jRadioButton5.setText("Dark Theme");
+        buttonGroup2.add(darkThemeRadioBox);
+        darkThemeRadioBox.setText("Dark Theme");
+        darkThemeRadioBox.setEnabled(false);
 
         jLabel9.setFont(new java.awt.Font("Lucida Grande", 1, 13));
         jLabel9.setText("Notification Style");
@@ -183,14 +231,14 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jLabel9)
-                    .add(jRadioButton1)
-                    .add(jRadioButton2)
-                    .add(jRadioButton3)
+                    .add(growlRadioButton)
+                    .add(nOSDRadioButton)
+                    .add(fallbackNotificationRadioButton)
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(29, 29, 29)
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jRadioButton5)
-                            .add(jRadioButton4))))
+                            .add(darkThemeRadioBox)
+                            .add(lightThemeRadioBox))))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -199,23 +247,29 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .add(jLabel9)
                 .add(18, 18, 18)
-                .add(jRadioButton1)
+                .add(growlRadioButton)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jRadioButton2)
+                .add(nOSDRadioButton)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jRadioButton3)
+                .add(fallbackNotificationRadioButton)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jRadioButton4)
+                .add(lightThemeRadioBox)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jRadioButton5)
+                .add(darkThemeRadioBox)
                 .add(23, 23, 23))
         );
 
         jPanel4.setOpaque(false);
 
-        jCheckBox1.setText("Ctrl");
+        shortcutkeyField.setText("M");
 
-        jCheckBox4.setText("Alt");
+        keyCtrlCheckBox.setSelected(true);
+        keyCtrlCheckBox.setText("Ctrl");
+        keyCtrlCheckBox.setEnabled(false);
+
+        keyAltCheckBox.setSelected(true);
+        keyAltCheckBox.setText("Alt");
+        keyAltCheckBox.setEnabled(false);
 
         jLabel4.setText("+");
 
@@ -230,25 +284,25 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel4Layout.createSequentialGroup()
                 .add(jLabel6)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 40, Short.MAX_VALUE)
-                .add(jCheckBox1)
+                .add(keyCtrlCheckBox)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jLabel4)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jCheckBox4)
+                .add(keyAltCheckBox)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jLabel5)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 34, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(shortcutkeyField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 34, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(8, 8, 8))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                .add(jCheckBox1)
+                .add(keyCtrlCheckBox)
                 .add(jLabel4)
-                .add(jCheckBox4)
+                .add(keyAltCheckBox)
                 .add(jLabel5)
-                .add(jTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(shortcutkeyField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(jLabel6))
         );
 
@@ -260,7 +314,7 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
 
         quitButton.setText("Quit");
 
-        newAccountButton.setText("Save Settings");
+        saveSettingsButton.setText("Save Settings");
 
         org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -268,7 +322,7 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(newAccountButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 110, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(saveSettingsButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 110, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 277, Short.MAX_VALUE)
                 .add(hideButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -282,13 +336,14 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
                 .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(quitButton)
                     .add(hideButton)
-                    .add(newAccountButton))
+                    .add(saveSettingsButton))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jCheckBox2.setText("Enable application logging (JavaPushMail.log)");
-        jCheckBox2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jCheckBox2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        loggingCheckBox.setSelected(true);
+        loggingCheckBox.setText("Enable application logging (JavaPushMail.log)");
+        loggingCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        loggingCheckBox.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -308,7 +363,7 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(24, 24, 24)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jCheckBox2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, loggingCheckBox, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
                             .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .add(18, 18, 18)))
                 .addContainerGap())
@@ -328,28 +383,22 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
                 .add(7, 7, 7)
                 .add(jPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(5, 5, 5)
-                .add(jCheckBox2)
+                .add(loggingCheckBox)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 43, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(35, 35, 35))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton3ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
+    public javax.swing.JRadioButton darkThemeRadioBox;
+    public javax.swing.JComboBox durationComboBox;
+    public javax.swing.JRadioButton fallbackNotificationRadioButton;
+    public javax.swing.JComboBox firstLineComboBox;
+    public javax.swing.JRadioButton growlRadioButton;
     private javax.swing.JButton hideButton;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
-    private javax.swing.JComboBox jComboBox4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -363,16 +412,72 @@ public class JavaPushMailNotificationSettingsPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
-    private javax.swing.JRadioButton jRadioButton5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JButton newAccountButton;
+    public javax.swing.JCheckBox keyAltCheckBox;
+    public javax.swing.JCheckBox keyCtrlCheckBox;
+    public javax.swing.JRadioButton lightThemeRadioBox;
+    public javax.swing.JCheckBox loggingCheckBox;
+    public javax.swing.JRadioButton nOSDRadioButton;
     private javax.swing.JButton quitButton;
+    private javax.swing.JButton saveSettingsButton;
+    public javax.swing.JComboBox secondLineComboBox;
+    public javax.swing.JTextField shortcutkeyField;
+    public javax.swing.JComboBox titleComboBox;
     // End of variables declaration//GEN-END:variables
+
+    public JButton getQuitButton() {
+        return quitButton;
+    }
+    public JButton getHideButton() {
+        return hideButton;
+    }
+    public JButton getSaveSettingsButton() {
+        return saveSettingsButton;
+    }
+
+    public JRadioButton getDarkThemeRadioBox() {
+        return darkThemeRadioBox;
+    }
+
+    public JComboBox getDurationComboBox() {
+        return durationComboBox;
+    }
+
+    public JRadioButton getFallbackNotificationRadioButton() {
+        return fallbackNotificationRadioButton;
+    }
+
+    public JComboBox getFirstLineComboBox() {
+        return firstLineComboBox;
+    }
+
+    public JRadioButton getGrowlRadioButton() {
+        return growlRadioButton;
+    }
+
+    public JRadioButton getLightThemeRadioBox() {
+        return lightThemeRadioBox;
+    }
+
+    public JCheckBox getLoggingCheckBox() {
+        return loggingCheckBox;
+    }
+
+    public JRadioButton getnOSDRadioButton() {
+        return nOSDRadioButton;
+    }
+
+    public JComboBox getSecondLineComboBox() {
+        return secondLineComboBox;
+    }
+
+    public JTextField getShortcutkeyField() {
+        return shortcutkeyField;
+    }
+
+    public JComboBox getTitleComboBox() {
+        return titleComboBox;
+    }
+    
 }

@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import com.mofirouz.simplelogger.SimpleLogger;
 
 /**
  *
@@ -23,7 +24,7 @@ import javax.swing.ImageIcon;
  */
 public class SystemNotification {
 
-    public final static String VERSION = "0.0.1";
+    public final static String VERSION = "0.0.2";
     private final int MAX_MESS_LENGTH = 80;
     private final static String GROWL_NAME = "JavaPushMail";
     private static String NOTIFY_OSD_PATH = "/usr/bin/notify-send";
@@ -39,14 +40,12 @@ public class SystemNotification {
     private SystemTray tray;
 
     public SystemNotification() {
-        notificationConfiguration = NotificationConfiguration.getDefaultConfiguration();
-        checkNativeSupport();
-        initTrayPopup();
-
+        this(NotificationConfiguration.getDefaultConfiguration());
     }
 
     public SystemNotification(NotificationConfiguration config) {
         notificationConfiguration = config;
+        checkNativeSupport();
         initTrayPopup();
     }
 
@@ -107,19 +106,25 @@ public class SystemNotification {
     
     private void checkSystemForGrowl() {
         String os = System.getProperty("os.name");
-        if (os.contains("Mac"))
-            growlSupport = true;    
+        if (os.contains("Mac")) {
+            SimpleLogger.info("OS: Mac -> Will try Growl first.");
+            growlSupport = true;
+        }
     }
     
     private void checkSystemForNotifyOSD() {
         String os = System.getProperty("os.name");
         if (os.contains("Linux")) {
-            if (new File(NOTIFY_OSD_PATH).exists())
+            SimpleLogger.info("OS: Linux -> Probing for Notify-Send");
+            if (new File(NOTIFY_OSD_PATH).exists()) {
+                SimpleLogger.info("Notify-Send exists. Will try for nOSD first.");
                 notifyOSDSupport = true;    
+            }
         }
     }
     
     private void checkNativeSupport() {
+        SimpleLogger.info("Checking for native notificatin support...");
         growlSupport = false;
         notifyOSDSupport = false;
         checkSystemForGrowl();
@@ -177,11 +182,13 @@ public class SystemNotification {
             else
                 fallbackNotification();
         } catch (Exception e) {
+            SimpleLogger.debug("Error occured showing notification. Falling back.", e);
             fallbackNotification();
         }
     }
 
     private void notifyGrowl() {
+        SimpleLogger.info("Trying to show notification through Growl...");
         if (growl == null) {
             growl = new Growl("JavaPushMail",
                     new String[]{
@@ -193,7 +200,7 @@ public class SystemNotification {
             growl.init();
             growl.registerApplication();
         }
-
+        
         String content = createMultiLineString(message);
         if (icon == null)
             growl.notify(GROWL_NAME, title, content);
@@ -204,11 +211,15 @@ public class SystemNotification {
     }
 
     private void notifyOSD() throws IOException, InterruptedException {
-
+        SimpleLogger.info("Trying to show notification through nOSD...");
         Process p = Runtime.getRuntime().exec(buildArgs(), null, null);
+        SimpleLogger.info("Exec nOSD. Waiting.");
         p.waitFor();
-        if (p.exitValue() != 0)
+        int exitValue = p.exitValue();
+        SimpleLogger.info("Done waiting for nOSD. Exit value=" + exitValue);
+        if (exitValue != 0) {
             fallbackNotification();
+        }
     }
 
     private String[] buildArgs() {

@@ -1,7 +1,7 @@
 package com.mofirouz.javapushmail.app.ui;
 
 import com.mofirouz.javapushmail.JavaPushMailAccount;
-import com.mofirouz.javapushmail.JavaPushMailLogger;
+import com.mofirouz.simplelogger.SimpleLogger;
 import com.mofirouz.javapushmail.app.JavaPushMailAccountsManager;
 import com.mofirouz.notifier.SystemNotification;
 import com.tulskiy.keymaster.common.Provider;
@@ -99,9 +99,9 @@ public class JavaPushMail {
     }
 
     private void initLogger() {
-        JavaPushMailLogger.setWriteFile(LOG_FILE);
-        JavaPushMailLogger.setWriteToFile(true);
-        JavaPushMailLogger.setLevel(0); // on production, this should be set to 4;
+        SimpleLogger.setWriteFile(LOG_FILE);
+        SimpleLogger.setWriteToFile(true);
+        SimpleLogger.setLevel(0); // on production, this should be set to 4;
     }
     
     protected static String getTempImagePath(Image icon) {

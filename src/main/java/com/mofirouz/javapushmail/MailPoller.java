@@ -1,5 +1,6 @@
 package com.mofirouz.javapushmail;
 
+import com.mofirouz.simplelogger.SimpleLogger;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -40,7 +41,7 @@ public abstract class MailPoller {
                 return false;
             }
         } catch (Exception ex) {
-            JavaPushMailLogger.debug("Poller Error: ", ex);
+            SimpleLogger.debug("Poller Error: ", ex);
             return false;
         }
     }

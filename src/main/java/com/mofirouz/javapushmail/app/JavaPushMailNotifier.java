@@ -2,7 +2,7 @@ package com.mofirouz.javapushmail.app;
 
 import com.mofirouz.notifier.SystemNotification;
 import com.mofirouz.javapushmail.JavaPushMailAccount;
-import com.mofirouz.javapushmail.JavaPushMailLogger;
+import com.mofirouz.simplelogger.SimpleLogger;
 import java.io.IOException;
 import javax.mail.Flags.Flag;
 import javax.mail.Message;
@@ -41,7 +41,7 @@ public class JavaPushMailNotifier {
 
             public void messagesAdded(final MessageCountEvent e) {
                 try {
-                    JavaPushMailLogger.info("Message Added: " + e.getMessages()[0].getSubject());
+                    SimpleLogger.info("Message Added: " + e.getMessages()[0].getSubject());
                     showNotification(e.getMessages()[0]);
                 } catch (MessagingException ex) {
                     //JavaPushMailLogger.error("Error showing notification for new added message", ex);
@@ -54,7 +54,7 @@ public class JavaPushMailNotifier {
 
             public void messagesRemoved(MessageCountEvent e) {
                 try {
-                    JavaPushMailLogger.info("Message Removed: " + e.getMessages()[0].getSubject());
+                    SimpleLogger.info("Message Removed: " + e.getMessages()[0].getSubject());
                     sysnot.hideNotification(getNotificationID(e.getMessages()[0]));
                 } catch (MessagingException ex) {
                     //JavaPushMailLogger.error("Error showing notification for removed message", ex);

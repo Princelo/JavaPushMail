@@ -1,5 +1,6 @@
 package com.mofirouz.javapushmail;
 
+import com.mofirouz.simplelogger.SimpleLogger;
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPStore;
 import com.sun.mail.imap.SortTerm;
@@ -69,21 +70,21 @@ public abstract class JavaPushMailAccount implements Runnable {
             selectFolder("");
             prober.start();
             connected = true;
-            JavaPushMailLogger.info(accountName + " connected!");
+            SimpleLogger.info(accountName + " connected!");
             onConnect();
         } catch (AuthenticationFailedException ex) {
             connected = false;
-            JavaPushMailLogger.warn(accountName, ex);
+            SimpleLogger.warn(accountName, ex);
             onError(ex);
         } catch (MessagingException ex) {
             connected = false;
             folder = null;
             messageChangedListener = null;
             messageCountListener = null;
-            JavaPushMailLogger.warn(accountName, ex);
+            SimpleLogger.warn(accountName, ex);
             onError(ex);
         } catch (IllegalStateException ex) {
-            JavaPushMailLogger.warn(accountName, ex);
+            SimpleLogger.warn(accountName, ex);
             connected = true;
             onConnect();
         }
@@ -102,10 +103,10 @@ public abstract class JavaPushMailAccount implements Runnable {
                     prober.stop();
                     poller.stop();
                     connected = false;
-                    JavaPushMailLogger.info(accountName + " disconnected!");
+                    SimpleLogger.info(accountName + " disconnected!");
                     onDisconnect();
                 } catch (Exception e) {
-                    JavaPushMailLogger.debug(e);
+                    SimpleLogger.debug(e);
                     onError(e);
                 }
             }
@@ -188,7 +189,7 @@ public abstract class JavaPushMailAccount implements Runnable {
             server = (IMAPStore) session.getStore(imapProtocol);
             connect();
         } catch (MessagingException ex) {
-            JavaPushMailLogger.debug(ex);
+            SimpleLogger.debug(ex);
             onError(ex);
         }
     }
@@ -203,10 +204,10 @@ public abstract class JavaPushMailAccount implements Runnable {
             }
             openFolder();
         } catch (MessagingException ex) {
-            JavaPushMailLogger.debug(ex);
+            SimpleLogger.debug(ex);
             onError(ex);
         } catch (IllegalStateException ex) {
-            JavaPushMailLogger.debug(ex);
+            SimpleLogger.debug(ex);
         }
     }
 
@@ -246,18 +247,18 @@ public abstract class JavaPushMailAccount implements Runnable {
                 try {
                     folder.idle(false);
                 } catch (FolderClosedException e) {
-                    JavaPushMailLogger.warn("Push Error: [DISCONNECT] " + accountName, e);
+                    SimpleLogger.warn("Push Error: [DISCONNECT] " + accountName, e);
                     usePush = true;
                     selectFolder("");
                 } catch (javax.mail.StoreClosedException e) {
-                    JavaPushMailLogger.warn("Push Error: [GLOBAL DISCONNECT] " + accountName, e);
+                    SimpleLogger.warn("Push Error: [GLOBAL DISCONNECT] " + accountName, e);
                     usePush = true;
                 } catch (MessagingException e) {
-                    JavaPushMailLogger.warn("Push Error: [NO IDLE] " + accountName, e);
+                    SimpleLogger.warn("Push Error: [NO IDLE] " + accountName, e);
                     usePush = false;
                     selectFolder("");
                 } catch (Exception e) {
-                    JavaPushMailLogger.warn("Push Error: [UNKNOWN] " + accountName, e);
+                    SimpleLogger.warn("Push Error: [UNKNOWN] " + accountName, e);
                     usePush = false;
                     selectFolder("");
                 }

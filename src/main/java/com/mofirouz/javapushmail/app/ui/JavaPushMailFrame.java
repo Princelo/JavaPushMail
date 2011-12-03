@@ -1,7 +1,7 @@
 package com.mofirouz.javapushmail.app.ui;
 
 import com.mofirouz.javapushmail.JavaPushMailAccount;
-import com.mofirouz.javapushmail.JavaPushMailLogger;
+import com.mofirouz.simplelogger.SimpleLogger;
 import com.mofirouz.javapushmail.app.JavaPushMailAccountsManager;
 import com.mofirouz.notifier.SystemNotification;
 import com.tulskiy.keymaster.common.HotKey;
@@ -434,7 +434,7 @@ public class JavaPushMailFrame {
             error += "<html><p align=center>You have been disconnected. Please reconnect manually.<br /><br />";
             error += "" + errorMessages + "<br />";
             
-            if (JavaPushMailLogger.isWritingFile())
+            if (SimpleLogger.isWritingFile())
                 error += "Please check log file for more information<br /><br />";
             
             error += "<br /><br /><font size=-2>click to dismiss</font>";

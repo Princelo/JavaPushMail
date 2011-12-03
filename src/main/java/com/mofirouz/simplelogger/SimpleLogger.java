@@ -1,4 +1,4 @@
-package com.mofirouz.javapushmail;
+package com.mofirouz.simplelogger;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,9 +11,9 @@ import java.util.Calendar;
  * @author Mo Firouz
  * @since 7/11/11
  */
-public class JavaPushMailLogger {
+public class SimpleLogger {
 
-    private static JavaPushMailLogger logger;
+    private static SimpleLogger logger;
     private int level = 0; // 0=debug, 1=info 2=warn 3=error
     private boolean writeOut = false;
     private File writeFile = null;
@@ -21,12 +21,12 @@ public class JavaPushMailLogger {
     private final String DATE_FORMAT_NOW = "yy/MM/dd HH:mm:ss(S)";
     public static String newline = System.getProperty("line.separator");
 
-    private JavaPushMailLogger() {
+    private SimpleLogger() {
     }
 
     private static void init() {
         if (logger == null)
-            logger = new JavaPushMailLogger();
+            logger = new SimpleLogger();
     }
 
     private void initWriter() throws IOException {

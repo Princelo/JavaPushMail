@@ -1,12 +1,5 @@
 package com.mofirouz.javapushmail.app.ui;
 
-import com.mofirouz.javapushmail.JavaPushMailAccount;
-import com.mofirouz.simplelogger.SimpleLogger;
-import com.mofirouz.javapushmail.app.JavaPushMailAccountsManager;
-import com.mofirouz.notifier.SystemNotification;
-import com.tulskiy.keymaster.common.HotKey;
-import com.tulskiy.keymaster.common.HotKeyListener;
-import com.tulskiy.keymaster.common.Provider;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
@@ -19,8 +12,24 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+
+import com.mofirouz.javapushmail.JavaPushMailAccount;
+import com.mofirouz.javapushmail.app.JavaPushMailAccountsManager;
+import com.mofirouz.notifier.SystemNotification;
+import com.mofirouz.simplelogger.SimpleLogger;
+import com.tulskiy.keymaster.common.HotKey;
+import com.tulskiy.keymaster.common.HotKeyListener;
+import com.tulskiy.keymaster.common.Provider;
 import javax.mail.MessagingException;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -110,7 +119,7 @@ public class JavaPushMailFrame {
     private void buildTabs() {
         tabbedPanel = new JTabbedPane();
         tabbedPanel.add(settingsPanel);
-        tabbedPanel.add(notificationPanel);
+//        tabbedPanel.add(notificationPanel);
     }
 
     private void buildPanels() {

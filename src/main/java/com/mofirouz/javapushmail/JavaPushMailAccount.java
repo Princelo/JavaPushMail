@@ -1,15 +1,14 @@
 package com.mofirouz.javapushmail;
 
+import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.Properties;
+import java.util.Vector;
+
 import com.mofirouz.simplelogger.SimpleLogger;
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPStore;
 import com.sun.mail.imap.SortTerm;
-
-import java.util.ArrayList;
-import java.util.EventListener;
-import java.util.Properties;
-
-import java.util.Vector;
 import javax.mail.AuthenticationFailedException;
 import javax.mail.Flags;
 import javax.mail.Folder;
@@ -249,6 +248,7 @@ public abstract class JavaPushMailAccount implements Runnable {
                 } catch (FolderClosedException e) {
                     SimpleLogger.warn("Push Error: [DISCONNECT] " + accountName, e);
                     usePush = true;
+                    nullifyListeners();
                     selectFolder("");
                 } catch (javax.mail.StoreClosedException e) {
                     SimpleLogger.warn("Push Error: [GLOBAL DISCONNECT] " + accountName, e);
@@ -338,6 +338,11 @@ public abstract class JavaPushMailAccount implements Runnable {
                 folder.addMessageCountListener(messageCountListener);
             }
         }
+    }
+
+    private void nullifyListeners() {
+        messageChangedListener = null;
+        messageCountListener = null;
     }
 
     public Message[] getNewMessages() throws MessagingException {
